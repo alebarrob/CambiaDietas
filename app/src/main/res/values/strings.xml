@@ -1,6 +1,17 @@
 <resources>
-    <string name="app_name">Cambia Dietas: Tabla de Equivalencias</string>
+    <string name="app_name">CambiaDietas: Tabla de Equivalencias</string>
+
     <string name="bottom_navigation_start">INICIO</string>
     <string name="bottom_navigation_food_categories">CATEGORÍAS</string>
     <string name="bottom_navigation_nutrition_advices">CONSEJOS</string>
+
+    <string name="pinneaple_card_text">Piña</string>
+    <string name="apple_card_text">Manzana</string>
+    <string name="orange_card_text">Naranja</string>
+    <string name="grapes_card_text">Uvas</string>
+    <string name="chocolate_card_text">Chocolate</string>
+
+    <string name="fruit_category">FRUTAS</string>
+    <string name="protein_category">PROTEÍNAS</string>
+    <string name="lacteos_category">LÁCTEOS</string>
 </resources>

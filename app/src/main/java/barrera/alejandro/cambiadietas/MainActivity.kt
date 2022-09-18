@@ -8,10 +8,6 @@ import barrera.alejandro.cambiadietas.ui.theme.CambiaDietasAppTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            CambiaDietasAppTheme {
-                CambiaDietasApp()
-            }
-        }
+        setContent { CambiaDietasAppTheme { CambiaDietasApp() } }
     }
 }
