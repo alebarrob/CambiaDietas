@@ -11,7 +11,10 @@
     <string name="grapes_card_text">Uvas</string>
     <string name="chocolate_card_text">Chocolate</string>
 
+    <string name="initial_category">Elige una categoría</string>
     <string name="fruit_category">FRUTAS</string>
     <string name="protein_category">PROTEÍNAS</string>
     <string name="lacteos_category">LÁCTEOS</string>
+
+    <string name="foodpicker_food_question">¿Qué alimento quieres cambiar?</string>
 </resources>

@@ -17,6 +17,7 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import barrera.alejandro.cambiadietas.ui.theme.Aquamarine
 import barrera.alejandro.cambiadietas.ui.theme.Cadet
@@ -91,6 +92,8 @@ private fun FoodPicker(modifier: Modifier = Modifier) {
         ) {
             FoodCategoryMenu()
             Spacer(Modifier.height(16.dp))
+            Text(text = stringResource(id = R.string.foodpicker_food_question))
+            Spacer(Modifier.height(16.dp))
             FoodRow()
         }
     }
@@ -101,6 +104,7 @@ private fun FoodCategoryMenu(modifier: Modifier = Modifier) {
     val items = categoriesData
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf(0) }
+    val disabledValue = "Elige una categoría"
 
     Box(modifier = modifier) {
         Surface(shape = MaterialTheme.shapes.small) {
@@ -230,6 +234,7 @@ private fun CambiaDietasBottomNavigationItem(
 // Data
 
 private val categoriesData = listOf(
+    R.string.initial_category,
     R.string.fruit_category,
     R.string.protein_category,
     R.string.lacteos_category
