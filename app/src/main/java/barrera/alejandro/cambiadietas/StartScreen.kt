@@ -17,7 +17,6 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import barrera.alejandro.cambiadietas.ui.theme.Aquamarine
 import barrera.alejandro.cambiadietas.ui.theme.Cadet
@@ -32,7 +31,6 @@ fun CambiaDietasApp() {
             modifier = Modifier
                 .fillMaxSize()
         ) {
-
             val paint = Paint().asFrameworkPaint().apply {
                 isAntiAlias = true
                 shader = ImageShader(
@@ -103,13 +101,12 @@ private fun FoodPicker(modifier: Modifier = Modifier) {
 private fun FoodCategoryMenu(modifier: Modifier = Modifier) {
     val items = categoriesData
     var expanded by remember { mutableStateOf(false) }
-    var selectedIndex by remember { mutableStateOf(0) }
-    val disabledValue = "Elige una categoría"
+    var selectedCategory by remember { mutableStateOf("Elige una categoría") }
 
     Box(modifier = modifier) {
         Surface(shape = MaterialTheme.shapes.small) {
             Text(
-                text = stringResource(id = items[selectedIndex]),
+                text = selectedCategory,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -125,11 +122,20 @@ private fun FoodCategoryMenu(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .background(Color.White)
         ) {
-            items.forEachIndexed { index, item ->
+            items.forEach { item ->
+                val category = stringResource(id = item)
+
                 DropdownMenuItem(onClick = {
-                    selectedIndex = index
+                    selectedCategory = category
                     expanded = false
-                }) { Text(text = stringResource(id = item)) }
+                }) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = stringResource(id = item))
+                    }
+                }
             }
         }
     }
@@ -234,7 +240,6 @@ private fun CambiaDietasBottomNavigationItem(
 // Data
 
 private val categoriesData = listOf(
-    R.string.initial_category,
     R.string.fruit_category,
     R.string.protein_category,
     R.string.lacteos_category
