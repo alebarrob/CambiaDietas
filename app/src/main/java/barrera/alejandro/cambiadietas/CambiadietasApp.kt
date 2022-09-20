@@ -12,7 +12,8 @@ fun CambiaDietasApp() {
         Scaffold(
             backgroundColor = Color.Transparent,
             bottomBar = { CambiaDietasBottomBar() },
-            content = { StartScreen() }
+            content = { paddingValues ->
+                StartScreen(paddingValues = paddingValues) }
         )
     }
 }

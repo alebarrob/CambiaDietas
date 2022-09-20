@@ -19,16 +19,18 @@ import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.ui.theme.Aquamarine
 
 @Composable
-fun StartScreen(modifier: Modifier = Modifier) {
+fun StartScreen(modifier: Modifier = Modifier, paddingValues: PaddingValues) {
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = modifier
-            .verticalScroll(rememberScrollState())
-            .padding(vertical = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxSize()
+            .padding(bottom = paddingValues.calculateBottomPadding()),
     ) {
         Image(
             painter = painterResource(id = R.drawable.logo_cambiadietas),
-            contentDescription = null
+            contentDescription = null,
+            modifier = Modifier.padding(bottom = 4.dp)
         )
         FoodPicker()
     }
