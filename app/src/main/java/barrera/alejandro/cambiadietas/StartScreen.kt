@@ -79,7 +79,7 @@ private fun FoodPicker(modifier: Modifier = Modifier) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 30.dp, end = 30.dp),
+            .padding(start = 30.dp, end = 30.dp, bottom = 40.dp),
         shape = MaterialTheme.shapes.medium,
         backgroundColor = Aquamarine
     ) {
