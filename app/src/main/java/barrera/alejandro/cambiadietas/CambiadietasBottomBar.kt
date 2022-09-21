@@ -16,12 +16,15 @@ import barrera.alejandro.cambiadietas.ui.theme.Cadet
 import barrera.alejandro.cambiadietas.ui.theme.RaisinBlack
 
 @Composable
-fun CambiaDietasBottomBar(modifier: Modifier = Modifier) {
+fun CambiaDietasBottomBar(
+    modifier: Modifier = Modifier,
+    onActiveScreen: (String) -> Unit
+) {
     BottomNavigation {
         CambiaDietasBottomNavigationItem(
             rowScope = this,
             selected = true,
-            onClick = { TODO() },
+            onClick = { onActiveScreen("startScreen") },
             drawable = R.drawable.ic_start,
             text = R.string.bottom_navigation_start,
             fontWeight = FontWeight.Bold
@@ -29,7 +32,7 @@ fun CambiaDietasBottomBar(modifier: Modifier = Modifier) {
         CambiaDietasBottomNavigationItem(
             rowScope = this,
             selected = false,
-            onClick = { TODO() },
+            onClick = { onActiveScreen("categoriesScreen") },
             drawable = R.drawable.ic_food_categories,
             text = R.string.bottom_navigation_food_categories,
             fontWeight = FontWeight.Light
@@ -37,7 +40,7 @@ fun CambiaDietasBottomBar(modifier: Modifier = Modifier) {
         CambiaDietasBottomNavigationItem(
             rowScope = this,
             selected = false,
-            onClick = { TODO() },
+            onClick = { onActiveScreen("tipsScreen") },
             drawable = R.drawable.ic_nutrition_advices,
             text = R.string.bottom_navigation_nutrition_advices,
             fontWeight = FontWeight.Light

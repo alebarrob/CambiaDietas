@@ -5,15 +5,36 @@
     <string name="bottom_navigation_food_categories">CATEGORÍAS</string>
     <string name="bottom_navigation_nutrition_advices">CONSEJOS</string>
 
-    <string name="pinneaple_card_text">Piña</string>
-    <string name="apple_card_text">Manzana</string>
-    <string name="orange_card_text">Naranja</string>
-    <string name="grapes_card_text">Uvas</string>
-    <string name="chocolate_card_text">Chocolate</string>
-
-    <string name="fruit_category">Frutas</string>
-    <string name="protein_category">Proteínas</string>
-    <string name="lacteos_category">Lácteos</string>
-
     <string name="foodpicker_food_question">¿Qué alimento quieres cambiar?</string>
+
+    <string name="fruits_category">Frutas</string>
+    <string name="proteins_fats_category">Grasas y Proteínas</string>
+    <string name="fats_category">Grasas</string>
+    <string name="carbohydrates_category">Carbohidratos</string>
+    <string name="dairy_category">Lácteos</string>
+
+    <string name="blueberries_card_text">Arándanos</string>
+    <string name="cherries_card_text">Cerezas</string>
+    <string name="plums_card_text">Ciruelas</string>
+    <string name="datiles_card_text">Dátiles</string>
+    <string name="raspberries_card_text">Frambuesas</string>
+    <string name="strawberries_card_text">Fresas</string>
+    <string name="figs_card_text">Higos</string>
+    <string name="kiwi_card_text">Kiwi</string>
+    <string name="tangerines_card_text">Mandarinas</string>
+    <string name="mango_card_text">Mango</string>
+    <string name="apple_card_text">Manzana</string>
+    <string name="peach_card_text">Melocotón</string>
+    <string name="blackberries_card_text">Moras</string>
+    <string name="orange_card_text">Naranja</string>
+    <string name="nectarine_card_text">Nectarina</string>
+    <string name="nisperos_card_text">Nísperos</string>
+    <string name="papaya_card_text">Papaya</string>
+    <string name="pear_card_text">Pera</string>
+    <string name="pinneaple_card_text">Piña natural</string>
+    <string name="banana_card_text">Plátano</string>
+    <string name="grapes_card_text">Uvas</string>
+    <string name="melon_card_text">Melón</string>
+    <string name="watermelon_card_text">Sandía</string>
+
 </resources>

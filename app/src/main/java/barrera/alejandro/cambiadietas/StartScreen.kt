@@ -59,7 +59,7 @@ private fun FoodPicker(modifier: Modifier = Modifier) {
                     fontSize = 20.sp,
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
-                FoodRow()
+                FoodRow(selectedCategory = selectedCategory)
             }
         }
     }
@@ -112,13 +112,22 @@ private fun FoodCategoryMenu(
 }
 
 @Composable
-private fun FoodRow(modifier: Modifier = Modifier) {
+private fun FoodRow(modifier: Modifier = Modifier, selectedCategory: String) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(5.dp),
         contentPadding = PaddingValues(horizontal = 10.dp),
         modifier = modifier
     ) {
-        items(foodData) {item ->
+        items(
+            when (selectedCategory) {
+                "Frutas" -> fruitsData
+                "Grasas y Proteínas" -> fatsAndProteinsData
+                "Grasas" -> fatsData
+                "Carbohidratos" -> carbohydratesData
+                "Lácteos" -> dairyData
+                else -> listOf()
+            }
+        ) { item ->
             FoodImage(item.drawable, item.text)
         }
     }
