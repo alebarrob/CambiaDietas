@@ -1,5 +1,6 @@
 package barrera.alejandro.cambiadietas
 
+import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.*
@@ -8,10 +9,12 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -20,12 +23,20 @@ import barrera.alejandro.cambiadietas.ui.theme.Aquamarine
 
 @Composable
 fun StartScreen(modifier: Modifier = Modifier, paddingValues: PaddingValues) {
+    val configuration = LocalConfiguration.current
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = modifier
-            .fillMaxSize()
-            .padding(bottom = paddingValues.calculateBottomPadding()),
+        modifier = when (configuration.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = paddingValues.calculateBottomPadding())
+            else -> modifier
+                .fillMaxSize()
+                .padding(bottom = paddingValues.calculateBottomPadding())
+        }
     ) {
         Image(
             painter = painterResource(id = R.drawable.logo_cambiadietas),
@@ -38,7 +49,7 @@ fun StartScreen(modifier: Modifier = Modifier, paddingValues: PaddingValues) {
 
 @Composable
 private fun FoodPicker(modifier: Modifier = Modifier) {
-    var selectedCategory by remember { mutableStateOf("Elige una categoría") }
+    var selectedCategory by rememberSaveable { mutableStateOf("Elige una categoría") }
 
     Card(
         modifier = modifier.padding(horizontal = 30.dp),
@@ -72,12 +83,13 @@ private fun FoodCategoryMenu(
     onSelectedCategory: (String) -> Unit
 ) {
     val items = categoriesData
-    var expanded by remember { mutableStateOf(false) }
+    var expanded by rememberSaveable { mutableStateOf(false) }
 
     Box(modifier = modifier) {
         Surface(shape = MaterialTheme.shapes.small) {
             Text(
                 text = selectedCategory,
+                fontSize = 25.sp,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 5.dp, vertical = 10.dp)
@@ -152,7 +164,7 @@ private fun FoodImage(
             )
             Text(
                 text = stringResource(text),
-                modifier = Modifier.padding(bottom = 5.dp)
+                modifier = Modifier.padding(vertical = 5.dp)
             )
         }
     }

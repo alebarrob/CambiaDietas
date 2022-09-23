@@ -25,6 +25,7 @@
     <string name="mango_card_text">Mango</string>
     <string name="apple_card_text">Manzana</string>
     <string name="peach_card_text">Melocotón</string>
+    <string name="melon_card_text">Melón</string>
     <string name="blackberries_card_text">Moras</string>
     <string name="orange_card_text">Naranja</string>
     <string name="nectarine_card_text">Nectarina</string>
@@ -33,8 +34,31 @@
     <string name="pear_card_text">Pera</string>
     <string name="pinneaple_card_text">Piña natural</string>
     <string name="banana_card_text">Plátano</string>
-    <string name="grapes_card_text">Uvas</string>
-    <string name="melon_card_text">Melón</string>
     <string name="watermelon_card_text">Sandía</string>
+    <string name="grapes_card_text">Uvas</string>
+
+    <string name="tuna_card_text">Atún al natural</string>
+    <string name="seafood_card_text">Cefalópodos, crustáceos, gambas y similares</string>
+    <string name="pork_card_text">Cerdo (graso)</string>
+    <string name="eggs_whites_card_text">Claras de huevo</string>
+    <string name="rabbit_card_text">Conejo</string>
+    <string name="lamb_card_text">Cordero</string>
+    <string name="gluten_card_text">Gluten de trigo</string>
+    <string name="egg_card_text">Huevo entero (XL)</string>
+    <string name="spanish_jam_card_text">Jamón serrano</string>
+    <string name="pork_loin_card_text">Lomo de cerdo (magro)</string>
+    <string name="tenderloin_card_text">Lomo embuchado</string>
+    <string name="white_fish_card_text">Pescado blanco</string>
+    <string name="chicken_card_text">Pollo o pavo (sin piel, pechuga)</string>
+    <string name="protein_powder_card_text">Proteína en polvo</string>
+    <string name="cottage_cheese_card_text">Requesón desnatado</string>
+    <string name="salmon_card_text">Salmón, pescados azules</string>
+    <string name="seitan_card_text">Seitan</string>
+    <string name="fat_beef_card_text">Ternera, potro (graso)</string>
+    <string name="lean_beef_card_text">Ternera, potro (magro)</string>
+    <string name="tofu_card_text">Tofu</string>
+    <string name="burgos_cheese_card_text">Queso burgos desnatado</string>
+    <string name="cheese_card_text">Queso (cualquier tipo)</string>
+    <string name="fresh_cheese_card_text">Queso fresco batido 0%</string>
 
 </resources>

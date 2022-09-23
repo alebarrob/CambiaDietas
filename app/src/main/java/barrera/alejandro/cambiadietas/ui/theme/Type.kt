@@ -42,7 +42,7 @@ val Typography = Typography(
     ),
     body1 = TextStyle(
         fontFamily = fontFamilyLato,
-        fontSize = 25.sp,
+        fontSize = 20.sp,
         color = RaisinBlack,
         textAlign = TextAlign.Center
     ),
