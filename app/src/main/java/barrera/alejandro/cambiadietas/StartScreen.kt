@@ -83,7 +83,7 @@ private fun FoodCategoryMenu(
     onSelectedCategory: (String) -> Unit
 ) {
     val items = categoriesData
-    var expanded by rememberSaveable { mutableStateOf(false) }
+    var expanded by remember { mutableStateOf(false) }
 
     Box(modifier = modifier) {
         Surface(shape = MaterialTheme.shapes.small) {
@@ -125,6 +125,30 @@ private fun FoodCategoryMenu(
 
 @Composable
 private fun FoodRow(modifier: Modifier = Modifier, selectedCategory: String) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
+        modifier = modifier
+            .horizontalScroll(rememberScrollState())
+            .padding(PaddingValues(horizontal = 10.dp))
+    ) {
+        val foodData = when (selectedCategory) {
+            "Frutas" -> fruitsData
+            "Grasas y Proteínas" -> fatsAndProteinsData
+            "Grasas" -> fatsData
+            "Carbohidratos" -> carbohydratesData
+            "Lácteos" -> dairyData
+            else -> listOf()
+        }
+        foodData.forEach { item ->
+            FoodImage(item.drawable, item.text)
+        }
+    }
+}
+
+/* Alternative FoodRow
+
+@Composable
+private fun FoodRow(modifier: Modifier = Modifier, selectedCategory: String) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(5.dp),
         contentPadding = PaddingValues(horizontal = 10.dp),
@@ -143,7 +167,8 @@ private fun FoodRow(modifier: Modifier = Modifier, selectedCategory: String) {
             FoodImage(item.drawable, item.text)
         }
     }
-}
+
+ */
 
 @Composable
 private fun FoodImage(
