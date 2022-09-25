@@ -46,6 +46,12 @@ val Typography = Typography(
         color = RaisinBlack,
         textAlign = TextAlign.Center
     ),
+    button = TextStyle(
+        fontFamily = fontFamilyLato,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 25.sp,
+        letterSpacing = (1.15).sp
+    ),
 )
 
 /*
@@ -66,10 +72,5 @@ h1 = TextStyle(
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
         letterSpacing = 0.sp
-    ),
-    button = TextStyle(
-        fontWeight = FontWeight.Bold,
-        fontSize = 14.sp,
-        letterSpacing = (1.15).sp
-    ),
+    )
 */

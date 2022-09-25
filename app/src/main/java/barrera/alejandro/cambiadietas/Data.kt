@@ -12,8 +12,8 @@ val categoriesData = listOf(
 )
 
 val fruitsData = listOf(
-    R.drawable.fruits_blueberries to R.string.blueberries_card_text,
-    R.drawable.fruits_cherries to R.string.cherries_card_text,
+    R.drawable.blueberries to R.string.blueberries_card_text,
+    R.drawable.cherries to R.string.cherries_card_text,
     R.drawable.fruits_plums to R.string.plums_card_text,
     R.drawable.fruits_datiles to R.string.datiles_card_text,
     R.drawable.fruits_raspberries to R.string.raspberries_card_text,
@@ -38,8 +38,8 @@ val fruitsData = listOf(
 ).map { DrawableStringPair(it.first, it.second) }
 
 val fatsAndProteinsData = listOf(
-    R.drawable.fats_proteins_tuna to R.string.tuna_card_text,
-    R.drawable.fats_proteins_seafood to R.string.seafood_card_text,
+    R.drawable.tuna to R.string.tuna_card_text,
+    R.drawable.seafood to R.string.seafood_card_text,
     R.drawable.fats_proteins_pork to R.string.pork_card_text,
     R.drawable.fats_proteins_eggs_whites to R.string.eggs_whites_card_text,
     R.drawable.fats_proteins_rabbit to R.string.rabbit_card_text,

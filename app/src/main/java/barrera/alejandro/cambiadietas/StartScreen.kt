@@ -5,7 +5,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.ui.theme.Aquamarine
+import barrera.alejandro.cambiadietas.ui.theme.KellyGreen
 
 @Composable
 fun StartScreen(modifier: Modifier = Modifier, paddingValues: PaddingValues) {
@@ -40,8 +41,7 @@ fun StartScreen(modifier: Modifier = Modifier, paddingValues: PaddingValues) {
     ) {
         Image(
             painter = painterResource(id = R.drawable.logo_cambiadietas),
-            contentDescription = null,
-            modifier = Modifier.padding(bottom = 4.dp)
+            contentDescription = null
         )
         FoodPicker()
     }
@@ -52,9 +52,9 @@ private fun FoodPicker(modifier: Modifier = Modifier) {
     var selectedCategory by rememberSaveable { mutableStateOf("Elige una categoría") }
 
     Card(
-        modifier = modifier.padding(horizontal = 30.dp),
         shape = MaterialTheme.shapes.medium,
-        backgroundColor = Aquamarine
+        backgroundColor = Aquamarine,
+        modifier = modifier.padding(horizontal = 30.dp, vertical = 4.dp),
     ) {
         Column(
             modifier = Modifier.padding(5.dp),
@@ -70,7 +70,7 @@ private fun FoodPicker(modifier: Modifier = Modifier) {
                     fontSize = 20.sp,
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
-                FoodRow(selectedCategory = selectedCategory)
+                FoodColumn(selectedCategory = selectedCategory)
             }
         }
     }
@@ -86,14 +86,16 @@ private fun FoodCategoryMenu(
     var expanded by remember { mutableStateOf(false) }
 
     Box(modifier = modifier) {
-        Surface(shape = MaterialTheme.shapes.small) {
+        OutlinedButton(
+            onClick = { expanded = true },
+            shape = MaterialTheme.shapes.small,
+            border = BorderStroke((0.5).dp, KellyGreen)
+        ) {
             Text(
                 text = selectedCategory,
-                fontSize = 25.sp,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 5.dp, vertical = 10.dp)
-                    .clickable(onClick = { expanded = true })
                     .background(Color.White)
             )
         }
@@ -109,6 +111,7 @@ private fun FoodCategoryMenu(
 
                 DropdownMenuItem(onClick = {
                     onSelectedCategory(category)
+
                     expanded = false
                 }) {
                     Box(
@@ -124,33 +127,9 @@ private fun FoodCategoryMenu(
 }
 
 @Composable
-private fun FoodRow(modifier: Modifier = Modifier, selectedCategory: String) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(5.dp),
-        modifier = modifier
-            .horizontalScroll(rememberScrollState())
-            .padding(PaddingValues(horizontal = 10.dp))
-    ) {
-        val foodData = when (selectedCategory) {
-            "Frutas" -> fruitsData
-            "Grasas y Proteínas" -> fatsAndProteinsData
-            "Grasas" -> fatsData
-            "Carbohidratos" -> carbohydratesData
-            "Lácteos" -> dairyData
-            else -> listOf()
-        }
-        foodData.forEach { item ->
-            FoodImage(item.drawable, item.text)
-        }
-    }
-}
-
-/* Alternative FoodRow
-
-@Composable
-private fun FoodRow(modifier: Modifier = Modifier, selectedCategory: String) {
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(5.dp),
+private fun FoodColumn(modifier: Modifier = Modifier, selectedCategory: String) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(5.dp),
         contentPadding = PaddingValues(horizontal = 10.dp),
         modifier = modifier
     ) {
@@ -164,11 +143,20 @@ private fun FoodRow(modifier: Modifier = Modifier, selectedCategory: String) {
                 else -> listOf()
             }
         ) { item ->
-            FoodImage(item.drawable, item.text)
+            Surface(shape = MaterialTheme.shapes.medium) {
+                Text(
+                    text = stringResource(id = item.text),
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 5.dp, vertical = 10.dp)
+                        .clickable(onClick = { })
+                        .background(Color.White)
+                )
+            }
         }
     }
-
- */
+}
 
 @Composable
 private fun FoodImage(
@@ -178,7 +166,7 @@ private fun FoodImage(
 ) {
     Card(
         elevation = 10.dp,
-        shape = MaterialTheme.shapes.small,
+        shape = MaterialTheme.shapes.large,
         modifier = modifier
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -187,10 +175,7 @@ private fun FoodImage(
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds
             )
-            Text(
-                text = stringResource(text),
-                modifier = Modifier.padding(vertical = 5.dp)
-            )
+
         }
     }
 }
