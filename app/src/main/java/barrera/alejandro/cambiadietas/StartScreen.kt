@@ -5,8 +5,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -17,6 +15,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.ui.theme.Aquamarine
@@ -54,7 +53,7 @@ private fun FoodPicker(modifier: Modifier = Modifier) {
     Card(
         shape = MaterialTheme.shapes.medium,
         backgroundColor = Aquamarine,
-        modifier = modifier.padding(horizontal = 30.dp, vertical = 4.dp),
+        modifier = modifier.padding(start = 30.dp, top = 4.dp, end = 30.dp, bottom = 15.dp),
     ) {
         Column(
             modifier = Modifier.padding(5.dp),
@@ -128,53 +127,39 @@ private fun FoodCategoryMenu(
 
 @Composable
 private fun FoodColumn(modifier: Modifier = Modifier, selectedCategory: String) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(5.dp),
-        contentPadding = PaddingValues(horizontal = 10.dp),
-        modifier = modifier
-    ) {
-        items(
-            when (selectedCategory) {
-                "Frutas" -> fruitsData
-                "Grasas y Proteínas" -> fatsAndProteinsData
-                "Grasas" -> fatsData
-                "Carbohidratos" -> carbohydratesData
-                "Lácteos" -> dairyData
-                else -> listOf()
-            }
-        ) { item ->
-            Surface(shape = MaterialTheme.shapes.medium) {
-                Text(
-                    text = stringResource(id = item.text),
-                    fontSize = 20.sp,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 5.dp, vertical = 10.dp)
-                        .clickable(onClick = { })
-                        .background(Color.White)
-                )
-            }
-        }
-    }
-}
+    var foodData by remember { mutableStateOf(listOf<DrawableStringPair>()) }
 
-@Composable
-private fun FoodImage(
-    @DrawableRes drawable: Int,
-    @StringRes text: Int,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        elevation = 10.dp,
-        shape = MaterialTheme.shapes.large,
+    foodData = when (selectedCategory) {
+        "Frutas" -> fruitsData
+        "Grasas y Proteínas" -> fatsAndProteinsData
+        "Grasas" -> fatsData
+        "Carbohidratos" -> carbohydratesData
+        "Lácteos" -> dairyData
+        else -> listOf()
+    }
+    Column(
+        verticalArrangement = Arrangement.spacedBy(5.dp),
         modifier = modifier
+            .padding(horizontal = 10.dp)
+            .fillMaxWidth()
+            .height(200.dp)
+            .verticalScroll(rememberScrollState())
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Image(
-                painter = painterResource(id = drawable),
-                contentDescription = null,
-                contentScale = ContentScale.FillBounds
-            )
+         foodData.forEach { item ->
+             Button(
+                 onClick = {  },
+                 shape = MaterialTheme.shapes.medium,
+                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
+             ) {
+                 Text(
+                     text = stringResource(id = item.text),
+                     fontSize = 18.sp,
+                     fontWeight = FontWeight.Light,
+                     modifier = Modifier
+                         .fillMaxWidth()
+                         .padding(horizontal = 5.dp, vertical = 10.dp)
+                 )
+             }
 
         }
     }
