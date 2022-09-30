@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas
+package barrera.alejandro.cambiadietas.ui.screens
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable

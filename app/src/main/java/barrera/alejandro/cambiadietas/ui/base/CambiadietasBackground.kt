@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas
+package barrera.alejandro.cambiadietas.ui.base
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.res.imageResource
+import barrera.alejandro.cambiadietas.R
 
 @Composable
 fun CambiadietasBackground() {
