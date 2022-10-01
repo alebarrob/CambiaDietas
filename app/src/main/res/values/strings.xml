@@ -5,7 +5,8 @@
     <string name="bottom_navigation_food_categories">CATEGORÍAS</string>
     <string name="bottom_navigation_nutrition_advices">CONSEJOS</string>
 
-    <string name="foodpicker_food_question">¿Qué alimento quieres cambiar?</string>
+    <string name="food_picker_question">¿Qué alimento quieres cambiar?</string>
+    <string name="food_comparator_question">¿Qué alimento prefieres comer?</string>
 
     <string name="fruits_category">Frutas</string>
     <string name="proteins_fats_category">Grasas y Proteínas</string>

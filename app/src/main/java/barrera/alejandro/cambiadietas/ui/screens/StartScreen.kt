@@ -79,7 +79,7 @@ private fun FoodPicker(
             )
             if (selectedCategory != "Elige una categoría") {
                 Text(
-                    text = stringResource(id = R.string.foodpicker_food_question),
+                    text = stringResource(id = R.string.food_picker_question),
                     fontSize = 20.sp,
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
