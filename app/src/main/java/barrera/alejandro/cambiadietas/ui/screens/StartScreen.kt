@@ -5,7 +5,6 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,7 +20,14 @@ import barrera.alejandro.cambiadietas.ui.theme.Aquamarine
 import barrera.alejandro.cambiadietas.ui.theme.KellyGreen
 
 @Composable
-fun StartScreen(modifier: Modifier = Modifier, paddingValues: PaddingValues) {
+fun StartScreen(
+    paddingValues: PaddingValues,
+    selectedCategory: String,
+    onSelectedCategory: (String) -> Unit,
+    onCurrentScreen: (String) -> Unit,
+    onSelectedFood: (DrawableStringPair) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val configuration = LocalConfiguration.current
 
     Column(
@@ -41,14 +47,23 @@ fun StartScreen(modifier: Modifier = Modifier, paddingValues: PaddingValues) {
             painter = painterResource(id = R.drawable.logo_cambiadietas),
             contentDescription = null
         )
-        FoodPicker()
+        FoodPicker(
+            selectedCategory = selectedCategory,
+            onSelectedCategory = onSelectedCategory,
+            onCurrentScreen = onCurrentScreen,
+            onSelectedFood = onSelectedFood
+        )
     }
 }
 
 @Composable
-private fun FoodPicker(modifier: Modifier = Modifier) {
-    var selectedCategory by rememberSaveable { mutableStateOf("Elige una categoría") }
-
+private fun FoodPicker(
+    selectedCategory: String,
+    onSelectedCategory: (String) -> Unit,
+    onCurrentScreen: (String) -> Unit,
+    onSelectedFood: (DrawableStringPair) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Card(
         shape = MaterialTheme.shapes.medium,
         backgroundColor = Aquamarine,
@@ -60,7 +75,7 @@ private fun FoodPicker(modifier: Modifier = Modifier) {
         ) {
             FoodCategoryMenu(
                 selectedCategory = selectedCategory,
-                onSelectedCategory = { selectedCategory = it }
+                onSelectedCategory = onSelectedCategory
             )
             if (selectedCategory != "Elige una categoría") {
                 Text(
@@ -68,8 +83,60 @@ private fun FoodPicker(modifier: Modifier = Modifier) {
                     fontSize = 20.sp,
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
-                FoodColumn(selectedCategory = selectedCategory)
+                FoodColumn(
+                    selectedCategory = selectedCategory,
+                    onCurrentScreen = onCurrentScreen,
+                    onSelectedFood = onSelectedFood
+                )
             }
+        }
+    }
+}
+
+@Composable
+private fun FoodColumn(
+    selectedCategory: String,
+    onCurrentScreen: (String) -> Unit,
+    onSelectedFood: (DrawableStringPair) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var foodData by remember { mutableStateOf(listOf<DrawableStringPair>()) }
+
+    foodData = when (selectedCategory) {
+        "Frutas" -> fruitsData
+        "Grasas y Proteínas" -> fatsAndProteinsData
+        "Grasas" -> fatsData
+        "Carbohidratos" -> carbohydratesData
+        "Lácteos" -> dairyData
+        else -> listOf()
+    }
+    Column(
+        verticalArrangement = Arrangement.spacedBy(5.dp),
+        modifier = modifier
+            .padding(horizontal = 10.dp)
+            .fillMaxWidth()
+            .height(200.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+         foodData.forEach { item ->
+             Button(
+                 onClick = {
+                     onCurrentScreen("selectedFoodScreen")
+                     onSelectedFood(item)
+                 },
+                 shape = MaterialTheme.shapes.medium,
+                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
+             ) {
+                 Text(
+                     text = stringResource(id = item.text),
+                     fontSize = 18.sp,
+                     fontWeight = FontWeight.Light,
+                     modifier = Modifier
+                         .fillMaxWidth()
+                         .padding(horizontal = 5.dp, vertical = 10.dp)
+                 )
+             }
+
         }
     }
 }
@@ -120,46 +187,6 @@ private fun FoodCategoryMenu(
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun FoodColumn(modifier: Modifier = Modifier, selectedCategory: String) {
-    var foodData by remember { mutableStateOf(listOf<DrawableStringPair>()) }
-
-    foodData = when (selectedCategory) {
-        "Frutas" -> fruitsData
-        "Grasas y Proteínas" -> fatsAndProteinsData
-        "Grasas" -> fatsData
-        "Carbohidratos" -> carbohydratesData
-        "Lácteos" -> dairyData
-        else -> listOf()
-    }
-    Column(
-        verticalArrangement = Arrangement.spacedBy(5.dp),
-        modifier = modifier
-            .padding(horizontal = 10.dp)
-            .fillMaxWidth()
-            .height(200.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
-         foodData.forEach { item ->
-             Button(
-                 onClick = {  },
-                 shape = MaterialTheme.shapes.medium,
-                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
-             ) {
-                 Text(
-                     text = stringResource(id = item.text),
-                     fontSize = 18.sp,
-                     fontWeight = FontWeight.Light,
-                     modifier = Modifier
-                         .fillMaxWidth()
-                         .padding(horizontal = 5.dp, vertical = 10.dp)
-                 )
-             }
-
         }
     }
 }

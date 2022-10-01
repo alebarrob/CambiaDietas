@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.ui.base
+package barrera.alejandro.cambiadietas.ui.commonui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

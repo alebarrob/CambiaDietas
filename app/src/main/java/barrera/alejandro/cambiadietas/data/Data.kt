@@ -1,8 +1,10 @@
 package barrera.alejandro.cambiadietas.data
 
+import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import barrera.alejandro.cambiadietas.R
+import kotlinx.android.parcel.Parcelize
 
 val categoriesData = listOf(
     R.string.fruits_category,
@@ -98,7 +100,8 @@ val dairyData = listOf(
     R.drawable.dairy_protein_yogurt to R.string.protein_yogurt_text,
 ).map { DrawableStringPair(it.first, it.second) }
 
+@Parcelize
 data class DrawableStringPair(
     @DrawableRes val drawable: Int,
     @StringRes val text: Int
-)
+) : Parcelable
