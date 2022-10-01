@@ -79,8 +79,8 @@ val fatsData = listOf(
 val carbohydratesData = listOf(
     R.drawable.carbohydrates_rice_pasta to R.string.rice_pasta_text,
     R.drawable.carbohydrates_cereals to R.string.cereals_text,
-    R.drawable.carbohydrates_oat_fleur to R.string.oat_fleur_text,
-    R.drawable.carbohydrates_corn_fleur to R.string.corn_fleur_text,
+    R.drawable.carbohydrates_oat_flour to R.string.oat_fleur_text,
+    R.drawable.carbohydrates_corn_flour to R.string.corn_fleur_text,
     R.drawable.carbohydrates_beans to R.string.beans_text,
     R.drawable.carbohydrates_honey to R.string.honey_text,
     R.drawable.carbohydrates_bread to R.string.bread_text,
