@@ -14,6 +14,8 @@
     <string name="carbohydrates_category">Carbohidratos</string>
     <string name="dairy_category">Lácteos</string>
 
+    <string name="food_text_placeholder"> </string>
+
     <string name="blueberries_text">Arándanos</string>
     <string name="cherries_text">Cerezas</string>
     <string name="plums_text">Ciruelas</string>

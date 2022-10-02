@@ -11,21 +11,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.data.*
+import barrera.alejandro.cambiadietas.data.DrawableStringPair
+import barrera.alejandro.cambiadietas.data.categoriesData
+import barrera.alejandro.cambiadietas.ui.commonui.FoodColumn
 import barrera.alejandro.cambiadietas.ui.theme.Aquamarine
 import barrera.alejandro.cambiadietas.ui.theme.KellyGreen
 
 @Composable
 fun StartScreen(
     paddingValues: PaddingValues,
-    selectedCategory: String,
-    onSelectedCategory: (String) -> Unit,
-    onCurrentScreen: (String) -> Unit,
-    onSelectedFood: (DrawableStringPair) -> Unit,
+    onScreenChange: (String) -> Unit,
+    foodCategory: String,
+    onFoodCategoryChange: (String) -> Unit,
+    onFoodChange: (DrawableStringPair) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val configuration = LocalConfiguration.current
@@ -48,20 +49,20 @@ fun StartScreen(
             contentDescription = null
         )
         FoodPicker(
-            selectedCategory = selectedCategory,
-            onSelectedCategory = onSelectedCategory,
-            onCurrentScreen = onCurrentScreen,
-            onSelectedFood = onSelectedFood
+            onScreenChange = onScreenChange,
+            foodCategory = foodCategory,
+            onFoodCategoryChange = onFoodCategoryChange,
+            onFoodChange = onFoodChange
         )
     }
 }
 
 @Composable
 private fun FoodPicker(
-    selectedCategory: String,
-    onSelectedCategory: (String) -> Unit,
-    onCurrentScreen: (String) -> Unit,
-    onSelectedFood: (DrawableStringPair) -> Unit,
+    onScreenChange: (String) -> Unit,
+    foodCategory: String,
+    onFoodCategoryChange: (String) -> Unit,
+    onFoodChange: (DrawableStringPair) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -74,19 +75,19 @@ private fun FoodPicker(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             FoodCategoryMenu(
-                selectedCategory = selectedCategory,
-                onSelectedCategory = onSelectedCategory
+                foodCategory = foodCategory,
+                onFoodCategoryChange = onFoodCategoryChange
             )
-            if (selectedCategory != "Elige una categoría") {
+            if (foodCategory != "Elige una categoría") {
                 Text(
                     text = stringResource(id = R.string.food_picker_question),
                     fontSize = 20.sp,
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
                 FoodColumn(
-                    selectedCategory = selectedCategory,
-                    onCurrentScreen = onCurrentScreen,
-                    onSelectedFood = onSelectedFood
+                    onScreenChange = onScreenChange,
+                    foodCategory = foodCategory,
+                    onFoodChange = onFoodChange,
                 )
             }
         }
@@ -94,60 +95,11 @@ private fun FoodPicker(
 }
 
 @Composable
-private fun FoodColumn(
-    selectedCategory: String,
-    onCurrentScreen: (String) -> Unit,
-    onSelectedFood: (DrawableStringPair) -> Unit,
+private fun FoodCategoryMenu(
+    foodCategory: String,
+    onFoodCategoryChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var foodData by remember { mutableStateOf(listOf<DrawableStringPair>()) }
-
-    foodData = when (selectedCategory) {
-        "Frutas" -> fruitsData
-        "Grasas y Proteínas" -> fatsAndProteinsData
-        "Grasas" -> fatsData
-        "Carbohidratos" -> carbohydratesData
-        "Lácteos" -> dairyData
-        else -> listOf()
-    }
-    Column(
-        verticalArrangement = Arrangement.spacedBy(5.dp),
-        modifier = modifier
-            .padding(horizontal = 10.dp)
-            .fillMaxWidth()
-            .height(200.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
-         foodData.forEach { item ->
-             Button(
-                 onClick = {
-                     onCurrentScreen("selectedFoodScreen")
-                     onSelectedFood(item)
-                 },
-                 shape = MaterialTheme.shapes.medium,
-                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
-             ) {
-                 Text(
-                     text = stringResource(id = item.text),
-                     fontSize = 18.sp,
-                     fontWeight = FontWeight.Light,
-                     modifier = Modifier
-                         .fillMaxWidth()
-                         .padding(horizontal = 5.dp, vertical = 10.dp)
-                 )
-             }
-
-        }
-    }
-}
-
-@Composable
-private fun FoodCategoryMenu(
-    modifier: Modifier = Modifier,
-    selectedCategory: String,
-    onSelectedCategory: (String) -> Unit
-) {
-    val items = categoriesData
     var expanded by remember { mutableStateOf(false) }
 
     Box(modifier = modifier) {
@@ -157,7 +109,7 @@ private fun FoodCategoryMenu(
             border = BorderStroke((0.5).dp, KellyGreen)
         ) {
             Text(
-                text = selectedCategory,
+                text = foodCategory,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 5.dp, vertical = 10.dp)
@@ -171,12 +123,13 @@ private fun FoodCategoryMenu(
                 .fillMaxWidth()
                 .background(Color.White)
         ) {
-            items.forEach { item ->
-                val category = stringResource(id = item)
+            val categoriesItems = categoriesData
+
+            categoriesItems.forEach { item ->
+                val newCategory = stringResource(id = item)
 
                 DropdownMenuItem(onClick = {
-                    onSelectedCategory(category)
-
+                    onFoodCategoryChange(newCategory)
                     expanded = false
                 }) {
                     Box(

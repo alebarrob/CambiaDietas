@@ -16,12 +16,12 @@ import barrera.alejandro.cambiadietas.ui.theme.Cadet
 import barrera.alejandro.cambiadietas.ui.theme.RaisinBlack
 
 @Composable
-fun CambiaDietasBottomBar(onCurrentScreen: (String) -> Unit) {
+fun CambiaDietasBottomBar(onScreenChange: (String) -> Unit) {
     BottomNavigation {
         CambiaDietasBottomNavigationItem(
             rowScope = this,
             selected = true,
-            onClick = { onCurrentScreen("startScreen") },
+            onClick = { onScreenChange("startScreen") },
             drawable = R.drawable.ic_start,
             text = R.string.bottom_navigation_start,
             fontWeight = FontWeight.Bold
@@ -29,7 +29,7 @@ fun CambiaDietasBottomBar(onCurrentScreen: (String) -> Unit) {
         CambiaDietasBottomNavigationItem(
             rowScope = this,
             selected = false,
-            onClick = { onCurrentScreen("categoriesScreen") },
+            onClick = { onScreenChange("categoriesScreen") },
             drawable = R.drawable.ic_food_categories,
             text = R.string.bottom_navigation_food_categories,
             fontWeight = FontWeight.Light
@@ -37,7 +37,7 @@ fun CambiaDietasBottomBar(onCurrentScreen: (String) -> Unit) {
         CambiaDietasBottomNavigationItem(
             rowScope = this,
             selected = false,
-            onClick = { onCurrentScreen("tipsScreen") },
+            onClick = { onScreenChange("tipsScreen") },
             drawable = R.drawable.ic_nutrition_advices,
             text = R.string.bottom_navigation_nutrition_advices,
             fontWeight = FontWeight.Light
@@ -57,12 +57,10 @@ private fun CambiaDietasBottomNavigationItem(
     rowScope.BottomNavigationItem(
         selected = selected,
         onClick = onClick,
-        icon = {
-            Icon(
+        icon = { Icon(
                 painter = painterResource(id = drawable),
                 contentDescription = null
-            )
-        },
+            ) },
         label = { Text(
             text = stringResource(text),
             fontWeight = fontWeight
