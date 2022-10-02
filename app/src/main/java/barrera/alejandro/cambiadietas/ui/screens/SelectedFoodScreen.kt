@@ -7,6 +7,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -100,7 +102,8 @@ fun FoodImageComparator(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(5.dp)
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier.fillMaxWidth()
     ) {
         FoodQuantityCard(
             food = food,
@@ -109,6 +112,10 @@ fun FoodImageComparator(
                 foodQuantity = newFoodQuantity
             },
             enabled = true
+        )
+        Image(
+            painter = painterResource(id = R.drawable.arrow),
+            contentDescription = null
         )
         FoodQuantityCard(
             food = alternativeFood,
@@ -140,9 +147,12 @@ fun FoodQuantityCard(
                 contentDescription = null,
                 modifier = Modifier.padding(5.dp)
             )
-            Text(text = stringResource(id = food.text))
+            Text(
+                text = stringResource(id = food.text),
+                modifier = Modifier.width(120.dp)
+            )
             TextField(
-                value = foodQuantity,
+                value = foodQuantity, //TODO - Add the units for eggs
                 shape = RectangleShape,
                 onValueChange = onFoodQuantityChange,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
