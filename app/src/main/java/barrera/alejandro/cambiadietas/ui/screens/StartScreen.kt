@@ -58,43 +58,6 @@ fun StartScreen(
 }
 
 @Composable
-private fun FoodPicker(
-    onScreenChange: (String) -> Unit,
-    foodCategory: String,
-    onFoodCategoryChange: (String) -> Unit,
-    onFoodChange: (DrawableStringPair) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        shape = MaterialTheme.shapes.medium,
-        backgroundColor = Aquamarine,
-        modifier = modifier.padding(start = 30.dp, top = 4.dp, end = 30.dp, bottom = 15.dp),
-    ) {
-        Column(
-            modifier = Modifier.padding(5.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            FoodCategoryMenu(
-                foodCategory = foodCategory,
-                onFoodCategoryChange = onFoodCategoryChange
-            )
-            if (foodCategory != "Elige una categoría") {
-                Text(
-                    text = stringResource(id = R.string.food_picker_question),
-                    fontSize = 20.sp,
-                    modifier = Modifier.padding(vertical = 16.dp)
-                )
-                FoodColumn(
-                    onScreenChange = onScreenChange,
-                    foodCategory = foodCategory,
-                    onFoodChange = onFoodChange,
-                )
-            }
-        }
-    }
-}
-
-@Composable
 private fun FoodCategoryMenu(
     foodCategory: String,
     onFoodCategoryChange: (String) -> Unit,
@@ -139,6 +102,43 @@ private fun FoodCategoryMenu(
                         Text(text = stringResource(id = item))
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun FoodPicker(
+    onScreenChange: (String) -> Unit,
+    foodCategory: String,
+    onFoodCategoryChange: (String) -> Unit,
+    onFoodChange: (DrawableStringPair) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        shape = MaterialTheme.shapes.medium,
+        backgroundColor = Aquamarine,
+        modifier = modifier.padding(start = 30.dp, top = 4.dp, end = 30.dp, bottom = 15.dp),
+    ) {
+        Column(
+            modifier = Modifier.padding(5.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            FoodCategoryMenu(
+                foodCategory = foodCategory,
+                onFoodCategoryChange = onFoodCategoryChange
+            )
+            if (foodCategory != "Elige una categoría") {
+                Text(
+                    text = stringResource(id = R.string.food_picker_question),
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(vertical = 16.dp)
+                )
+                FoodColumn(
+                    onScreenChange = onScreenChange,
+                    foodCategory = foodCategory,
+                    onFoodChange = onFoodChange,
+                )
             }
         }
     }
