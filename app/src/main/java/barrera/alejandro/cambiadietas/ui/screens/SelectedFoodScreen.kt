@@ -61,7 +61,7 @@ fun SelectedFoodScreen(
 @Composable
 fun FoodComparator(
     food: DrawableStringPair,
-    foodCategory: String
+    foodCategory: String,
 ) {
     var alternativeFood by rememberSaveable { mutableStateOf(DrawableStringPair(
         R.drawable.food_image_placeholder,
@@ -74,8 +74,9 @@ fun FoodComparator(
         modifier = Modifier.padding(start = 30.dp, top = 4.dp, end = 30.dp, bottom = 15.dp),
     ) {
         Column(
-            modifier = Modifier.padding(5.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(5.dp)
         ) {
             FoodImageComparator(
                 food = food,
@@ -83,8 +84,7 @@ fun FoodComparator(
             )
             Text(
                 text = stringResource(id = R.string.food_comparator_question),
-                fontSize = 20.sp,
-                modifier = Modifier.padding(vertical = 16.dp)
+                fontSize = 20.sp
             )
             FoodColumn(
                 onScreenChange = null,
@@ -100,6 +100,8 @@ fun FoodImageComparator(
     food: DrawableStringPair,
     alternativeFood: DrawableStringPair
 ) {
+    val sourceFoodName = stringResource(food.text)
+    val sourceAlternativeFoodName = stringResource(alternativeFood.text)
     var foodAmount by remember { mutableStateOf("") }
     var foodUnit by remember { mutableStateOf("") }
     var alternativeFoodAmount by remember { mutableStateOf("") }
@@ -114,8 +116,18 @@ fun FoodImageComparator(
             food = food,
             foodAmount = foodAmount,
             onFoodAmountChange = {
+                val appleGrams = convertToAppleGrams(
+                    SourceFoodName = sourceFoodName,
+                    sourceFoodAmount = it.toDouble(),
+                )
+                val targetFoodGrams = convertFromAppleGrams(
+                    appleGrams = appleGrams,
+                    targetFoodName = sourceAlternativeFoodName
+                )
+
                 foodAmount = it
-                alternativeFoodAmount = it
+                alternativeFoodAmount = targetFoodGrams.toString()
+
             },
             measurementUnit = foodUnit,
             onMeasurementUnitChange = { foodUnit = it },
@@ -160,17 +172,19 @@ fun FoodQuantityCard(
         elevation = 5.dp
     ) {
         Column(
-            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(5.dp),
+            modifier = Modifier.padding(top = 5.dp)
         ) {
             Image(
                 painter = painterResource(id = food.drawable),
-                contentDescription = null,
-                modifier = Modifier.padding(5.dp)
+                contentDescription = null
             )
             Text(
                 text = stringResource(id = food.text),
-                modifier = Modifier.width(120.dp)
+                modifier = Modifier
+                    .width(120.dp)
+                    .padding(horizontal = 5.dp)
             )
             TextField(
                 value = foodAmount,
@@ -185,18 +199,66 @@ fun FoodQuantityCard(
                 enabled = enabled,
                 colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = KellyGreen),
                 label = { Text(text = measurementUnit) },
-                modifier = Modifier
-                    .width(120.dp)
-                    .padding(top = 3.dp),
+                modifier = Modifier.width(120.dp)
             )
         }
     }
 }
 
 private fun convertToAppleGrams(SourceFoodName: String, sourceFoodAmount: Double): Double {
- return 0.0
+    return when (SourceFoodName) {
+        "Arándanos" -> sourceFoodAmount * 130.0 / 120.0
+        "Cerezas" -> sourceFoodAmount * 130.0 / 145.0
+        "Ciruelas" -> sourceFoodAmount * 130.0 / 145.0
+        "Dátiles" -> sourceFoodAmount * 130.0 / 20.0
+        "Frambuesas" -> sourceFoodAmount * 130.0 / 200.0
+        "Fresas" -> sourceFoodAmount * 130.0 / 145.0
+        "Higos" -> sourceFoodAmount * 130.0 / 145.0
+        "Kiwi" -> sourceFoodAmount * 130.0 / 145.0
+        "Mandarinas" -> sourceFoodAmount * 130.0 / 145.0
+        "Mango" -> sourceFoodAmount * 130.0 / 145.0
+        "Manzana" -> sourceFoodAmount * 130.0 / 145.0
+        "Melocotón" -> sourceFoodAmount * 130.0 / 145.0
+        "Melón" -> sourceFoodAmount * 130.0 / 145.0
+        "Moras" -> sourceFoodAmount * 130.0 / 145.0
+        "Naranja" -> sourceFoodAmount * 130.0 / 145.0
+        "Nectarina" -> sourceFoodAmount * 130.0 / 145.0
+        "Nísperos" -> sourceFoodAmount * 130.0 / 145.0
+        "Papaya" -> sourceFoodAmount * 130.0 / 145.0
+        "Pera" -> sourceFoodAmount * 130.0 / 145.0
+        "Piña natural" -> sourceFoodAmount * 130.0 / 145.0
+        "Plátano" -> sourceFoodAmount * 130.0 / 145.0
+        "Sandía" -> sourceFoodAmount * 130.0 / 145.0
+        "Uvas" -> sourceFoodAmount * 130.0 / 145.0
+        else -> sourceFoodAmount * 130.0 / 145.0
+    }
 }
 
-private fun convertFromAppleGrams(targetFoodName: String, ) {
-
+private fun convertFromAppleGrams(appleGrams: Double, targetFoodName: String): Double {
+    return when (targetFoodName) {
+        "Arándanos" -> appleGrams * 120.0 / 130.0
+        "Cerezas" -> appleGrams * 145.0 / 130.0
+        "Ciruelas" -> 0.00
+        "Dátiles" -> 0.00
+        "Frambuesas" -> 0.00
+        "Fresas" -> 0.00
+        "Higos" -> 0.00
+        "Kiwi" -> 0.00
+        "Mandarinas" -> 0.00
+        "Mango" -> 0.00
+        "Manzana" -> 0.00
+        "Melocotón" -> 0.00
+        "Melón" -> 0.00
+        "Moras" -> 0.00
+        "Naranja" -> 0.00
+        "Nectarina" -> 0.00
+        "Nísperos" -> 0.00
+        "Papaya" -> 0.00
+        "Pera" -> 0.00
+        "Piña natural" -> 0.00
+        "Plátano" -> 0.00
+        "Sandía" -> 0.00
+        "Uvas" -> 0.00
+        else -> 0.00
+    }
 }
