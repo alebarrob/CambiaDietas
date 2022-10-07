@@ -35,8 +35,8 @@ import java.util.*
 @Composable
 fun SelectedFoodScreen(
     paddingValues: PaddingValues,
-    food: DrawableStringPair,
     foodCategory: String,
+    food: DrawableStringPair,
     modifier: Modifier = Modifier
 ) {
     val configuration = LocalConfiguration.current
@@ -55,21 +55,29 @@ fun SelectedFoodScreen(
         }
     ) {
         FoodComparator(
-            food = food,
-            foodCategory = foodCategory
+            foodCategory = foodCategory,
+            food = food
         )
     }
 }
 
 @Composable
 fun FoodComparator(
-    food: DrawableStringPair,
     foodCategory: String,
+    food: DrawableStringPair
 ) {
+    val context = LocalContext.current
+    val foodName = stringResource(food.text)
+    var foodAmount by rememberSaveable { mutableStateOf("") }
+    var foodUnit by rememberSaveable { mutableStateOf("") }
     var alternativeFood by rememberSaveable { mutableStateOf(DrawableStringPair(
         R.drawable.food_image_placeholder,
         R.string.food_text_placeholder
     )) }
+    val alternativeFoodName = stringResource(alternativeFood.text)
+    var alternativeFoodAmount by rememberSaveable { mutableStateOf("") }
+    var alternativeFoodUnit by rememberSaveable { mutableStateOf("") }
+    var isError by rememberSaveable { mutableStateOf(false) }
 
     Card(
         shape = MaterialTheme.shapes.medium,
@@ -82,9 +90,40 @@ fun FoodComparator(
             modifier = Modifier.padding(5.dp)
         ) {
             FoodImageComparator(
-                foodCategory = foodCategory,
                 food = food,
-                alternativeFood = alternativeFood
+                foodAmount = foodAmount,
+                foodUnit = foodUnit,
+                onFoodUnitChange = { foodUnit = it },
+                alternativeFood = alternativeFood,
+                alternativeFoodAmount = alternativeFoodAmount,
+                onAlternativeFoodAmountChange = {
+                    if (it.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))"))) {
+                        isError = false
+                        foodAmount = it
+                        alternativeFoodAmount = String.format(
+                            locale = Locale.US,
+                            format = "%.2f",
+                            calculateFoodAmountEquivalence(
+                                foodCategory = foodCategory,
+                                foodName = foodName,
+                                foodAmount = it.toDouble(),
+                                alternativeFoodName = alternativeFoodName
+                            )
+                        )
+                    } else if (it == "") {
+                        isError = false
+                        foodAmount = it
+                        alternativeFoodAmount = it
+                    } else {
+                        isError = true
+                        Toast.makeText(
+                            context, "Has introducido un valor incorrecto", Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                },
+                alternativeFoodUnit = alternativeFoodUnit,
+                onAlternativeFoodUnitChange = { alternativeFoodUnit = it },
+                isError = isError
             )
             Text(
                 text = stringResource(id = R.string.food_comparator_question),
@@ -93,7 +132,26 @@ fun FoodComparator(
             FoodColumn(
                 onScreenChange = null,
                 foodCategory = foodCategory,
-                onFoodChange = { alternativeFood = it } //UPDATE AMOUNT VALUE
+                onFoodChange = {
+                    alternativeFood = it
+                    Toast.makeText(
+                        context, "BOTON PULSADO", Toast.LENGTH_SHORT
+                    ).show()
+                    alternativeFoodAmount = if (foodAmount.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))"))) {
+                        String.format(
+                            locale = Locale.US,
+                            format = "%.2f",
+                            calculateFoodAmountEquivalence(
+                                foodCategory = foodCategory,
+                                foodName = foodName,
+                                foodAmount = foodAmount.toDouble(),
+                                alternativeFoodName = alternativeFoodName
+                            )
+                        )
+                    } else {
+                        foodAmount
+                    }
+                }
             )
         }
     }
@@ -101,18 +159,18 @@ fun FoodComparator(
 
 @Composable
 fun FoodImageComparator(
-    foodCategory: String,
     food: DrawableStringPair,
-    alternativeFood: DrawableStringPair
+    foodAmount: String,
+    foodUnit: String,
+    onFoodUnitChange: (String) -> Unit,
+    alternativeFood: DrawableStringPair,
+    alternativeFoodAmount: String,
+    onAlternativeFoodAmountChange: (String) -> Unit,
+    alternativeFoodUnit: String,
+    onAlternativeFoodUnitChange: (String) -> Unit,
+    isError: Boolean
 ) {
-    val context = LocalContext.current
-    val sourceFoodName = stringResource(food.text)
-    val sourceAlternativeFoodName = stringResource(alternativeFood.text)
-    var foodAmount by remember { mutableStateOf("") }
-    var foodUnit by remember { mutableStateOf("") }
-    var alternativeFoodAmount by remember { mutableStateOf("") }
-    var alternativeFoodUnit by remember { mutableStateOf("") }
-    var isError by remember { mutableStateOf(false) }
+
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -122,33 +180,9 @@ fun FoodImageComparator(
         FoodQuantityCard(
             food = food,
             foodAmount = foodAmount,
-            onFoodAmountChange = {
-                if (it.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))"))) {
-                    isError = false
-                    foodAmount = it
-                    alternativeFoodAmount = String.format(
-                        locale = Locale.US,
-                        format = "%.2f",
-                        calculateFoodAmountEquivalence(
-                            foodCategory = foodCategory,
-                            sourceFoodName = sourceFoodName,
-                            sourceFoodAmount = it.toDouble(),
-                            sourceAlternativeFoodName = sourceAlternativeFoodName
-                        )
-                    )
-                } else if (it == "") {
-                    isError = false
-                    foodAmount = it
-                    alternativeFoodAmount = it
-                } else {
-                    isError = true
-                    Toast.makeText(
-                        context, "Has introducido un valor incorrecto", Toast.LENGTH_SHORT
-                    ).show()
-                }
-            },
+            onFoodAmountChange = { onAlternativeFoodAmountChange(it) },
             measurementUnit = foodUnit,
-            onMeasurementUnitChange = { foodUnit = it },
+            onMeasurementUnitChange = { onFoodUnitChange(it) },
             enabled = true,
             isError = isError
         )
@@ -161,7 +195,7 @@ fun FoodImageComparator(
             foodAmount = alternativeFoodAmount,
             onFoodAmountChange = { },
             measurementUnit = alternativeFoodUnit,
-            onMeasurementUnitChange = { alternativeFoodUnit = it },
+            onMeasurementUnitChange = { onAlternativeFoodUnitChange(it) },
             enabled = false,
             isError = isError
         )
@@ -229,19 +263,19 @@ fun FoodQuantityCard(
 
 private fun calculateFoodAmountEquivalence(
     foodCategory: String,
-    sourceFoodName: String,
-    sourceFoodAmount: Double,
-    sourceAlternativeFoodName: String
+    foodName: String,
+    foodAmount: Double,
+    alternativeFoodName: String
 ): Double {
     return when (foodCategory) {
         "Frutas" -> {
             val appleGrams = convertToAppleGrams(
-                SourceFoodName = sourceFoodName,
-                sourceFoodAmount = sourceFoodAmount,
+                SourceFoodName = foodName,
+                sourceFoodAmount = foodAmount,
             )
             val alternativeFoodAmount = convertFromAppleGrams(
                 appleGrams = appleGrams,
-                targetFoodName = sourceAlternativeFoodName
+                targetFoodName = alternativeFoodName
             )
 
             alternativeFoodAmount
