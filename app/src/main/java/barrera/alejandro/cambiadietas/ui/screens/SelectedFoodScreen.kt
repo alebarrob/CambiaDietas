@@ -9,8 +9,11 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -26,7 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.data.DrawableStringPair
+import barrera.alejandro.cambiadietas.data.FoodDrawableStringAmountTriple
 import barrera.alejandro.cambiadietas.ui.commonui.FoodColumn
 import barrera.alejandro.cambiadietas.ui.theme.Aquamarine
 import barrera.alejandro.cambiadietas.ui.theme.KellyGreen
@@ -36,10 +39,17 @@ import java.util.*
 fun SelectedFoodScreen(
     paddingValues: PaddingValues,
     foodCategory: String,
-    food: DrawableStringPair,
+    food: FoodDrawableStringAmountTriple,
     modifier: Modifier = Modifier
 ) {
     val configuration = LocalConfiguration.current
+    var alternativeFood by rememberSaveable { mutableStateOf(FoodDrawableStringAmountTriple(
+        R.drawable.food_image_placeholder,
+        R.string.food_text_placeholder,
+        0.00
+    )) }
+    var alternativeFoodAmount by rememberSaveable { mutableStateOf("") }
+    var insertedFoodAmount by rememberSaveable { mutableStateOf("") }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -56,7 +66,18 @@ fun SelectedFoodScreen(
     ) {
         FoodComparator(
             foodCategory = foodCategory,
-            food = food
+            food = food,
+            alternativeFood = alternativeFood,
+            onAlternativeFoodChange = { alternativeFood = it },
+            insertedFoodAmount = insertedFoodAmount,
+            onInsertedFoodAmountChange = { insertedFoodAmount = it },
+            alternativeFoodAmount = alternativeFoodAmount,
+            onAlternativeFoodAmountChange = { alternativeFoodAmount = calculateFoodAmountEquivalence(
+                foodCategory = foodCategory,
+                food = food,
+                alternativeFood = alternativeFood,
+                insertedFoodAmount = insertedFoodAmount.toDouble()
+            ) }
         )
     }
 }
@@ -64,19 +85,16 @@ fun SelectedFoodScreen(
 @Composable
 fun FoodComparator(
     foodCategory: String,
-    food: DrawableStringPair
+    food: FoodDrawableStringAmountTriple,
+    insertedFoodAmount: String,
+    onInsertedFoodAmountChange: (String) -> Unit,
+    alternativeFood: FoodDrawableStringAmountTriple,
+    alternativeFoodAmount: String,
+    onAlternativeFoodAmountChange: (String) -> Unit,
+    onAlternativeFoodChange: (FoodDrawableStringAmountTriple) -> Unit
 ) {
     val context = LocalContext.current
-    val foodName = stringResource(food.text)
-    var foodAmount by rememberSaveable { mutableStateOf("") }
-    var foodUnit by rememberSaveable { mutableStateOf("") }
-    var alternativeFood by rememberSaveable { mutableStateOf(DrawableStringPair(
-        R.drawable.food_image_placeholder,
-        R.string.food_text_placeholder
-    )) }
-    val alternativeFoodName = stringResource(alternativeFood.text)
-    var alternativeFoodAmount by rememberSaveable { mutableStateOf("") }
-    var alternativeFoodUnit by rememberSaveable { mutableStateOf("") }
+
     var isError by rememberSaveable { mutableStateOf(false) }
 
     Card(
@@ -91,38 +109,22 @@ fun FoodComparator(
         ) {
             FoodImageComparator(
                 food = food,
-                foodAmount = foodAmount,
-                foodUnit = foodUnit,
-                onFoodUnitChange = { foodUnit = it },
-                alternativeFood = alternativeFood,
-                alternativeFoodAmount = alternativeFoodAmount,
-                onAlternativeFoodAmountChange = {
-                    if (it.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))"))) {
+                insertedFoodAmount = insertedFoodAmount,
+                onFoodAmountChange = { if (it.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))"))) {
                         isError = false
-                        foodAmount = it
-                        alternativeFoodAmount = String.format(
-                            locale = Locale.US,
-                            format = "%.2f",
-                            calculateFoodAmountEquivalence(
-                                foodCategory = foodCategory,
-                                foodName = foodName,
-                                foodAmount = it.toDouble(),
-                                alternativeFoodName = alternativeFoodName
-                            )
-                        )
+                        onInsertedFoodAmountChange(it)
+                        onAlternativeFoodAmountChange(it)
                     } else if (it == "") {
                         isError = false
-                        foodAmount = it
-                        alternativeFoodAmount = it
+                        onInsertedFoodAmountChange(it)
                     } else {
                         isError = true
                         Toast.makeText(
                             context, "Has introducido un valor incorrecto", Toast.LENGTH_SHORT
                         ).show()
-                    }
-                },
-                alternativeFoodUnit = alternativeFoodUnit,
-                onAlternativeFoodUnitChange = { alternativeFoodUnit = it },
+                    } },
+                alternativeFood = alternativeFood,
+                alternativeFoodAmount = alternativeFoodAmount,
                 isError = isError
             )
             Text(
@@ -130,26 +132,12 @@ fun FoodComparator(
                 fontSize = 20.sp
             )
             FoodColumn(
-                onScreenChange = null,
                 foodCategory = foodCategory,
-                onFoodChange = {
-                    alternativeFood = it
-                    Toast.makeText(
-                        context, "BOTON PULSADO", Toast.LENGTH_SHORT
-                    ).show()
-                    alternativeFoodAmount = if (foodAmount.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))"))) {
-                        String.format(
-                            locale = Locale.US,
-                            format = "%.2f",
-                            calculateFoodAmountEquivalence(
-                                foodCategory = foodCategory,
-                                foodName = foodName,
-                                foodAmount = foodAmount.toDouble(),
-                                alternativeFoodName = alternativeFoodName
-                            )
-                        )
-                    } else {
-                        foodAmount
+                onAlternativeFoodChange = onAlternativeFoodChange,
+                alternativeFoodAmount = alternativeFoodAmount,
+                onAlternativeFoodAmountChange = {
+                    if (alternativeFoodAmount.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))"))) {
+                        onAlternativeFoodAmountChange(insertedFoodAmount)
                     }
                 }
             )
@@ -159,18 +147,15 @@ fun FoodComparator(
 
 @Composable
 fun FoodImageComparator(
-    food: DrawableStringPair,
-    foodAmount: String,
-    foodUnit: String,
-    onFoodUnitChange: (String) -> Unit,
-    alternativeFood: DrawableStringPair,
+    food: FoodDrawableStringAmountTriple,
+    insertedFoodAmount: String,
+    onFoodAmountChange: (String) -> Unit,
+    alternativeFood: FoodDrawableStringAmountTriple,
     alternativeFoodAmount: String,
-    onAlternativeFoodAmountChange: (String) -> Unit,
-    alternativeFoodUnit: String,
-    onAlternativeFoodUnitChange: (String) -> Unit,
     isError: Boolean
 ) {
-
+    var foodUnit by rememberSaveable { mutableStateOf("") }
+    var alternativeFoodUnit by rememberSaveable { mutableStateOf("") }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -179,10 +164,10 @@ fun FoodImageComparator(
     ) {
         FoodQuantityCard(
             food = food,
-            foodAmount = foodAmount,
-            onFoodAmountChange = { onAlternativeFoodAmountChange(it) },
+            insertedFoodAmount = insertedFoodAmount,
+            onFoodAmountChange = onFoodAmountChange,
             measurementUnit = foodUnit,
-            onMeasurementUnitChange = { onFoodUnitChange(it) },
+            onMeasurementUnitChange = { foodUnit = it },
             enabled = true,
             isError = isError
         )
@@ -192,10 +177,10 @@ fun FoodImageComparator(
         )
         FoodQuantityCard(
             food = alternativeFood,
-            foodAmount = alternativeFoodAmount,
+            insertedFoodAmount = alternativeFoodAmount,
             onFoodAmountChange = { },
             measurementUnit = alternativeFoodUnit,
-            onMeasurementUnitChange = { onAlternativeFoodUnitChange(it) },
+            onMeasurementUnitChange = { alternativeFoodUnit = it },
             enabled = false,
             isError = isError
         )
@@ -205,8 +190,8 @@ fun FoodImageComparator(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun FoodQuantityCard(
-    food: DrawableStringPair,
-    foodAmount: String,
+    food: FoodDrawableStringAmountTriple,
+    insertedFoodAmount: String,
     onFoodAmountChange: (String) -> Unit,
     measurementUnit: String,
     onMeasurementUnitChange: (String) -> Unit,
@@ -242,7 +227,7 @@ fun FoodQuantityCard(
                     .padding(horizontal = 5.dp)
             )
             TextField(
-                value = foodAmount,
+                value = insertedFoodAmount,
                 shape = RectangleShape,
                 onValueChange = onFoodAmountChange,
                 keyboardOptions = KeyboardOptions(
@@ -263,81 +248,31 @@ fun FoodQuantityCard(
 
 private fun calculateFoodAmountEquivalence(
     foodCategory: String,
-    foodName: String,
-    foodAmount: Double,
-    alternativeFoodName: String
-): Double {
+    food: FoodDrawableStringAmountTriple,
+    alternativeFood: FoodDrawableStringAmountTriple,
+    insertedFoodAmount: Double,
+): String {
     return when (foodCategory) {
         "Frutas" -> {
             val appleGrams = convertToAppleGrams(
-                SourceFoodName = foodName,
-                sourceFoodAmount = foodAmount,
+                sourceFoodAmount = insertedFoodAmount,
+                equivalentFoodAmount = food.equivalentAmount
             )
             val alternativeFoodAmount = convertFromAppleGrams(
                 appleGrams = appleGrams,
-                targetFoodName = alternativeFoodName
+                equivalentFoodAmount = alternativeFood.equivalentAmount
             )
 
-            alternativeFoodAmount
+            String.format(locale = Locale.US, format = "%.2f", alternativeFoodAmount)
         }
-        else -> 0.0
+        else -> "0.00"
     }
 }
 
-private fun convertToAppleGrams(SourceFoodName: String, sourceFoodAmount: Double): Double {
-    return when (SourceFoodName) {
-        "Arándanos" -> sourceFoodAmount * 130.0 / 120.0
-        "Cerezas" -> sourceFoodAmount * 130.0 / 145.0
-        "Ciruelas" -> sourceFoodAmount * 130.0 / 145.0
-        "Dátiles" -> sourceFoodAmount * 130.0 / 20.0
-        "Frambuesas" -> sourceFoodAmount * 130.0 / 200.0
-        "Fresas" -> sourceFoodAmount * 130.0 / 250.0
-        "Higos" -> sourceFoodAmount * 130.0 / 160.0
-        "Kiwi" -> sourceFoodAmount * 130.0 / 140.0
-        "Mandarinas" -> sourceFoodAmount * 130.0 / 170.0
-        "Mango" -> sourceFoodAmount * 130.0 / 120.0
-        "Manzana" -> sourceFoodAmount * 130.0 / 130.0
-        "Melocotón" -> sourceFoodAmount * 130.0 / 320.0
-        "Melón" -> sourceFoodAmount * 130.0 / 445.0
-        "Moras" -> sourceFoodAmount * 130.0 / 250.0
-        "Naranja" -> sourceFoodAmount * 130.0 / 290.0
-        "Nectarina" -> sourceFoodAmount * 130.0 / 135.0
-        "Nísperos" -> sourceFoodAmount * 130.0 / 320.0
-        "Papaya" -> sourceFoodAmount * 130.0 / 200.0
-        "Pera" -> sourceFoodAmount * 130.0 / 160.0
-        "Piña natural" -> sourceFoodAmount * 130.0 / 120.0
-        "Plátano" -> sourceFoodAmount * 130.0 / 165.0
-        "Sandía" -> sourceFoodAmount * 130.0 / 395.0
-        "Uvas" -> sourceFoodAmount * 130.0 / 125.0
-        else -> 0.00
-    }
+private fun convertToAppleGrams(sourceFoodAmount: Double, equivalentFoodAmount: Double): Double {
+    return sourceFoodAmount * 130.00 / equivalentFoodAmount
 }
 
-private fun convertFromAppleGrams(appleGrams: Double, targetFoodName: String): Double {
-    return when (targetFoodName) {
-        "Arándanos" -> appleGrams * 120.0 / 130.0
-        "Cerezas" -> appleGrams * 145.0 / 130.0
-        "Ciruelas" -> appleGrams * 145.0 / 130.0
-        "Dátiles" -> appleGrams * 20.0 / 130.0
-        "Frambuesas" -> appleGrams * 200.0 / 130.0
-        "Fresas" -> appleGrams * 250.0 / 130.0
-        "Higos" -> appleGrams * 160.0 / 130.0
-        "Kiwi" -> appleGrams * 140.0 / 130.0
-        "Mandarinas" -> appleGrams * 160.0 / 130.0
-        "Mango" -> appleGrams * 120.0 / 130.0
-        "Manzana" -> appleGrams * 130.0 / 130.0
-        "Melocotón" -> appleGrams * 320.0 / 130.0
-        "Melón" -> appleGrams * 445.0 / 130.0
-        "Moras" -> appleGrams * 250.0 / 130.0
-        "Naranja" -> appleGrams * 290.0 / 130.0
-        "Nectarina" -> appleGrams * 135.0 / 130.0
-        "Nísperos" -> appleGrams * 320.0 / 130.0
-        "Papaya" -> appleGrams * 200.0 / 130.0
-        "Pera" -> appleGrams * 160.0 / 130.0
-        "Piña natural" -> appleGrams * 120.0 / 130.0
-        "Plátano" -> appleGrams * 165.0 / 130.0
-        "Sandía" -> appleGrams * 395.0 / 130.0
-        "Uvas" -> appleGrams * 125.0 / 130.0
-        else -> 0.00
-    }
+private fun convertFromAppleGrams(appleGrams: Double, equivalentFoodAmount: Double): Double {
+    return appleGrams * equivalentFoodAmount / 130.0
 }

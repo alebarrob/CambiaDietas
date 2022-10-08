@@ -18,12 +18,15 @@ import barrera.alejandro.cambiadietas.data.*
 
 @Composable
 fun FoodColumn(
-    onScreenChange: ((String) -> Unit)?,
+    modifier: Modifier = Modifier,
+    onScreenChange: ((String) -> Unit)? = null,
     foodCategory: String,
-    onFoodChange: (DrawableStringPair) -> Unit,
-    modifier: Modifier = Modifier
+    onFoodChange: ((FoodDrawableStringAmountTriple) -> Unit)? = null,
+    onAlternativeFoodChange: ((FoodDrawableStringAmountTriple) -> Unit)? = null,
+    alternativeFoodAmount: String? = null,
+    onAlternativeFoodAmountChange: ((String) -> Unit)? = null
 ) {
-    var foodItems by remember { mutableStateOf(listOf<DrawableStringPair>()) }
+    var foodItems by remember { mutableStateOf(listOf<FoodDrawableStringAmountTriple>()) }
 
     foodItems = when (foodCategory) {
         "Frutas" -> fruitsData
@@ -45,7 +48,9 @@ fun FoodColumn(
             Button(
                 onClick = {
                     onScreenChange?.invoke("selectedFoodScreen")
-                    onFoodChange(item)
+                    onFoodChange?.invoke(item)
+                    onAlternativeFoodChange?.invoke(item)
+                    onAlternativeFoodAmountChange?.invoke(alternativeFoodAmount!!)
                 },
                 shape = MaterialTheme.shapes.medium,
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)

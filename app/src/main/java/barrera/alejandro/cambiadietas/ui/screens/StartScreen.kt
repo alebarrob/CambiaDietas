@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.data.DrawableStringPair
+import barrera.alejandro.cambiadietas.data.FoodDrawableStringAmountTriple
 import barrera.alejandro.cambiadietas.data.categoriesData
 import barrera.alejandro.cambiadietas.ui.commonui.FoodColumn
 import barrera.alejandro.cambiadietas.ui.theme.Aquamarine
@@ -26,7 +26,7 @@ fun StartScreen(
     onScreenChange: (String) -> Unit,
     foodCategory: String,
     onFoodCategoryChange: (String) -> Unit,
-    onFoodChange: (DrawableStringPair) -> Unit,
+    onFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val configuration = LocalConfiguration.current
@@ -112,7 +112,7 @@ private fun FoodPicker(
     onScreenChange: (String) -> Unit,
     foodCategory: String,
     onFoodCategoryChange: (String) -> Unit,
-    onFoodChange: (DrawableStringPair) -> Unit,
+    onFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(

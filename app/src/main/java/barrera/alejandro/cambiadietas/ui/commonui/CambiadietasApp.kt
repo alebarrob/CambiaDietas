@@ -10,7 +10,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.data.DrawableStringPair
+import barrera.alejandro.cambiadietas.data.FoodDrawableStringAmountTriple
 import barrera.alejandro.cambiadietas.ui.screens.CategoriesScreen
 import barrera.alejandro.cambiadietas.ui.screens.SelectedFoodScreen
 import barrera.alejandro.cambiadietas.ui.screens.StartScreen
@@ -21,9 +21,10 @@ fun CambiaDietasApp() {
     val scaffoldState = rememberScaffoldState()
     var screen by rememberSaveable { mutableStateOf("startScreen") }
     var foodCategory by rememberSaveable { mutableStateOf("Elige una categoría") }
-    var food by rememberSaveable { mutableStateOf(DrawableStringPair(
+    var food by rememberSaveable { mutableStateOf(FoodDrawableStringAmountTriple(
         R.drawable.food_image_placeholder,
-        R.string.food_text_placeholder
+        R.string.food_text_placeholder,
+        0.00
     )) }
 
     Box {
