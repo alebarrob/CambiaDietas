@@ -46,9 +46,9 @@ fun SelectedFoodScreen(
     val configuration = LocalConfiguration.current
     var insertedFoodAmount by rememberSaveable { mutableStateOf("") }
     var alternativeFood by rememberSaveable { mutableStateOf(FoodDrawableStringAmountTriple(
-        R.drawable.food_image_placeholder,
-        R.string.food_text_placeholder,
-        0.00
+        drawable = R.drawable.food_image_placeholder,
+        text = R.string.food_text_placeholder,
+        equivalentAmount = 0.00
     )) }
     var alternativeFoodAmount by rememberSaveable { mutableStateOf("") }
 
