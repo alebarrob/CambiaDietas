@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.data.FoodDrawableStringAmountTriple
+import barrera.alejandro.cambiadietas.data.IntermediateFood
 import barrera.alejandro.cambiadietas.ui.commonui.FoodColumn
 import barrera.alejandro.cambiadietas.ui.theme.Aquamarine
 import barrera.alejandro.cambiadietas.ui.theme.KellyGreen
@@ -43,13 +44,13 @@ fun SelectedFoodScreen(
     modifier: Modifier = Modifier
 ) {
     val configuration = LocalConfiguration.current
+    var insertedFoodAmount by rememberSaveable { mutableStateOf("") }
     var alternativeFood by rememberSaveable { mutableStateOf(FoodDrawableStringAmountTriple(
         R.drawable.food_image_placeholder,
         R.string.food_text_placeholder,
         0.00
     )) }
     var alternativeFoodAmount by rememberSaveable { mutableStateOf("") }
-    var insertedFoodAmount by rememberSaveable { mutableStateOf("") }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -67,17 +68,19 @@ fun SelectedFoodScreen(
         FoodComparator(
             foodCategory = foodCategory,
             food = food,
-            alternativeFood = alternativeFood,
-            onAlternativeFoodChange = { alternativeFood = it },
             insertedFoodAmount = insertedFoodAmount,
             onInsertedFoodAmountChange = { insertedFoodAmount = it },
+            alternativeFood = alternativeFood,
+            onAlternativeFoodChange = { alternativeFood = it },
             alternativeFoodAmount = alternativeFoodAmount,
-            onAlternativeFoodAmountChange = { alternativeFoodAmount = calculateFoodAmountEquivalence(
-                foodCategory = foodCategory,
-                food = food,
-                alternativeFood = alternativeFood,
-                insertedFoodAmount = insertedFoodAmount.toDouble()
-            ) }
+            onAlternativeFoodAmountChange = {
+                alternativeFoodAmount = calculateFoodAmountEquivalence(
+                    foodCategory = foodCategory,
+                    food = food,
+                    insertedFoodAmount = insertedFoodAmount.toDouble(),
+                    alternativeFood = alternativeFood
+                )
+            }
         )
     }
 }
@@ -89,12 +92,11 @@ fun FoodComparator(
     insertedFoodAmount: String,
     onInsertedFoodAmountChange: (String) -> Unit,
     alternativeFood: FoodDrawableStringAmountTriple,
+    onAlternativeFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
     alternativeFoodAmount: String,
-    onAlternativeFoodAmountChange: (String) -> Unit,
-    onAlternativeFoodChange: (FoodDrawableStringAmountTriple) -> Unit
+    onAlternativeFoodAmountChange: (String) -> Unit
 ) {
     val context = LocalContext.current
-
     var isError by rememberSaveable { mutableStateOf(false) }
 
     Card(
@@ -109,20 +111,20 @@ fun FoodComparator(
         ) {
             FoodImageComparator(
                 food = food,
-                insertedFoodAmount = insertedFoodAmount,
                 onFoodAmountChange = { if (it.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))"))) {
-                        isError = false
-                        onInsertedFoodAmountChange(it)
-                        onAlternativeFoodAmountChange(it)
-                    } else if (it == "") {
-                        isError = false
-                        onInsertedFoodAmountChange(it)
-                    } else {
-                        isError = true
-                        Toast.makeText(
-                            context, "Has introducido un valor incorrecto", Toast.LENGTH_SHORT
-                        ).show()
-                    } },
+                    isError = false
+                    onInsertedFoodAmountChange(it)
+                    onAlternativeFoodAmountChange(it)
+                } else if (it == "") {
+                    isError = false
+                    onInsertedFoodAmountChange(it)
+                } else {
+                    isError = true
+                    Toast.makeText(
+                        context, "Has introducido un valor incorrecto", Toast.LENGTH_SHORT
+                    ).show()
+                } },
+                insertedFoodAmount = insertedFoodAmount,
                 alternativeFood = alternativeFood,
                 alternativeFoodAmount = alternativeFoodAmount,
                 isError = isError
@@ -164,8 +166,8 @@ fun FoodImageComparator(
     ) {
         FoodQuantityCard(
             food = food,
-            insertedFoodAmount = insertedFoodAmount,
             onFoodAmountChange = onFoodAmountChange,
+            insertedFoodAmount = insertedFoodAmount,
             measurementUnit = foodUnit,
             onMeasurementUnitChange = { foodUnit = it },
             enabled = true,
@@ -177,8 +179,8 @@ fun FoodImageComparator(
         )
         FoodQuantityCard(
             food = alternativeFood,
-            insertedFoodAmount = alternativeFoodAmount,
             onFoodAmountChange = { },
+            insertedFoodAmount = alternativeFoodAmount,
             measurementUnit = alternativeFoodUnit,
             onMeasurementUnitChange = { alternativeFoodUnit = it },
             enabled = false,
@@ -191,8 +193,8 @@ fun FoodImageComparator(
 @Composable
 fun FoodQuantityCard(
     food: FoodDrawableStringAmountTriple,
-    insertedFoodAmount: String,
     onFoodAmountChange: (String) -> Unit,
+    insertedFoodAmount: String,
     measurementUnit: String,
     onMeasurementUnitChange: (String) -> Unit,
     enabled: Boolean,
@@ -200,12 +202,6 @@ fun FoodQuantityCard(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    when (stringResource(id = food.text)) {
-        "" -> onMeasurementUnitChange("")
-        "Leche desnatada" -> onMeasurementUnitChange("ml.")
-        "Huevo entero XL", "Huevo (Yema)", "Tortitas de arroz o maíz" -> onMeasurementUnitChange("unidades")
-        else -> onMeasurementUnitChange("gr.")
-    }
     Card(
         shape = MaterialTheme.shapes.medium,
         backgroundColor = Color.White,
@@ -226,14 +222,17 @@ fun FoodQuantityCard(
                     .width(120.dp)
                     .padding(horizontal = 5.dp)
             )
+            when (stringResource(id = food.text)) {
+                "" -> onMeasurementUnitChange("")
+                "Leche desnatada" -> onMeasurementUnitChange("ml.")
+                "Huevo entero XL", "Huevo (Yema)", "Tortitas de arroz o maíz" -> onMeasurementUnitChange("unidades")
+                else -> onMeasurementUnitChange("gr.")
+            }
             TextField(
                 value = insertedFoodAmount,
                 shape = RectangleShape,
                 onValueChange = onFoodAmountChange,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
-                ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
                 isError = isError,
                 keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
                 singleLine = true,
@@ -249,30 +248,19 @@ fun FoodQuantityCard(
 private fun calculateFoodAmountEquivalence(
     foodCategory: String,
     food: FoodDrawableStringAmountTriple,
-    alternativeFood: FoodDrawableStringAmountTriple,
     insertedFoodAmount: Double,
+    alternativeFood: FoodDrawableStringAmountTriple,
 ): String {
-    return when (foodCategory) {
-        "Frutas" -> {
-            val appleGrams = convertToAppleGrams(
-                sourceFoodAmount = insertedFoodAmount,
-                equivalentFoodAmount = food.equivalentAmount
-            )
-            val alternativeFoodAmount = convertFromAppleGrams(
-                appleGrams = appleGrams,
-                equivalentFoodAmount = alternativeFood.equivalentAmount
-            )
-
-            String.format(locale = Locale.US, format = "%.2f", alternativeFoodAmount)
-        }
-        else -> "0.00"
+    val intermediateFoodEquivalentAmount = when (foodCategory) {
+        "Frutas" -> IntermediateFood.APPLE.equivalentAmount
+        "Grasas y Proteínas" -> IntermediateFood.RABBIT.equivalentAmount
+        "Grasas" -> IntermediateFood.AVOCADO.equivalentAmount
+        "Carbohidratos" -> IntermediateFood.BREAD.equivalentAmount
+        "Lácteos" -> IntermediateFood.GREEK_YOGURT.equivalentAmount
+        else -> 0.00
     }
-}
+    val intermediateFoodAmount = insertedFoodAmount * intermediateFoodEquivalentAmount / food.equivalentAmount
+    val alternativeFoodAmount = intermediateFoodAmount * alternativeFood.equivalentAmount / intermediateFoodEquivalentAmount
 
-private fun convertToAppleGrams(sourceFoodAmount: Double, equivalentFoodAmount: Double): Double {
-    return sourceFoodAmount * 130.00 / equivalentFoodAmount
-}
-
-private fun convertFromAppleGrams(appleGrams: Double, equivalentFoodAmount: Double): Double {
-    return appleGrams * equivalentFoodAmount / 130.0
+    return String.format(locale = Locale.US, format = "%.2f", alternativeFoodAmount)
 }
