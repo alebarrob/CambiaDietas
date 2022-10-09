@@ -1,11 +1,13 @@
 package barrera.alejandro.cambiadietas.ui.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,8 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import barrera.alejandro.cambiadietas.data.*
+import barrera.alejandro.cambiadietas.ui.theme.KellyGreen
 
 @Composable
 fun CategoriesScreen(
@@ -59,9 +63,20 @@ fun CategoryCard(foodCategory: String, modifier: Modifier = Modifier) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(5.dp),
-            modifier = Modifier.padding(5.dp)
+            modifier = Modifier.padding(6.dp)
         ) {
-            Text(text = foodCategory)
+            Divider(
+                color = KellyGreen,
+                thickness = (0.5).dp
+            )
+            Text(
+                text = foodCategory,
+                fontWeight = FontWeight.SemiBold
+            )
+            Divider(
+                color = KellyGreen,
+                thickness = (0.5).dp
+            )
             FoodRow(foodItems)
         }
     }
@@ -69,17 +84,15 @@ fun CategoryCard(foodCategory: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun FoodRow(foodItems: List<FoodDrawableStringAmountTriple>, modifier: Modifier = Modifier) {
-    Row( //SUSTITUYE POR LAZYROW
-        horizontalArrangement = Arrangement.spacedBy(3.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .fillMaxWidth()
-            .horizontalScroll(rememberScrollState())
+    LazyRow(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.Top
     ) {
-        foodItems.forEach {
+        items(foodItems) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(3.dp),
+                modifier = modifier.padding(top = 8.dp)
             ) {
                 Image(
                     painter = painterResource(id = it.drawable),
