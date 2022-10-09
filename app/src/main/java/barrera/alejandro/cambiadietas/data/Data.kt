@@ -14,6 +14,19 @@ val categoriesData = listOf(
     R.string.dairy_category
 )
 
+val tipsData = listOf(
+    R.string.tip_1,
+    R.string.tip_2,
+    R.string.tip_3,
+    R.string.tip_4,
+    R.string.tip_5,
+    R.string.tip_6,
+    R.string.tip_7,
+    R.string.tip_8,
+    R.string.tip_9,
+    R.string.tip_10,
+)
+
 val fruitsData = listOf(
     Triple(R.drawable.fruits_blueberries, R.string.blueberries_text, 120.00),
     Triple(R.drawable.fruits_cherries, R.string.cherries_text, 145.00),

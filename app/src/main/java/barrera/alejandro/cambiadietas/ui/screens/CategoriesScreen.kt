@@ -1,5 +1,6 @@
 package barrera.alejandro.cambiadietas.ui.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -58,6 +59,8 @@ fun CategoryCard(foodCategory: String, modifier: Modifier = Modifier) {
     Card(
         shape = MaterialTheme.shapes.medium,
         backgroundColor = Color.White,
+        elevation = (1.5).dp,
+        border = BorderStroke((0.5).dp, KellyGreen),
         modifier = modifier.padding(5.dp)
     ) {
         Column(
@@ -65,10 +68,6 @@ fun CategoryCard(foodCategory: String, modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(5.dp),
             modifier = Modifier.padding(6.dp)
         ) {
-            Divider(
-                color = KellyGreen,
-                thickness = (0.5).dp
-            )
             Text(
                 text = foodCategory,
                 fontWeight = FontWeight.SemiBold

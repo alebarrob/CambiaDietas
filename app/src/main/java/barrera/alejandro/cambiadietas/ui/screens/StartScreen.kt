@@ -117,6 +117,7 @@ private fun FoodPicker(
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
+        elevation = (1.5).dp,
         backgroundColor = Aquamarine,
         modifier = modifier.padding(start = 30.dp, top = 4.dp, end = 30.dp, bottom = 15.dp),
     ) {

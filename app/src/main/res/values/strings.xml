@@ -92,4 +92,17 @@
     <string name="greek_yogurt_text">Yogur griego</string>
     <string name="protein_yogurt_text">Yogur proteico</string>
 
+    <string name="tip_1">"Recuerda beber 2 litros de agua cada día."</string>
+    <string name="tip_2">"Consume siempre una porción de grasas al día: aceite de oliva, frutos secos, pescados grasos, etc."</string>
+    <string name="tip_3">"Ten cuidado con las grasas saturadas y el colesterol."</string>
+    <string name="tip_4">"Aumenta el consumo diario de fibra para mejorar tu tránsito intestinal."</string>
+    <string name="tip_5">"Agrega siempre una porción de proteínas en tu plato para crear y mantener una buena musculatura."</string>
+    <string name="tip_6">"Come verduras y frutas todos los días."</string>
+    <string name="tip_7">"Limita el consumo de azúcar: refrescos, bollería industrial, azúcar de mesa, etc."</string>
+    <string name="tip_8">"Reduce o evita el consumo de bebidas alcohólicas."</string>
+    <string name="tip_9">"Complementa tu nutrición con actividad física."</string>
+    <string name="tip_10">"No empieces una dieta pensando que algún día la terminarás. Empieza un nuevo estilo de vida que durará para siempre."</string>
+
+    <string name="contact_message">Si buscas la atención personalizada de una dietista profesional, puedes contactar con la dietista Mónica Barrera escribiendo a su correo electrónico: ejemplo@gmail.com.</string>
+
 </resources>
