@@ -8,7 +8,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -27,10 +26,9 @@ fun StartScreen(
     foodCategory: String,
     onFoodCategoryChange: (String) -> Unit,
     onFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
+    configuration: Configuration,
     modifier: Modifier = Modifier
 ) {
-    val configuration = LocalConfiguration.current
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,

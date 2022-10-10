@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.data.FoodDrawableStringAmountTriple
 import barrera.alejandro.cambiadietas.ui.screens.CategoriesScreen
@@ -26,6 +27,7 @@ fun CambiaDietasApp() {
         text = R.string.food_text_placeholder,
         equivalentAmount = 0.00
     )) }
+    val configuration = LocalConfiguration.current
 
     Box {
         CambiadietasBackground()
@@ -40,7 +42,8 @@ fun CambiaDietasApp() {
                         onScreenChange = { screen = it },
                         foodCategory = foodCategory,
                         onFoodCategoryChange = { foodCategory = it },
-                        onFoodChange = { food = it }
+                        onFoodChange = { food = it },
+                        configuration = configuration
                     )
                     "selectedFoodScreen" -> SelectedFoodScreen(
                         paddingValues = paddingValues,
@@ -48,7 +51,10 @@ fun CambiaDietasApp() {
                         foodCategory = foodCategory
                     )
                     "categoriesScreen" -> CategoriesScreen(paddingValues = paddingValues)
-                    "tipsScreen" -> TipsScreen(paddingValues = paddingValues)
+                    "tipsScreen" -> TipsScreen(
+                        paddingValues = paddingValues,
+                        configuration = configuration
+                    )
                 } }
         )
     }

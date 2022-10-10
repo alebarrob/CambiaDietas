@@ -1,13 +1,14 @@
 package barrera.alejandro.cambiadietas.ui.screens
 
-import androidx.compose.foundation.*
+import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.data.tipsData
 import barrera.alejandro.cambiadietas.ui.theme.Aquamarine
@@ -24,6 +26,7 @@ import barrera.alejandro.cambiadietas.ui.theme.KellyGreen
 @Composable
 fun TipsScreen(
     paddingValues: PaddingValues,
+    configuration: Configuration,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -47,6 +50,13 @@ fun TipsScreen(
                 .padding(6.dp)
         ) {
             TipsRow()
+            if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                Divider(
+                    color = KellyGreen,
+                    thickness = (0.5).dp,
+                    modifier = Modifier.padding(horizontal = 30.dp)
+                )
+            }
             ContactCard()
         }
     }
@@ -97,15 +107,17 @@ fun TipsCard(tipTitle: String, tipBody: String, modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ContactCard(modifier: Modifier = Modifier) {
+fun ContactCard() {
     Card(
         border = BorderStroke((0.5).dp, KellyGreen),
         elevation = (1.5).dp,
+        onClick = {  }
     ) {
         Row(
             verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.spacedBy(5.dp)
+            horizontalArrangement = Arrangement.spacedBy(1.dp)
         ) {
             Box(
                 contentAlignment = Alignment.BottomStart,
@@ -116,8 +128,18 @@ fun ContactCard(modifier: Modifier = Modifier) {
                     contentDescription = null
                 )
             }
-            Box(contentAlignment = Alignment.Center) {
-                Text(text = stringResource(id = R.string.contact_message))
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.padding(
+                    top = 30.dp,
+                    end = 15.dp,
+                    bottom = 30.dp
+                )
+            ) {
+                Text(
+                    text = stringResource(id = R.string.contact_message),
+                    fontSize = 15.sp
+                )
             }
         }
     }
