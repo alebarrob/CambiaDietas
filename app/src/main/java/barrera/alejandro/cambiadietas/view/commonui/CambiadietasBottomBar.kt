@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.ui.commonui
+package barrera.alejandro.cambiadietas.view.commonui
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -16,8 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.ui.theme.Cadet
-import barrera.alejandro.cambiadietas.ui.theme.RaisinBlack
+import barrera.alejandro.cambiadietas.view.theme.Cadet
+import barrera.alejandro.cambiadietas.view.theme.RaisinBlack
 
 @Composable
 fun CambiaDietasBottomBar(onScreenChange: (String) -> Unit) {

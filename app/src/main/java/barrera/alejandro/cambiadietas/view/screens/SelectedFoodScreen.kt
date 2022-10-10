@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.ui.screens
+package barrera.alejandro.cambiadietas.view.screens
 
 import android.content.res.Configuration
 import android.widget.Toast
@@ -29,11 +29,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.data.FoodDrawableStringAmountTriple
-import barrera.alejandro.cambiadietas.data.IntermediateFood
-import barrera.alejandro.cambiadietas.ui.commonui.FoodColumn
-import barrera.alejandro.cambiadietas.ui.theme.Aquamarine
-import barrera.alejandro.cambiadietas.ui.theme.KellyGreen
+import barrera.alejandro.cambiadietas.model.data.FoodDrawableStringAmountTriple
+import barrera.alejandro.cambiadietas.model.data.IntermediateFood
+import barrera.alejandro.cambiadietas.view.commonui.FoodColumn
+import barrera.alejandro.cambiadietas.view.theme.Aquamarine
+import barrera.alejandro.cambiadietas.view.theme.KellyGreen
 import java.util.*
 
 @Composable
@@ -45,11 +45,13 @@ fun SelectedFoodScreen(
 ) {
     val configuration = LocalConfiguration.current
     var insertedFoodAmount by rememberSaveable { mutableStateOf("") }
-    var alternativeFood by rememberSaveable { mutableStateOf(FoodDrawableStringAmountTriple(
+    var alternativeFood by rememberSaveable { mutableStateOf(
+        FoodDrawableStringAmountTriple(
         drawable = R.drawable.food_image_placeholder,
         text = R.string.food_text_placeholder,
         equivalentAmount = 0.00
-    )) }
+    )
+    ) }
     var alternativeFoodAmount by rememberSaveable { mutableStateOf("") }
 
     Column(

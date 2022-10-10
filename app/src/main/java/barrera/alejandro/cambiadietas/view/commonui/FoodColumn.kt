@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.ui.commonui
+package barrera.alejandro.cambiadietas.view.commonui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import barrera.alejandro.cambiadietas.data.*
+import barrera.alejandro.cambiadietas.model.data.*
 
 @Composable
 fun FoodColumn(

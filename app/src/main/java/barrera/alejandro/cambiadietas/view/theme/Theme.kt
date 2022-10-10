@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.ui.theme
+package barrera.alejandro.cambiadietas.view.theme
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.lightColors

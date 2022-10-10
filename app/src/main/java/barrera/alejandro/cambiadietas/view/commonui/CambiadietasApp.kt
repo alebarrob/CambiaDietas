@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.ui.commonui
+package barrera.alejandro.cambiadietas.view.commonui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.Scaffold
@@ -11,22 +11,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.data.FoodDrawableStringAmountTriple
-import barrera.alejandro.cambiadietas.ui.screens.CategoriesScreen
-import barrera.alejandro.cambiadietas.ui.screens.SelectedFoodScreen
-import barrera.alejandro.cambiadietas.ui.screens.StartScreen
-import barrera.alejandro.cambiadietas.ui.screens.TipsScreen
+import barrera.alejandro.cambiadietas.model.data.FoodDrawableStringAmountTriple
+import barrera.alejandro.cambiadietas.view.screens.CategoriesScreen
+import barrera.alejandro.cambiadietas.view.screens.SelectedFoodScreen
+import barrera.alejandro.cambiadietas.view.screens.StartScreen
+import barrera.alejandro.cambiadietas.view.screens.TipsScreen
 
 @Composable
 fun CambiaDietasApp() {
     val scaffoldState = rememberScaffoldState()
     var screen by rememberSaveable { mutableStateOf("startScreen") }
     var foodCategory by rememberSaveable { mutableStateOf("Elige una categoría") }
-    var food by rememberSaveable { mutableStateOf(FoodDrawableStringAmountTriple(
+    var food by rememberSaveable { mutableStateOf(
+        FoodDrawableStringAmountTriple(
         drawable = R.drawable.food_image_placeholder,
         text = R.string.food_text_placeholder,
         equivalentAmount = 0.00
-    )) }
+    )
+    ) }
     val configuration = LocalConfiguration.current
 
     Box {

@@ -1,31 +1,6 @@
-package barrera.alejandro.cambiadietas.data
+package barrera.alejandro.cambiadietas.model.data
 
-import android.os.Parcelable
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import barrera.alejandro.cambiadietas.R
-import kotlinx.parcelize.Parcelize
-
-val categoriesData = listOf(
-    R.string.fruits_category,
-    R.string.proteins_fats_category,
-    R.string.fats_category,
-    R.string.carbohydrates_category,
-    R.string.dairy_category
-)
-
-val tipsData = listOf(
-    Tip(R.string.tip_1_title, R.string.tip_1),
-    Tip(R.string.tip_2_title, R.string.tip_2),
-    Tip(R.string.tip_3_title, R.string.tip_3),
-    Tip(R.string.tip_4_title, R.string.tip_4),
-    Tip(R.string.tip_5_title, R.string.tip_5),
-    Tip(R.string.tip_6_title, R.string.tip_6),
-    Tip(R.string.tip_7_title, R.string.tip_7),
-    Tip(R.string.tip_8_title, R.string.tip_8),
-    Tip(R.string.tip_9_title, R.string.tip_9),
-    Tip(R.string.tip_10_title, R.string.tip_10)
-)
 
 val fruitsData = listOf(
     Triple(R.drawable.fruits_blueberries, R.string.blueberries_text, 120.00),
@@ -112,15 +87,3 @@ val dairyData = listOf(
     Triple(R.drawable.dairy_greek_yogurt, R.string.greek_yogurt_text, 100.00),
     Triple(R.drawable.dairy_protein_yogurt, R.string.protein_yogurt_text, 200.00)
 ).map { FoodDrawableStringAmountTriple(it.first, it.second, it.third) }
-
-@Parcelize
-data class FoodDrawableStringAmountTriple(
-    @DrawableRes val drawable: Int,
-    @StringRes val text: Int,
-    val equivalentAmount: Double
-) : Parcelable
-
-data class Tip(
-    @StringRes val tipTitle: Int,
-    @StringRes val tipBody: Int
-)

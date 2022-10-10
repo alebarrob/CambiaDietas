@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.ui.commonui
+package barrera.alejandro.cambiadietas.view.commonui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize

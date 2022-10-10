@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.ui.theme
+package barrera.alejandro.cambiadietas.view.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

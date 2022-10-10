@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.ui.screens
+package barrera.alejandro.cambiadietas.view.screens
 
 import android.content.res.Configuration
 import androidx.compose.foundation.*
@@ -13,11 +13,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.data.FoodDrawableStringAmountTriple
-import barrera.alejandro.cambiadietas.data.categoriesData
-import barrera.alejandro.cambiadietas.ui.commonui.FoodColumn
-import barrera.alejandro.cambiadietas.ui.theme.Aquamarine
-import barrera.alejandro.cambiadietas.ui.theme.KellyGreen
+import barrera.alejandro.cambiadietas.model.data.FoodDrawableStringAmountTriple
+import barrera.alejandro.cambiadietas.model.data.categoriesData
+import barrera.alejandro.cambiadietas.view.commonui.FoodColumn
+import barrera.alejandro.cambiadietas.view.theme.Aquamarine
+import barrera.alejandro.cambiadietas.view.theme.KellyGreen
 
 @Composable
 fun StartScreen(
