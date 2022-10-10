@@ -15,16 +15,16 @@ val categoriesData = listOf(
 )
 
 val tipsData = listOf(
-    R.string.tip_1,
-    R.string.tip_2,
-    R.string.tip_3,
-    R.string.tip_4,
-    R.string.tip_5,
-    R.string.tip_6,
-    R.string.tip_7,
-    R.string.tip_8,
-    R.string.tip_9,
-    R.string.tip_10,
+    Tip(R.string.tip_1_title, R.string.tip_1),
+    Tip(R.string.tip_2_title, R.string.tip_2),
+    Tip(R.string.tip_3_title, R.string.tip_3),
+    Tip(R.string.tip_4_title, R.string.tip_4),
+    Tip(R.string.tip_5_title, R.string.tip_5),
+    Tip(R.string.tip_6_title, R.string.tip_6),
+    Tip(R.string.tip_7_title, R.string.tip_7),
+    Tip(R.string.tip_8_title, R.string.tip_8),
+    Tip(R.string.tip_9_title, R.string.tip_9),
+    Tip(R.string.tip_10_title, R.string.tip_10)
 )
 
 val fruitsData = listOf(
@@ -119,3 +119,8 @@ data class FoodDrawableStringAmountTriple(
     @StringRes val text: Int,
     val equivalentAmount: Double
 ) : Parcelable
+
+data class Tip(
+    @StringRes val tipTitle: Int,
+    @StringRes val tipBody: Int
+)
