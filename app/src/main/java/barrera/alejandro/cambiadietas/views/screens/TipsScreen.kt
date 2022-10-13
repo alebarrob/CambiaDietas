@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.view.screens
+package barrera.alejandro.cambiadietas.views.screens
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.model.data.tipsData
-import barrera.alejandro.cambiadietas.view.theme.Aquamarine
-import barrera.alejandro.cambiadietas.view.theme.KellyGreen
+import barrera.alejandro.cambiadietas.views.theme.Aquamarine
+import barrera.alejandro.cambiadietas.views.theme.KellyGreen
 
 @Composable
 fun TipsScreen(

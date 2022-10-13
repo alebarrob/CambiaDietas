@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.view.screens
+package barrera.alejandro.cambiadietas.views.screens
 
 import android.content.res.Configuration
 import android.widget.Toast
@@ -31,9 +31,9 @@ import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.model.data.FoodDrawableStringAmountTriple
 import barrera.alejandro.cambiadietas.model.data.IntermediateFood
-import barrera.alejandro.cambiadietas.view.commonui.FoodColumn
-import barrera.alejandro.cambiadietas.view.theme.Aquamarine
-import barrera.alejandro.cambiadietas.view.theme.KellyGreen
+import barrera.alejandro.cambiadietas.views.commonui.FoodColumn
+import barrera.alejandro.cambiadietas.views.theme.Aquamarine
+import barrera.alejandro.cambiadietas.views.theme.KellyGreen
 import java.util.*
 
 @Composable

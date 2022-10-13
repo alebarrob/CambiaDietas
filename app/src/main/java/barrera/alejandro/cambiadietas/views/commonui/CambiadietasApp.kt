@@ -1,50 +1,47 @@
-package barrera.alejandro.cambiadietas.view.commonui
+package barrera.alejandro.cambiadietas.views.commonui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.Scaffold
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.model.data.FoodDrawableStringAmountTriple
-import barrera.alejandro.cambiadietas.view.screens.CategoriesScreen
-import barrera.alejandro.cambiadietas.view.screens.SelectedFoodScreen
-import barrera.alejandro.cambiadietas.view.screens.StartScreen
-import barrera.alejandro.cambiadietas.view.screens.TipsScreen
+import barrera.alejandro.cambiadietas.viewmodels.commonuiviewmodels.CambiaDietasAppViewModel
+import barrera.alejandro.cambiadietas.views.screens.CategoriesScreen
+import barrera.alejandro.cambiadietas.views.screens.SelectedFoodScreen
+import barrera.alejandro.cambiadietas.views.screens.StartScreen
+import barrera.alejandro.cambiadietas.views.screens.TipsScreen
+
 
 @Composable
-fun CambiaDietasApp() {
-    val scaffoldState = rememberScaffoldState()
-    var screen by rememberSaveable { mutableStateOf("startScreen") }
-    var foodCategory by rememberSaveable { mutableStateOf("Elige una categoría") }
-    var food by rememberSaveable { mutableStateOf(
-        FoodDrawableStringAmountTriple(
+fun CambiaDietasApp(cambiaDietasAppViewModel: CambiaDietasAppViewModel) {
+    val screen by cambiaDietasAppViewModel.screen.observeAsState(initial = "startScreen")
+    val foodCategory by cambiaDietasAppViewModel.foodCategory.observeAsState(initial = "Elige una categoría")
+    val food by cambiaDietasAppViewModel.food.observeAsState(initial = FoodDrawableStringAmountTriple(
         drawable = R.drawable.food_image_placeholder,
         text = R.string.food_text_placeholder,
         equivalentAmount = 0.00
-    )
-    ) }
+    ))
     val configuration = LocalConfiguration.current
 
     Box {
         CambiadietasBackground()
         Scaffold(
-            scaffoldState = scaffoldState,
             backgroundColor = Color.Transparent,
-            bottomBar = { CambiaDietasBottomBar(onScreenChange = { screen = it }) },
+            bottomBar = { CambiaDietasBottomBar(onScreenChange = {
+                cambiaDietasAppViewModel.onScreenChange(it)
+            }) },
             content = { paddingValues ->
                 when (screen) {
                     "startScreen" -> StartScreen(
                         paddingValues = paddingValues,
-                        onScreenChange = { screen = it },
+                        onScreenChange = { cambiaDietasAppViewModel.onScreenChange(it) },
                         foodCategory = foodCategory,
-                        onFoodCategoryChange = { foodCategory = it },
-                        onFoodChange = { food = it },
+                        onFoodCategoryChange = { cambiaDietasAppViewModel.onFoodCategoryChange(it) },
+                        onFoodChange = { cambiaDietasAppViewModel.onFoodChange(it) },
                         configuration = configuration
                     )
                     "selectedFoodScreen" -> SelectedFoodScreen(

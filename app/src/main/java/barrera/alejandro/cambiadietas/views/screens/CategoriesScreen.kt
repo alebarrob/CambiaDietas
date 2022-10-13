@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.view.screens
+package barrera.alejandro.cambiadietas.views.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import barrera.alejandro.cambiadietas.model.data.*
-import barrera.alejandro.cambiadietas.view.theme.KellyGreen
+import barrera.alejandro.cambiadietas.views.theme.KellyGreen
 
 @Composable
 fun CategoriesScreen(

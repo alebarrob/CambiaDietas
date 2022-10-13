@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.view.commonui
+package barrera.alejandro.cambiadietas.views.commonui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
