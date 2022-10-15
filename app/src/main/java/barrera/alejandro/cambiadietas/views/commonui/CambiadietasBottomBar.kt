@@ -9,32 +9,35 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavHostController
 import barrera.alejandro.cambiadietas.R
+import barrera.alejandro.cambiadietas.model.routes.Routes.*
+import barrera.alejandro.cambiadietas.viewmodels.commonuiviewmodels.CambiaDietasBottomBarViewModel
 import barrera.alejandro.cambiadietas.views.theme.Cadet
 import barrera.alejandro.cambiadietas.views.theme.RaisinBlack
 
 @Composable
-fun CambiaDietasBottomBar(onScreenChange: (String) -> Unit) {
-    var startButtonIsSelected by rememberSaveable { mutableStateOf(true) }
-    var categoriesButtonIsSelected by rememberSaveable { mutableStateOf(false) }
-    var advicesButtonIsSelected by rememberSaveable { mutableStateOf(false) }
+fun CambiaDietasBottomBar(
+    navigationController: NavHostController,
+    cambiaDietasBottomBarViewModel: CambiaDietasBottomBarViewModel
+) {
+    val startButtonIsSelected by cambiaDietasBottomBarViewModel.startButtonIsSelected.observeAsState(initial = true)
+    val categoriesButtonIsSelected by cambiaDietasBottomBarViewModel.categoriesButtonIsSelected.observeAsState(initial = false)
+    val advicesButtonIsSelected by cambiaDietasBottomBarViewModel.advicesButtonIsSelected.observeAsState(initial = false)
 
     BottomNavigation {
         CambiaDietasBottomNavigationItem(
             rowScope = this,
             selected = startButtonIsSelected,
             onClick = {
-                onScreenChange("startScreen")
-                startButtonIsSelected = true
-                categoriesButtonIsSelected = false
-                advicesButtonIsSelected = false
-
+                navigationController.navigate(route = StartScreen.route)
+                cambiaDietasBottomBarViewModel.onStartButtonIsSelectedChange(true)
+                cambiaDietasBottomBarViewModel.onCategoriesButtonIsSelectedChange(false)
+                cambiaDietasBottomBarViewModel.onAdvicesButtonIsSelectedChange(false)
             },
             drawable = R.drawable.ic_start,
             text = R.string.bottom_navigation_start,
@@ -45,10 +48,10 @@ fun CambiaDietasBottomBar(onScreenChange: (String) -> Unit) {
             rowScope = this,
             selected = categoriesButtonIsSelected,
             onClick = {
-                onScreenChange("categoriesScreen")
-                startButtonIsSelected = false
-                categoriesButtonIsSelected = true
-                advicesButtonIsSelected = false
+                navigationController.navigate(route = CategoriesScreen.route)
+                cambiaDietasBottomBarViewModel.onStartButtonIsSelectedChange(false)
+                cambiaDietasBottomBarViewModel.onCategoriesButtonIsSelectedChange(true)
+                cambiaDietasBottomBarViewModel.onAdvicesButtonIsSelectedChange(false)
             },
             drawable = R.drawable.ic_food_categories,
             text = R.string.bottom_navigation_food_categories,
@@ -59,10 +62,10 @@ fun CambiaDietasBottomBar(onScreenChange: (String) -> Unit) {
             rowScope = this,
             selected = advicesButtonIsSelected,
             onClick = {
-                onScreenChange("tipsScreen")
-                startButtonIsSelected = false
-                categoriesButtonIsSelected = false
-                advicesButtonIsSelected = true
+                navigationController.navigate(route = TipsScreen.route)
+                cambiaDietasBottomBarViewModel.onStartButtonIsSelectedChange(false)
+                cambiaDietasBottomBarViewModel.onCategoriesButtonIsSelectedChange(false)
+                cambiaDietasBottomBarViewModel.onAdvicesButtonIsSelectedChange(true)
             },
             drawable = R.drawable.ic_nutrition_advices,
             text = R.string.bottom_navigation_nutrition_advices,

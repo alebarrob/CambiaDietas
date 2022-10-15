@@ -12,9 +12,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.model.data.FoodDrawableStringAmountTriple
 import barrera.alejandro.cambiadietas.model.data.categoriesData
+import barrera.alejandro.cambiadietas.viewmodels.commonuiviewmodels.FoodColumnViewModel
 import barrera.alejandro.cambiadietas.views.commonui.FoodColumn
 import barrera.alejandro.cambiadietas.views.theme.Aquamarine
 import barrera.alejandro.cambiadietas.views.theme.KellyGreen
@@ -22,11 +24,12 @@ import barrera.alejandro.cambiadietas.views.theme.KellyGreen
 @Composable
 fun StartScreen(
     paddingValues: PaddingValues,
-    onScreenChange: (String) -> Unit,
+    navigationController: NavHostController,
     foodCategory: String,
     onFoodCategoryChange: (String) -> Unit,
     onFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
     configuration: Configuration,
+    foodColumnViewModel: FoodColumnViewModel,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -47,10 +50,11 @@ fun StartScreen(
             contentDescription = null
         )
         FoodPicker(
-            onScreenChange = onScreenChange,
+            navigationController = navigationController,
             foodCategory = foodCategory,
             onFoodCategoryChange = onFoodCategoryChange,
-            onFoodChange = onFoodChange
+            onFoodChange = onFoodChange,
+            foodColumnViewModel = foodColumnViewModel
         )
     }
 }
@@ -107,10 +111,11 @@ private fun FoodCategoryMenu(
 
 @Composable
 private fun FoodPicker(
-    onScreenChange: (String) -> Unit,
+    navigationController: NavHostController,
     foodCategory: String,
     onFoodCategoryChange: (String) -> Unit,
     onFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
+    foodColumnViewModel: FoodColumnViewModel,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -134,9 +139,10 @@ private fun FoodPicker(
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
                 FoodColumn(
-                    onScreenChange = onScreenChange,
+                    navigationController = navigationController,
                     foodCategory = foodCategory,
                     onFoodChange = onFoodChange,
+                    foodColumnViewModel = foodColumnViewModel
                 )
             }
         }

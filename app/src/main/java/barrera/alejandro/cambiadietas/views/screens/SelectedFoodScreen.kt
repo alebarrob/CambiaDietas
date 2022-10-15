@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.model.data.FoodDrawableStringAmountTriple
 import barrera.alejandro.cambiadietas.model.data.IntermediateFood
+import barrera.alejandro.cambiadietas.viewmodels.commonuiviewmodels.FoodColumnViewModel
 import barrera.alejandro.cambiadietas.views.commonui.FoodColumn
 import barrera.alejandro.cambiadietas.views.theme.Aquamarine
 import barrera.alejandro.cambiadietas.views.theme.KellyGreen
@@ -41,6 +42,7 @@ fun SelectedFoodScreen(
     paddingValues: PaddingValues,
     foodCategory: String,
     food: FoodDrawableStringAmountTriple,
+    foodColumnViewModel: FoodColumnViewModel,
     modifier: Modifier = Modifier
 ) {
     val configuration = LocalConfiguration.current
@@ -82,7 +84,8 @@ fun SelectedFoodScreen(
                     insertedFoodAmount = insertedFoodAmount.toDouble(),
                     alternativeFood = alternativeFood
                 )
-            }
+            },
+            foodColumnViewModel = foodColumnViewModel
         )
     }
 }
@@ -96,7 +99,8 @@ fun FoodComparator(
     alternativeFood: FoodDrawableStringAmountTriple,
     onAlternativeFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
     alternativeFoodAmount: String,
-    onAlternativeFoodAmountChange: (String) -> Unit
+    onAlternativeFoodAmountChange: (String) -> Unit,
+    foodColumnViewModel: FoodColumnViewModel
 ) {
     val context = LocalContext.current
     var isError by rememberSaveable { mutableStateOf(false) }
@@ -143,7 +147,8 @@ fun FoodComparator(
                     if (alternativeFoodAmount.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))"))) {
                         onAlternativeFoodAmountChange(insertedFoodAmount)
                     }
-                }
+                },
+                foodColumnViewModel = foodColumnViewModel
             )
         }
     }

@@ -7,7 +7,9 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,27 +17,30 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import barrera.alejandro.cambiadietas.model.data.*
+import barrera.alejandro.cambiadietas.model.routes.Routes.SelectedFoodScreen
+import barrera.alejandro.cambiadietas.viewmodels.commonuiviewmodels.FoodColumnViewModel
 
 @Composable
 fun FoodColumn(
     modifier: Modifier = Modifier,
-    onScreenChange: ((String) -> Unit)? = null,
+    navigationController: NavHostController? = null,
     foodCategory: String,
     onFoodChange: ((FoodDrawableStringAmountTriple) -> Unit)? = null,
     onAlternativeFoodChange: ((FoodDrawableStringAmountTriple) -> Unit)? = null,
     alternativeFoodAmount: String? = null,
-    onAlternativeFoodAmountChange: ((String) -> Unit)? = null
+    onAlternativeFoodAmountChange: ((String) -> Unit)? = null,
+    foodColumnViewModel: FoodColumnViewModel
 ) {
-    var foodItems by remember { mutableStateOf(listOf<FoodDrawableStringAmountTriple>()) }
+    val foodItems by foodColumnViewModel.foodItems.observeAsState(initial = listOf())
 
-    foodItems = when (foodCategory) {
-        "Frutas" -> fruitsData
-        "Grasas y Proteínas" -> fatsAndProteinsData
-        "Grasas" -> fatsData
-        "Carbohidratos" -> carbohydratesData
-        "Lácteos" -> dairyData
-        else -> listOf()
+    when (foodCategory) {
+        "Frutas" -> foodColumnViewModel.onFoodItemsChange(fruitsData)
+        "Grasas y Proteínas" -> foodColumnViewModel.onFoodItemsChange(fatsAndProteinsData)
+        "Grasas" -> foodColumnViewModel.onFoodItemsChange(fatsData)
+        "Carbohidratos" -> foodColumnViewModel.onFoodItemsChange(carbohydratesData)
+        "Lácteos" -> foodColumnViewModel.onFoodItemsChange(dairyData)
     }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -49,7 +54,7 @@ fun FoodColumn(
         foodItems.forEach { item ->
             Button(
                 onClick = {
-                    onScreenChange?.invoke("selectedFoodScreen")
+                    navigationController?.navigate(route = SelectedFoodScreen.route)
                     onFoodChange?.invoke(item)
                     onAlternativeFoodChange?.invoke(item)
                     onAlternativeFoodAmountChange?.invoke(alternativeFoodAmount!!)
