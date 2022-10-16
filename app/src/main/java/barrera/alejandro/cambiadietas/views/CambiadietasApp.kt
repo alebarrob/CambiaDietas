@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -61,19 +62,27 @@ fun CambiaDietasApp(
                                     contentDescription = null
                                 )
                             },
-                            label = { Text(stringResource(screen.iconLabelId!!)) },
+                            label = {
+                                Text(
+                                    text = stringResource(screen.iconLabelId!!),
+                                    fontWeight = when {
+                                        currentDestination?.route == "selectedFoodScreen" && screen.route == "startScreen" -> FontWeight.Bold
+                                        currentDestination?.hierarchy?.any { (it.route == screen.route) } == true -> FontWeight.Bold
+                                        else -> FontWeight.Light
+                                    }
+                                )
+                            },
                             selectedContentColor = RaisinBlack,
                             unselectedContentColor = Cadet,
-                            selected = if (screen.route == "startScreen") {
-                                true
-                            } else {
-                                currentDestination?.hierarchy?.any { (it.route == screen.route) } == true
+                            selected = when {
+                                currentDestination?.route == "selectedFoodScreen" && screen.route == "startScreen" -> true
+                                currentDestination?.hierarchy?.any { (it.route == screen.route) } == true -> true
+                                else -> false
                             },
                             onClick = {
                                 navController.navigate(screen.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                                    popUpTo(navController.graph.findStartDestination().id)
                                     launchSingleTop = true
-                                    restoreState = true
                                 }
                             }
                         )
