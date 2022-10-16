@@ -9,10 +9,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.model.data.FoodDrawableStringAmountTriple
-import barrera.alejandro.cambiadietas.model.routes.Routes.*
+import barrera.alejandro.cambiadietas.model.routes.Screen.*
 import barrera.alejandro.cambiadietas.viewmodels.commonuiviewmodels.CambiaDietasAppViewModel
 import barrera.alejandro.cambiadietas.viewmodels.commonuiviewmodels.CambiaDietasBackgroundViewModel
 import barrera.alejandro.cambiadietas.viewmodels.commonuiviewmodels.CambiaDietasBottomBarViewModel
@@ -23,7 +24,6 @@ import barrera.alejandro.cambiadietas.views.screens.CategoriesScreen
 import barrera.alejandro.cambiadietas.views.screens.SelectedFoodScreen
 import barrera.alejandro.cambiadietas.views.screens.StartScreen
 import barrera.alejandro.cambiadietas.views.screens.TipsScreen
-
 
 @Composable
 fun CambiaDietasApp(
@@ -40,6 +40,9 @@ fun CambiaDietasApp(
         ))
     val configuration = LocalConfiguration.current
     val navigationController = rememberNavController()
+    val navBackStackEntry by navigationController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    val items = listOf(StartScreen.resourceId, CategoriesScreen.resourceId, TipsScreen.resourceId)
 
     Box {
         CambiadietasBackground(cambiaDietasBackgroundViewModel)
@@ -47,7 +50,26 @@ fun CambiaDietasApp(
             backgroundColor = Color.Transparent,
             bottomBar = {
                 CambiaDietasBottomBar(
-                    navigationController = navigationController,
+                    onNavigateToStartScreen = {
+                        navigationController.navigate(route = StartScreen.route) {
+                            launchSingleTop = true
+                        }
+                    },
+                    onNavigateToCategoriesScreen = {
+                        navigationController.navigate(route = CategoriesScreen.route) {
+                            launchSingleTop = true
+                            popUpTo(StartScreen.route)
+                        }
+                    },
+                    onNavigateToTipsScreen = {
+                        navigationController.navigate(route = TipsScreen.route) {
+                            launchSingleTop = true
+                            popUpTo(StartScreen.route)
+                        }
+                    },
+                    items = items,
+                    navBackStackEntry = navBackStackEntry,
+                    currentDestination = currentDestination,
                     cambiaDietasBottomBarViewModel = cambiaDietasBottomBarViewModel
                 )
             },
@@ -58,7 +80,11 @@ fun CambiaDietasApp(
 
                         StartScreen(
                             paddingValues = paddingValues,
-                            navigationController = navigationController,
+                            onNavigateToSelectedFoodScreen = {
+                                navigationController.navigate(route = SelectedFoodScreen.route) {
+                                    popUpTo(StartScreen.route)
+                                }
+                            },
                             foodCategory = foodCategory,
                             onFoodCategoryChange = { cambiaDietasAppViewModel.onFoodCategoryChange(it) },
                             onFoodChange = { cambiaDietasAppViewModel.onFoodChange(it) },

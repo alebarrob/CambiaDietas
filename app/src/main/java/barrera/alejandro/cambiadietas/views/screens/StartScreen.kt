@@ -12,7 +12,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.model.data.FoodDrawableStringAmountTriple
 import barrera.alejandro.cambiadietas.model.data.categoriesData
@@ -24,7 +23,7 @@ import barrera.alejandro.cambiadietas.views.theme.KellyGreen
 @Composable
 fun StartScreen(
     paddingValues: PaddingValues,
-    navigationController: NavHostController,
+    onNavigateToSelectedFoodScreen: () -> Unit,
     foodCategory: String,
     onFoodCategoryChange: (String) -> Unit,
     onFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
@@ -50,7 +49,7 @@ fun StartScreen(
             contentDescription = null
         )
         FoodPicker(
-            navigationController = navigationController,
+            onNavigateToSelectedFoodScreen = onNavigateToSelectedFoodScreen,
             foodCategory = foodCategory,
             onFoodCategoryChange = onFoodCategoryChange,
             onFoodChange = onFoodChange,
@@ -66,6 +65,7 @@ private fun FoodCategoryMenu(
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val categoriesItems = categoriesData
 
     Box(modifier = modifier) {
         OutlinedButton(
@@ -88,8 +88,6 @@ private fun FoodCategoryMenu(
                 .fillMaxWidth()
                 .background(Color.White)
         ) {
-            val categoriesItems = categoriesData
-
             categoriesItems.forEach { item ->
                 val newCategory = stringResource(id = item)
 
@@ -111,7 +109,7 @@ private fun FoodCategoryMenu(
 
 @Composable
 private fun FoodPicker(
-    navigationController: NavHostController,
+    onNavigateToSelectedFoodScreen: () -> Unit,
     foodCategory: String,
     onFoodCategoryChange: (String) -> Unit,
     onFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
@@ -139,7 +137,7 @@ private fun FoodPicker(
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
                 FoodColumn(
-                    navigationController = navigationController,
+                    onNavigateToSelectedFoodScreen = onNavigateToSelectedFoodScreen,
                     foodCategory = foodCategory,
                     onFoodChange = onFoodChange,
                     foodColumnViewModel = foodColumnViewModel

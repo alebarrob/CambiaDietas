@@ -17,15 +17,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import barrera.alejandro.cambiadietas.model.data.*
-import barrera.alejandro.cambiadietas.model.routes.Routes.SelectedFoodScreen
 import barrera.alejandro.cambiadietas.viewmodels.commonuiviewmodels.FoodColumnViewModel
 
 @Composable
 fun FoodColumn(
     modifier: Modifier = Modifier,
-    navigationController: NavHostController? = null,
+    onNavigateToSelectedFoodScreen: (() -> Unit)? = null,
     foodCategory: String,
     onFoodChange: ((FoodDrawableStringAmountTriple) -> Unit)? = null,
     onAlternativeFoodChange: ((FoodDrawableStringAmountTriple) -> Unit)? = null,
@@ -54,7 +52,7 @@ fun FoodColumn(
         foodItems.forEach { item ->
             Button(
                 onClick = {
-                    navigationController?.navigate(route = SelectedFoodScreen.route)
+                    onNavigateToSelectedFoodScreen?.invoke()
                     onFoodChange?.invoke(item)
                     onAlternativeFoodChange?.invoke(item)
                     onAlternativeFoodAmountChange?.invoke(alternativeFoodAmount!!)
