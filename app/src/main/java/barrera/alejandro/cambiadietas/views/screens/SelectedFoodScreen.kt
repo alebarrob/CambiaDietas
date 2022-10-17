@@ -1,25 +1,18 @@
 package barrera.alejandro.cambiadietas.views.screens
 
-import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -30,62 +23,71 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.model.data.FoodDrawableStringAmountTriple
-import barrera.alejandro.cambiadietas.model.data.IntermediateFood
-import barrera.alejandro.cambiadietas.viewmodels.commonuiviewmodels.FoodColumnViewModel
+import barrera.alejandro.cambiadietas.viewmodels.CommonUiViewModel
+import barrera.alejandro.cambiadietas.viewmodels.SelectedFoodScreenViewModel
+import barrera.alejandro.cambiadietas.views.commonui.CambiaDietasColumn
 import barrera.alejandro.cambiadietas.views.commonui.FoodColumn
 import barrera.alejandro.cambiadietas.views.theme.Aquamarine
 import barrera.alejandro.cambiadietas.views.theme.KellyGreen
-import java.util.*
 
 @Composable
 fun SelectedFoodScreen(
+    modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
     foodCategory: String,
     food: FoodDrawableStringAmountTriple,
-    foodColumnViewModel: FoodColumnViewModel,
-    modifier: Modifier = Modifier
+    foodItems: List<FoodDrawableStringAmountTriple>,
+    commonUiViewModel: CommonUiViewModel
 ) {
-    val configuration = LocalConfiguration.current
-    var insertedFoodAmount by rememberSaveable { mutableStateOf("") }
-    var alternativeFood by rememberSaveable { mutableStateOf(
-        FoodDrawableStringAmountTriple(
-        drawable = R.drawable.food_image_placeholder,
-        text = R.string.food_text_placeholder,
-        equivalentAmount = 0.00
-    )
-    ) }
-    var alternativeFoodAmount by rememberSaveable { mutableStateOf("") }
+    val selectedFoodScreenViewModel = SelectedFoodScreenViewModel()
+    val context = LocalContext.current
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = when (configuration.orientation) {
-            Configuration.ORIENTATION_LANDSCAPE -> modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(bottom = paddingValues.calculateBottomPadding())
-            else -> modifier
-                .fillMaxSize()
-                .padding(bottom = paddingValues.calculateBottomPadding())
-        }
+    val foodAmount by selectedFoodScreenViewModel.foodAmount.observeAsState(initial = "")
+    val alternativeFood by selectedFoodScreenViewModel.alternativeFood.observeAsState(
+        initial = FoodDrawableStringAmountTriple(
+            drawable = R.drawable.food_image_placeholder,
+            text = R.string.food_text_placeholder,
+            equivalentAmount = 0.00
+        )
+    )
+    val alternativeFoodAmount by selectedFoodScreenViewModel.alternativeFoodAmount.observeAsState(initial = "")
+    val wrongInput by selectedFoodScreenViewModel.wrongInput.observeAsState(initial = false)
+    val foodUnit by selectedFoodScreenViewModel.foodUnit.observeAsState(initial = "")
+    val alternativeFoodUnit by selectedFoodScreenViewModel.alternativeFoodUnit.observeAsState(initial = "")
+
+    CambiaDietasColumn(
+        modifier = modifier,
+        paddingValues = paddingValues
     ) {
         FoodComparator(
             foodCategory = foodCategory,
             food = food,
-            insertedFoodAmount = insertedFoodAmount,
-            onInsertedFoodAmountChange = { insertedFoodAmount = it },
+            foodUnit = foodUnit,
+            onFoodUnitChange = { selectedFoodScreenViewModel.onFoodUnitChange(it) },
+            foodAmount = foodAmount,
             alternativeFood = alternativeFood,
-            onAlternativeFoodChange = { alternativeFood = it },
-            alternativeFoodAmount = alternativeFoodAmount,
-            onAlternativeFoodAmountChange = {
-                alternativeFoodAmount = calculateFoodAmountEquivalence(
+            alternativeFoodUnit = alternativeFoodUnit,
+            onAlternativeFoodUnitChange = { selectedFoodScreenViewModel.onAlternativeFoodUnitChange(it) },
+            onAlternativeFoodChange = {
+                selectedFoodScreenViewModel.onAlternativeFoodChange(it)
+                selectedFoodScreenViewModel.updateAlternativeFoodAmount(
+                    foodAmount = foodAmount,
                     foodCategory = foodCategory,
-                    food = food,
-                    insertedFoodAmount = insertedFoodAmount.toDouble(),
-                    alternativeFood = alternativeFood
+                    food = food
                 )
             },
-            foodColumnViewModel = foodColumnViewModel
+            onFoodAmountChange = {
+                selectedFoodScreenViewModel.onFoodAmountChange(
+                    foodAmount = it,
+                    foodCategory = foodCategory,
+                    food = food,
+                    context = context
+                )
+            },
+            alternativeFoodAmount = alternativeFoodAmount,
+            foodItems = foodItems,
+            wrongInput = wrongInput,
+            commonUiViewModel = commonUiViewModel
         )
     }
 }
@@ -94,17 +96,19 @@ fun SelectedFoodScreen(
 fun FoodComparator(
     foodCategory: String,
     food: FoodDrawableStringAmountTriple,
-    insertedFoodAmount: String,
-    onInsertedFoodAmountChange: (String) -> Unit,
+    foodUnit: String,
+    onFoodUnitChange: (String) -> Unit,
+    foodAmount: String,
     alternativeFood: FoodDrawableStringAmountTriple,
+    alternativeFoodUnit: String,
+    onAlternativeFoodUnitChange: (String) -> Unit,
     onAlternativeFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
     alternativeFoodAmount: String,
-    onAlternativeFoodAmountChange: (String) -> Unit,
-    foodColumnViewModel: FoodColumnViewModel
+    foodItems: List<FoodDrawableStringAmountTriple>,
+    wrongInput: Boolean,
+    onFoodAmountChange: (String) -> Unit,
+    commonUiViewModel: CommonUiViewModel
 ) {
-    val context = LocalContext.current
-    var isError by rememberSaveable { mutableStateOf(false) }
-
     Card(
         shape = MaterialTheme.shapes.medium,
         backgroundColor = Aquamarine,
@@ -117,23 +121,15 @@ fun FoodComparator(
         ) {
             FoodImageComparator(
                 food = food,
-                onFoodAmountChange = { if (it.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))"))) {
-                    isError = false
-                    onInsertedFoodAmountChange(it)
-                    onAlternativeFoodAmountChange(it)
-                } else if (it == "") {
-                    isError = false
-                    onInsertedFoodAmountChange(it)
-                } else {
-                    isError = true
-                    Toast.makeText(
-                        context, "Has introducido un valor incorrecto", Toast.LENGTH_SHORT
-                    ).show()
-                } },
-                insertedFoodAmount = insertedFoodAmount,
+                foodUnit = foodUnit,
+                onFoodUnitChange = onFoodUnitChange,
+                onFoodAmountChange = onFoodAmountChange,
+                insertedFoodAmount = foodAmount,
                 alternativeFood = alternativeFood,
+                alternativeFoodUnit = alternativeFoodUnit,
+                onAlternativeFoodUnitChange = onAlternativeFoodUnitChange,
                 alternativeFoodAmount = alternativeFoodAmount,
-                isError = isError
+                wrongInput = wrongInput
             )
             Text(
                 text = stringResource(id = R.string.food_comparator_question),
@@ -142,13 +138,8 @@ fun FoodComparator(
             FoodColumn(
                 foodCategory = foodCategory,
                 onAlternativeFoodChange = onAlternativeFoodChange,
-                alternativeFoodAmount = alternativeFoodAmount,
-                onAlternativeFoodAmountChange = {
-                    if (alternativeFoodAmount.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))"))) {
-                        onAlternativeFoodAmountChange(insertedFoodAmount)
-                    }
-                },
-                foodColumnViewModel = foodColumnViewModel
+                foodItems = foodItems,
+                commonUiViewModel = commonUiViewModel
             )
         }
     }
@@ -157,15 +148,16 @@ fun FoodComparator(
 @Composable
 fun FoodImageComparator(
     food: FoodDrawableStringAmountTriple,
+    foodUnit: String,
+    onFoodUnitChange: (String) -> Unit,
     insertedFoodAmount: String,
     onFoodAmountChange: (String) -> Unit,
     alternativeFood: FoodDrawableStringAmountTriple,
+    alternativeFoodUnit: String,
+    onAlternativeFoodUnitChange: (String) -> Unit,
     alternativeFoodAmount: String,
-    isError: Boolean
+    wrongInput: Boolean
 ) {
-    var foodUnit by rememberSaveable { mutableStateOf("") }
-    var alternativeFoodUnit by rememberSaveable { mutableStateOf("") }
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -176,9 +168,9 @@ fun FoodImageComparator(
             onFoodAmountChange = onFoodAmountChange,
             insertedFoodAmount = insertedFoodAmount,
             measurementUnit = foodUnit,
-            onMeasurementUnitChange = { foodUnit = it },
+            onMeasurementUnitChange = { onFoodUnitChange(it) },
             enabled = true,
-            isError = isError
+            wrongInput = wrongInput
         )
         Image(
             painter = painterResource(id = R.drawable.arrow),
@@ -189,9 +181,9 @@ fun FoodImageComparator(
             onFoodAmountChange = { },
             insertedFoodAmount = alternativeFoodAmount,
             measurementUnit = alternativeFoodUnit,
-            onMeasurementUnitChange = { alternativeFoodUnit = it },
+            onMeasurementUnitChange = { onAlternativeFoodUnitChange(it) },
             enabled = false,
-            isError = isError
+            wrongInput = wrongInput
         )
     }
 }
@@ -205,7 +197,7 @@ fun FoodQuantityCard(
     measurementUnit: String,
     onMeasurementUnitChange: (String) -> Unit,
     enabled: Boolean,
-    isError: Boolean
+    wrongInput: Boolean
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -240,7 +232,7 @@ fun FoodQuantityCard(
                 shape = RectangleShape,
                 onValueChange = onFoodAmountChange,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
-                isError = isError,
+                isError = wrongInput,
                 keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
                 singleLine = true,
                 enabled = enabled,
@@ -250,24 +242,4 @@ fun FoodQuantityCard(
             )
         }
     }
-}
-
-private fun calculateFoodAmountEquivalence(
-    foodCategory: String,
-    food: FoodDrawableStringAmountTriple,
-    insertedFoodAmount: Double,
-    alternativeFood: FoodDrawableStringAmountTriple,
-): String {
-    val intermediateFoodEquivalentAmount = when (foodCategory) {
-        "Frutas" -> IntermediateFood.APPLE.equivalentAmount
-        "Grasas y Proteínas" -> IntermediateFood.RABBIT.equivalentAmount
-        "Grasas" -> IntermediateFood.AVOCADO.equivalentAmount
-        "Carbohidratos" -> IntermediateFood.BREAD.equivalentAmount
-        "Lácteos" -> IntermediateFood.GREEK_YOGURT.equivalentAmount
-        else -> 0.00
-    }
-    val intermediateFoodAmount = insertedFoodAmount * intermediateFoodEquivalentAmount / food.equivalentAmount
-    val alternativeFoodAmount = intermediateFoodAmount * alternativeFood.equivalentAmount / intermediateFoodEquivalentAmount
-
-    return String.format(locale = Locale.US, format = "%.2f", alternativeFoodAmount)
 }

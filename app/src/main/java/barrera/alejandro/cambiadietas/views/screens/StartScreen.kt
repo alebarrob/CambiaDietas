@@ -1,10 +1,12 @@
 package barrera.alejandro.cambiadietas.views.screens
 
-import android.content.res.Configuration
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,34 +17,30 @@ import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.model.data.FoodDrawableStringAmountTriple
 import barrera.alejandro.cambiadietas.model.data.categoriesData
-import barrera.alejandro.cambiadietas.viewmodels.commonuiviewmodels.FoodColumnViewModel
+import barrera.alejandro.cambiadietas.viewmodels.CommonUiViewModel
+import barrera.alejandro.cambiadietas.viewmodels.StartScreenViewModel
+import barrera.alejandro.cambiadietas.views.commonui.CambiaDietasColumn
 import barrera.alejandro.cambiadietas.views.commonui.FoodColumn
 import barrera.alejandro.cambiadietas.views.theme.Aquamarine
 import barrera.alejandro.cambiadietas.views.theme.KellyGreen
 
 @Composable
 fun StartScreen(
+    modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
     onNavigateToSelectedFoodScreen: () -> Unit,
     foodCategory: String,
     onFoodCategoryChange: (String) -> Unit,
     onFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
-    configuration: Configuration,
-    foodColumnViewModel: FoodColumnViewModel,
-    modifier: Modifier = Modifier
+    foodItems: List<FoodDrawableStringAmountTriple>,
+    commonUiViewModel: CommonUiViewModel,
+    startScreenViewModel: StartScreenViewModel
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = when (configuration.orientation) {
-            Configuration.ORIENTATION_LANDSCAPE -> modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(bottom = paddingValues.calculateBottomPadding())
-            else -> modifier
-                .fillMaxSize()
-                .padding(bottom = paddingValues.calculateBottomPadding())
-        }
+    val expanded by startScreenViewModel.expanded.observeAsState(initial = false)
+
+    CambiaDietasColumn(
+        modifier = modifier,
+        paddingValues = paddingValues
     ) {
         Image(
             painter = painterResource(id = R.drawable.logo_cambiadietas),
@@ -53,74 +51,31 @@ fun StartScreen(
             foodCategory = foodCategory,
             onFoodCategoryChange = onFoodCategoryChange,
             onFoodChange = onFoodChange,
-            foodColumnViewModel = foodColumnViewModel
+            foodItems = foodItems,
+            expanded = expanded,
+            onExpandedChange = { startScreenViewModel.onExpandedChange(it) },
+            commonUiViewModel = commonUiViewModel
         )
     }
 }
 
 @Composable
-private fun FoodCategoryMenu(
-    foodCategory: String,
-    onFoodCategoryChange: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    var expanded by remember { mutableStateOf(false) }
-    val categoriesItems = categoriesData
-
-    Box(modifier = modifier) {
-        OutlinedButton(
-            onClick = { expanded = true },
-            shape = MaterialTheme.shapes.small,
-            border = BorderStroke((0.5).dp, KellyGreen)
-        ) {
-            Text(
-                text = foodCategory,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 5.dp, vertical = 10.dp)
-                    .background(Color.White)
-            )
-        }
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-        ) {
-            categoriesItems.forEach { item ->
-                val newCategory = stringResource(id = item)
-
-                DropdownMenuItem(onClick = {
-                    onFoodCategoryChange(newCategory)
-                    expanded = false
-                }) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(text = stringResource(id = item))
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
 private fun FoodPicker(
+    modifier: Modifier = Modifier,
     onNavigateToSelectedFoodScreen: () -> Unit,
     foodCategory: String,
     onFoodCategoryChange: (String) -> Unit,
     onFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
-    foodColumnViewModel: FoodColumnViewModel,
-    modifier: Modifier = Modifier
+    foodItems: List<FoodDrawableStringAmountTriple>,
+    expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
+    commonUiViewModel: CommonUiViewModel
 ) {
     Card(
+        modifier = modifier.padding(start = 30.dp, top = 4.dp, end = 30.dp, bottom = 15.dp),
         shape = MaterialTheme.shapes.medium,
         elevation = (1.5).dp,
-        backgroundColor = Aquamarine,
-        modifier = modifier.padding(start = 30.dp, top = 4.dp, end = 30.dp, bottom = 15.dp),
+        backgroundColor = Aquamarine
     ) {
         Column(
             modifier = Modifier.padding(5.dp),
@@ -128,20 +83,73 @@ private fun FoodPicker(
         ) {
             FoodCategoryMenu(
                 foodCategory = foodCategory,
-                onFoodCategoryChange = onFoodCategoryChange
+                onFoodCategoryChange = onFoodCategoryChange,
+                expanded = expanded,
+                onExpandedChange = onExpandedChange
             )
             if (foodCategory != "Elige una categoría") {
                 Text(
+                    modifier = Modifier.padding(vertical = 16.dp),
                     text = stringResource(id = R.string.food_picker_question),
-                    fontSize = 20.sp,
-                    modifier = Modifier.padding(vertical = 16.dp)
+                    fontSize = 20.sp
                 )
                 FoodColumn(
                     onNavigateToSelectedFoodScreen = onNavigateToSelectedFoodScreen,
                     foodCategory = foodCategory,
                     onFoodChange = onFoodChange,
-                    foodColumnViewModel = foodColumnViewModel
+                    foodItems = foodItems,
+                    commonUiViewModel = commonUiViewModel
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun FoodCategoryMenu(
+    modifier: Modifier = Modifier,
+    foodCategory: String,
+    onFoodCategoryChange: (String) -> Unit,
+    expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit
+) {
+    val categoriesItems = categoriesData
+
+    Box(modifier = modifier) {
+        OutlinedButton(
+            onClick = { onExpandedChange(true) },
+            shape = MaterialTheme.shapes.small,
+            border = BorderStroke((0.5).dp, KellyGreen)
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 5.dp, vertical = 10.dp)
+                    .background(Color.White),
+                text = foodCategory
+            )
+        }
+        DropdownMenu(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White),
+            expanded = expanded,
+            onDismissRequest = { onExpandedChange(false) }
+        ) {
+            categoriesItems.forEach { item ->
+                val newCategory = stringResource(id = item)
+
+                DropdownMenuItem(onClick = {
+                    onFoodCategoryChange(newCategory)
+                    onExpandedChange(false)
+                }) {
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(text = stringResource(id = item))
+                    }
+                }
             }
         }
     }
