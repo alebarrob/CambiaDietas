@@ -12,7 +12,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import barrera.alejandro.cambiadietas.model.data.Screen
+import barrera.alejandro.cambiadietas.models.Screen
 import barrera.alejandro.cambiadietas.views.theme.Cadet
 import barrera.alejandro.cambiadietas.views.theme.RaisinBlack
 

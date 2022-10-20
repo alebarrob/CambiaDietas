@@ -7,14 +7,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.compose.*
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.model.data.FoodDrawableStringAmountTriple
-import barrera.alejandro.cambiadietas.model.data.Screen.*
-import barrera.alejandro.cambiadietas.viewmodels.*
+import barrera.alejandro.cambiadietas.models.FoodDrawableStringAmountTriple
+import barrera.alejandro.cambiadietas.models.Screen.*
+import barrera.alejandro.cambiadietas.viewmodels.CategoriesScreenViewModel
+import barrera.alejandro.cambiadietas.viewmodels.CommonUiViewModel
+import barrera.alejandro.cambiadietas.viewmodels.StartScreenViewModel
+import barrera.alejandro.cambiadietas.viewmodels.TipsScreenViewModel
 import barrera.alejandro.cambiadietas.views.screens.CategoriesScreen
 import barrera.alejandro.cambiadietas.views.screens.SelectedFoodScreen
 import barrera.alejandro.cambiadietas.views.screens.StartScreen
@@ -28,6 +29,7 @@ fun CambiaDietasApp(
     tipsScreenViewModel: TipsScreenViewModel
 ) {
     val configuration = LocalConfiguration.current
+    val context = LocalContext.current
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -38,7 +40,8 @@ fun CambiaDietasApp(
             drawable = R.drawable.food_image_placeholder,
             text = R.string.food_text_placeholder,
             equivalentAmount = 0.00
-        ))
+        )
+    )
     val foodItems by commonUiViewModel.foodItems.observeAsState(initial = listOf())
 
     Box {
@@ -76,16 +79,23 @@ fun CambiaDietasApp(
                             food = food,
                             foodCategory = foodCategory,
                             foodItems = foodItems,
-                            commonUiViewModel = commonUiViewModel
+                            commonUiViewModel = commonUiViewModel,
+                            context = context
                         )
                     }
                     composable(route = CategoriesScreen.route) {
-                        CategoriesScreen(paddingValues = paddingValues)
+                        CategoriesScreen(
+                            paddingValues = paddingValues,
+                            commonUiViewModel = commonUiViewModel,
+                            categoriesScreenViewModel = categoriesScreenViewModel
+                        )
                     }
                     composable(route = TipsScreen.route) {
                         TipsScreen(
                             paddingValues = paddingValues,
-                            configuration = configuration
+                            configuration = configuration,
+                            tipsScreenViewModel = tipsScreenViewModel,
+                            context = context
                         )
                     }
                 }

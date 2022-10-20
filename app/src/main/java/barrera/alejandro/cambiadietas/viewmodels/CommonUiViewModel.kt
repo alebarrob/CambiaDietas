@@ -3,7 +3,7 @@ package barrera.alejandro.cambiadietas.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import barrera.alejandro.cambiadietas.model.data.*
+import barrera.alejandro.cambiadietas.models.*
 
 class CommonUiViewModel : ViewModel() {
     private val _foodCategory = MutableLiveData<String>()
@@ -23,18 +23,18 @@ class CommonUiViewModel : ViewModel() {
         _food.value = food
     }
 
-    fun onFoodItemsChange(foodCategory: String) {
-        _foodItems.value = loadFoodItems(foodCategory)
+    fun loadFoodItems(foodCategory: String) {
+        _foodItems.value = selectFoodItems(foodCategory)
     }
 
-    private fun loadFoodItems(foodCategory: String): List<FoodDrawableStringAmountTriple>? {
+    fun selectFoodItems(foodCategory: String): List<FoodDrawableStringAmountTriple> {
         return when (foodCategory) {
             "Frutas" -> fruitsData
             "Grasas y Proteínas" -> fatsAndProteinsData
             "Grasas" -> fatsData
             "Carbohidratos" -> carbohydratesData
             "Lácteos" -> dairyData
-            else -> null
+            else -> listOf()
         }
     }
 }

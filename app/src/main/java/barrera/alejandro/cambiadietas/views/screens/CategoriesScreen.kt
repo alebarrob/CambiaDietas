@@ -12,6 +12,8 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,17 +22,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import barrera.alejandro.cambiadietas.model.data.*
+import barrera.alejandro.cambiadietas.models.FoodDrawableStringAmountTriple
+import barrera.alejandro.cambiadietas.models.categoriesData
+import barrera.alejandro.cambiadietas.viewmodels.CategoriesScreenViewModel
+import barrera.alejandro.cambiadietas.viewmodels.CommonUiViewModel
 import barrera.alejandro.cambiadietas.views.theme.KellyGreen
 
 @Composable
 fun CategoriesScreen(
-    paddingValues: PaddingValues,
     modifier: Modifier = Modifier,
+    paddingValues: PaddingValues,
+    commonUiViewModel: CommonUiViewModel,
+    categoriesScreenViewModel: CategoriesScreenViewModel
 ) {
+    val foodCategoriesId by categoriesScreenViewModel.foodCategoriesId.observeAsState(initial = categoriesData)
+
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(5.dp),
         modifier = modifier
             .padding(
                 start = 15.dp,
@@ -39,34 +46,36 @@ fun CategoriesScreen(
                 bottom = paddingValues.calculateBottomPadding()
             )
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        categoriesData.forEach { CategoryCard(stringResource(id = it)) }
+        foodCategoriesId.forEach { categoryId ->
+            CategoryCard(
+                foodCategory = stringResource(id = categoryId),
+                commonUiViewModel = commonUiViewModel
+            )
+        }
     }
 }
 
 @Composable
-fun CategoryCard(foodCategory: String, modifier: Modifier = Modifier) {
-    val foodItems = when (foodCategory) {
-        "Frutas" -> fruitsData
-        "Grasas y Proteínas" -> fatsAndProteinsData
-        "Grasas" -> fatsData
-        "Carbohidratos" -> carbohydratesData
-        "Lácteos" -> dairyData
-        else -> listOf()
-    }
-
+fun CategoryCard(
+    modifier: Modifier = Modifier,
+    foodCategory: String,
+    commonUiViewModel: CommonUiViewModel
+) {
     Card(
+        modifier = modifier.padding(5.dp),
         shape = MaterialTheme.shapes.medium,
         backgroundColor = Color.White,
         elevation = (1.5).dp,
-        border = BorderStroke((0.5).dp, KellyGreen),
-        modifier = modifier.padding(5.dp)
+        border = BorderStroke((0.5).dp, KellyGreen)
     ) {
         Column(
+            modifier = Modifier.padding(6.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(5.dp),
-            modifier = Modifier.padding(6.dp)
+            verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             Text(
                 text = foodCategory,
@@ -76,36 +85,39 @@ fun CategoryCard(foodCategory: String, modifier: Modifier = Modifier) {
                 color = KellyGreen,
                 thickness = (0.5).dp
             )
-            FoodRow(foodItems)
+            FoodRow(foodItems = commonUiViewModel.selectFoodItems(foodCategory))
         }
     }
 }
 
 @Composable
-fun FoodRow(foodItems: List<FoodDrawableStringAmountTriple>, modifier: Modifier = Modifier) {
+fun FoodRow(
+    modifier: Modifier = Modifier,
+    foodItems: List<FoodDrawableStringAmountTriple>
+) {
     LazyRow(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.Top
     ) {
         items(foodItems) {
             Column(
+                modifier = modifier.padding(top = 8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(3.dp),
-                modifier = modifier.padding(top = 8.dp)
+                verticalArrangement = Arrangement.spacedBy(3.dp)
             ) {
                 Image(
-                    painter = painterResource(id = it.drawable),
-                    contentDescription = null,
-                    contentScale = ContentScale.Inside,
                     modifier = Modifier
                         .width(50.dp)
-                        .height(50.dp)
+                        .height(50.dp),
+                    painter = painterResource(id = it.drawable),
+                    contentDescription = null,
+                    contentScale = ContentScale.Inside
                 )
                 Text(
-                    text = stringResource(id = it.text),
                     modifier = Modifier
                         .width(120.dp)
-                        .padding(horizontal = 5.dp)
+                        .padding(horizontal = 5.dp),
+                    text = stringResource(id = it.text)
                 )
             }
         }

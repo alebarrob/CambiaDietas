@@ -1,13 +1,10 @@
 package barrera.alejandro.cambiadietas.viewmodels
 
-import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.model.data.FoodDrawableStringAmountTriple
-import barrera.alejandro.cambiadietas.model.data.IntermediateFood
+import barrera.alejandro.cambiadietas.models.FoodDrawableStringAmountTriple
+import barrera.alejandro.cambiadietas.models.IntermediateFood
 import java.util.*
 
 class SelectedFoodScreenViewModel: ViewModel() {
@@ -29,24 +26,11 @@ class SelectedFoodScreenViewModel: ViewModel() {
     private val _alternativeFoodUnit = MutableLiveData<String>()
     val alternativeFoodUnit: LiveData<String> get() = _alternativeFoodUnit
 
-    fun updateAlternativeFoodAmount(
-        foodAmount: String,
-        foodCategory: String,
-        food: FoodDrawableStringAmountTriple,
-    ) {
-        if (foodAmount.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))"))) {
-            onAlternativeFoodAmountChange(
-                foodCategory = foodCategory,
-                food = food
-            )
-        }
-    }
-
     fun onFoodAmountChange(
-        foodAmount: String,
         foodCategory: String,
         food: FoodDrawableStringAmountTriple,
-        context: Context
+        alternativeFood: FoodDrawableStringAmountTriple,
+        foodAmount: String
     ) {
         when {
             foodAmount.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))")) -> {
@@ -54,7 +38,9 @@ class SelectedFoodScreenViewModel: ViewModel() {
                 _foodAmount.value = foodAmount
                 onAlternativeFoodAmountChange(
                     foodCategory = foodCategory,
-                    food = food
+                    food = food,
+                    alternativeFood = alternativeFood,
+                    foodAmount = foodAmount.toDouble()
                 )
             }
             foodAmount == "" -> {
@@ -64,24 +50,21 @@ class SelectedFoodScreenViewModel: ViewModel() {
             }
             else -> {
                 _wrongInput.value = true
-                Toast.makeText(context, "Has introducido un valor incorrecto", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun onAlternativeFoodAmountChange(
         foodCategory: String,
-        food: FoodDrawableStringAmountTriple
+        food: FoodDrawableStringAmountTriple,
+        alternativeFood: FoodDrawableStringAmountTriple,
+        foodAmount: Double
     ) {
         _alternativeFoodAmount.value = calculateFoodAmountEquivalence(
             foodCategory = foodCategory,
             food = food,
-            foodAmount = _foodAmount.value!!.toDouble(),
-            alternativeFood = _alternativeFood.value ?: FoodDrawableStringAmountTriple(
-                drawable = R.drawable.food_image_placeholder,
-                text = R.string.food_text_placeholder,
-                equivalentAmount = 0.00
-            )
+            foodAmount = foodAmount,
+            alternativeFood = alternativeFood
         )
     }
 
@@ -91,14 +74,14 @@ class SelectedFoodScreenViewModel: ViewModel() {
         foodAmount: Double,
         alternativeFood: FoodDrawableStringAmountTriple,
     ): String {
-        val intermediateFoodEquivalentAmount = loadIntermediateFoodEquivalentAmount(foodCategory)
+        val intermediateFoodEquivalentAmount = selectIntermediateFoodEquivalentAmount(foodCategory)
         val intermediateFoodAmount = foodAmount * intermediateFoodEquivalentAmount / food.equivalentAmount
         val alternativeFoodAmount = intermediateFoodAmount * alternativeFood.equivalentAmount / intermediateFoodEquivalentAmount
 
         return String.format(locale = Locale.US, format = "%.2f", alternativeFoodAmount)
     }
 
-    private fun loadIntermediateFoodEquivalentAmount(foodCategory: String): Double {
+    private fun selectIntermediateFoodEquivalentAmount(foodCategory: String): Double {
         return when (foodCategory) {
             "Frutas" -> IntermediateFood.APPLE.equivalentAmount
             "Grasas y Proteínas" -> IntermediateFood.RABBIT.equivalentAmount
@@ -113,17 +96,36 @@ class SelectedFoodScreenViewModel: ViewModel() {
         _alternativeFood.value = alternativeFood
     }
 
-    fun onFoodUnitChange(foodUnit: String) {
-        _foodUnit.value = foodUnit
-    }
-
-    fun onAlternativeFoodUnitChange(alternativeFoodUnit: String) {
-        _alternativeFoodUnit.value = alternativeFoodUnit
-    }
-
-    /*fun copyFoodAmount() {
-        if (alternativeFoodAmount.value!!.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))"))) {
-            _alternativeFoodAmount.value = _foodAmount.value
+    fun updateAlternativeFoodAmount(
+        foodCategory: String,
+        food: FoodDrawableStringAmountTriple,
+        alternativeFood: FoodDrawableStringAmountTriple,
+        foodAmount: String,
+    ) {
+        if (foodAmount.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))"))) {
+            onAlternativeFoodAmountChange(
+                foodCategory = foodCategory,
+                food = food,
+                alternativeFood = alternativeFood,
+                foodAmount = foodAmount.toDouble()
+            )
         }
-    }*/
+    }
+
+    fun loadFoodUnit(foodUnit: String) {
+        _foodUnit.value = selectMeasurementUnit(foodUnit)
+    }
+
+    fun loadAlternativeFoodUnit(alternativeFoodUnit: String) {
+        _alternativeFoodUnit.value = selectMeasurementUnit(alternativeFoodUnit)
+    }
+
+    private fun selectMeasurementUnit(foodName: String): String {
+        return when (foodName) {
+            "" -> ""
+            "Leche desnatada" -> "ml."
+            "Huevo entero XL", "Huevo (Yema)", "Tortitas de arroz o maíz" -> "unidades"
+            else -> "gr."
+        }
+    }
 }

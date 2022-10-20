@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 
 @Composable
-fun CambiaDietasColumn(
+fun CambiaDietasContainer(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
     content: @Composable (ColumnScope.() -> Unit)

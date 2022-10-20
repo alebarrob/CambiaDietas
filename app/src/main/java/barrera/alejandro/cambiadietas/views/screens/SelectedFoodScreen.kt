@@ -1,5 +1,7 @@
 package barrera.alejandro.cambiadietas.views.screens
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -13,7 +15,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -22,11 +23,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.model.data.FoodDrawableStringAmountTriple
+import barrera.alejandro.cambiadietas.models.FoodDrawableStringAmountTriple
 import barrera.alejandro.cambiadietas.viewmodels.CommonUiViewModel
 import barrera.alejandro.cambiadietas.viewmodels.SelectedFoodScreenViewModel
-import barrera.alejandro.cambiadietas.views.commonui.CambiaDietasColumn
-import barrera.alejandro.cambiadietas.views.commonui.FoodColumn
+import barrera.alejandro.cambiadietas.views.commonui.CambiaDietasContainer
+import barrera.alejandro.cambiadietas.views.commonui.CambiaDietasFoodColumn
 import barrera.alejandro.cambiadietas.views.theme.Aquamarine
 import barrera.alejandro.cambiadietas.views.theme.KellyGreen
 
@@ -37,12 +38,13 @@ fun SelectedFoodScreen(
     foodCategory: String,
     food: FoodDrawableStringAmountTriple,
     foodItems: List<FoodDrawableStringAmountTriple>,
-    commonUiViewModel: CommonUiViewModel
+    commonUiViewModel: CommonUiViewModel,
+    context: Context
 ) {
     val selectedFoodScreenViewModel = SelectedFoodScreenViewModel()
-    val context = LocalContext.current
 
     val foodAmount by selectedFoodScreenViewModel.foodAmount.observeAsState(initial = "")
+    val foodUnit by selectedFoodScreenViewModel.foodUnit.observeAsState(initial = "")
     val alternativeFood by selectedFoodScreenViewModel.alternativeFood.observeAsState(
         initial = FoodDrawableStringAmountTriple(
             drawable = R.drawable.food_image_placeholder,
@@ -51,40 +53,44 @@ fun SelectedFoodScreen(
         )
     )
     val alternativeFoodAmount by selectedFoodScreenViewModel.alternativeFoodAmount.observeAsState(initial = "")
-    val wrongInput by selectedFoodScreenViewModel.wrongInput.observeAsState(initial = false)
-    val foodUnit by selectedFoodScreenViewModel.foodUnit.observeAsState(initial = "")
     val alternativeFoodUnit by selectedFoodScreenViewModel.alternativeFoodUnit.observeAsState(initial = "")
+    val wrongInput by selectedFoodScreenViewModel.wrongInput.observeAsState(initial = false)
 
-    CambiaDietasColumn(
+    selectedFoodScreenViewModel.loadFoodUnit(stringResource(id = food.text))
+    selectedFoodScreenViewModel.loadAlternativeFoodUnit(stringResource(id = alternativeFood.text))
+
+    CambiaDietasContainer(
         modifier = modifier,
         paddingValues = paddingValues
     ) {
         FoodComparator(
             foodCategory = foodCategory,
             food = food,
-            foodUnit = foodUnit,
-            onFoodUnitChange = { selectedFoodScreenViewModel.onFoodUnitChange(it) },
             foodAmount = foodAmount,
-            alternativeFood = alternativeFood,
-            alternativeFoodUnit = alternativeFoodUnit,
-            onAlternativeFoodUnitChange = { selectedFoodScreenViewModel.onAlternativeFoodUnitChange(it) },
-            onAlternativeFoodChange = {
-                selectedFoodScreenViewModel.onAlternativeFoodChange(it)
-                selectedFoodScreenViewModel.updateAlternativeFoodAmount(
-                    foodAmount = foodAmount,
-                    foodCategory = foodCategory,
-                    food = food
-                )
-            },
             onFoodAmountChange = {
                 selectedFoodScreenViewModel.onFoodAmountChange(
                     foodAmount = it,
                     foodCategory = foodCategory,
                     food = food,
-                    context = context
+                    alternativeFood = alternativeFood
+                )
+                if (wrongInput) {
+                    Toast.makeText(context, "Has introducido un valor incorrecto", Toast.LENGTH_SHORT).show()
+                }
+            },
+            foodUnit = foodUnit,
+            alternativeFood = alternativeFood,
+            onAlternativeFoodChange = {
+                selectedFoodScreenViewModel.onAlternativeFoodChange(it)
+                selectedFoodScreenViewModel.updateAlternativeFoodAmount(
+                    foodAmount = foodAmount,
+                    foodCategory = foodCategory,
+                    food = food,
+                    alternativeFood = alternativeFood
                 )
             },
             alternativeFoodAmount = alternativeFoodAmount,
+            alternativeFoodUnit = alternativeFoodUnit,
             foodItems = foodItems,
             wrongInput = wrongInput,
             commonUiViewModel = commonUiViewModel
@@ -94,48 +100,45 @@ fun SelectedFoodScreen(
 
 @Composable
 fun FoodComparator(
+    modifier: Modifier = Modifier,
     foodCategory: String,
     food: FoodDrawableStringAmountTriple,
-    foodUnit: String,
-    onFoodUnitChange: (String) -> Unit,
     foodAmount: String,
+    onFoodAmountChange: (String) -> Unit,
+    foodUnit: String,
     alternativeFood: FoodDrawableStringAmountTriple,
-    alternativeFoodUnit: String,
-    onAlternativeFoodUnitChange: (String) -> Unit,
     onAlternativeFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
     alternativeFoodAmount: String,
+    alternativeFoodUnit: String,
     foodItems: List<FoodDrawableStringAmountTriple>,
     wrongInput: Boolean,
-    onFoodAmountChange: (String) -> Unit,
     commonUiViewModel: CommonUiViewModel
 ) {
     Card(
+        modifier = modifier.padding(start = 30.dp, top = 4.dp, end = 30.dp, bottom = 15.dp),
         shape = MaterialTheme.shapes.medium,
-        backgroundColor = Aquamarine,
-        modifier = Modifier.padding(start = 30.dp, top = 4.dp, end = 30.dp, bottom = 15.dp),
+        backgroundColor = Aquamarine
     ) {
         Column(
+            modifier = Modifier.padding(5.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(5.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             FoodImageComparator(
                 food = food,
-                foodUnit = foodUnit,
-                onFoodUnitChange = onFoodUnitChange,
+                foodAmount = foodAmount,
                 onFoodAmountChange = onFoodAmountChange,
-                insertedFoodAmount = foodAmount,
+                foodUnit = foodUnit,
                 alternativeFood = alternativeFood,
-                alternativeFoodUnit = alternativeFoodUnit,
-                onAlternativeFoodUnitChange = onAlternativeFoodUnitChange,
                 alternativeFoodAmount = alternativeFoodAmount,
+                alternativeFoodUnit = alternativeFoodUnit,
                 wrongInput = wrongInput
             )
             Text(
                 text = stringResource(id = R.string.food_comparator_question),
                 fontSize = 20.sp
             )
-            FoodColumn(
+            CambiaDietasFoodColumn(
                 foodCategory = foodCategory,
                 onAlternativeFoodChange = onAlternativeFoodChange,
                 foodItems = foodItems,
@@ -147,28 +150,26 @@ fun FoodComparator(
 
 @Composable
 fun FoodImageComparator(
+    modifier: Modifier = Modifier,
     food: FoodDrawableStringAmountTriple,
-    foodUnit: String,
-    onFoodUnitChange: (String) -> Unit,
-    insertedFoodAmount: String,
+    foodAmount: String,
     onFoodAmountChange: (String) -> Unit,
+    foodUnit: String,
     alternativeFood: FoodDrawableStringAmountTriple,
-    alternativeFoodUnit: String,
-    onAlternativeFoodUnitChange: (String) -> Unit,
     alternativeFoodAmount: String,
+    alternativeFoodUnit: String,
     wrongInput: Boolean
 ) {
     Row(
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier.fillMaxWidth()
+        horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         FoodQuantityCard(
-            food = food,
+            anyFood = food,
+            foodAmount = foodAmount,
             onFoodAmountChange = onFoodAmountChange,
-            insertedFoodAmount = insertedFoodAmount,
             measurementUnit = foodUnit,
-            onMeasurementUnitChange = { onFoodUnitChange(it) },
             enabled = true,
             wrongInput = wrongInput
         )
@@ -177,11 +178,10 @@ fun FoodImageComparator(
             contentDescription = null
         )
         FoodQuantityCard(
-            food = alternativeFood,
+            anyFood = alternativeFood,
+            foodAmount = alternativeFoodAmount,
             onFoodAmountChange = { },
-            insertedFoodAmount = alternativeFoodAmount,
             measurementUnit = alternativeFoodUnit,
-            onMeasurementUnitChange = { onAlternativeFoodUnitChange(it) },
             enabled = false,
             wrongInput = wrongInput
         )
@@ -191,11 +191,11 @@ fun FoodImageComparator(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun FoodQuantityCard(
-    food: FoodDrawableStringAmountTriple,
+    modifier: Modifier = Modifier,
+    anyFood: FoodDrawableStringAmountTriple,
+    foodAmount: String,
     onFoodAmountChange: (String) -> Unit,
-    insertedFoodAmount: String,
     measurementUnit: String,
-    onMeasurementUnitChange: (String) -> Unit,
     enabled: Boolean,
     wrongInput: Boolean
 ) {
@@ -207,38 +207,32 @@ fun FoodQuantityCard(
         elevation = 5.dp
     ) {
         Column(
+            modifier = modifier.padding(top = 5.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(5.dp),
-            modifier = Modifier.padding(top = 5.dp)
+            verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             Image(
-                painter = painterResource(id = food.drawable),
+                painter = painterResource(id = anyFood.drawable),
                 contentDescription = null
             )
             Text(
-                text = stringResource(id = food.text),
                 modifier = Modifier
                     .width(120.dp)
-                    .padding(horizontal = 5.dp)
+                    .padding(horizontal = 5.dp),
+                text = stringResource(id = anyFood.text)
             )
-            when (stringResource(id = food.text)) {
-                "" -> onMeasurementUnitChange("")
-                "Leche desnatada" -> onMeasurementUnitChange("ml.")
-                "Huevo entero XL", "Huevo (Yema)", "Tortitas de arroz o maíz" -> onMeasurementUnitChange("unidades")
-                else -> onMeasurementUnitChange("gr.")
-            }
             TextField(
-                value = insertedFoodAmount,
-                shape = RectangleShape,
+                value = foodAmount,
                 onValueChange = onFoodAmountChange,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+                modifier = Modifier.width(120.dp),
+                enabled = enabled,
+                label = { Text(text = measurementUnit) },
                 isError = wrongInput,
+                shape = RectangleShape,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
                 singleLine = true,
-                enabled = enabled,
                 colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = KellyGreen),
-                label = { Text(text = measurementUnit) },
-                modifier = Modifier.width(120.dp)
             )
         }
     }

@@ -15,12 +15,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.model.data.FoodDrawableStringAmountTriple
-import barrera.alejandro.cambiadietas.model.data.categoriesData
+import barrera.alejandro.cambiadietas.models.FoodDrawableStringAmountTriple
+import barrera.alejandro.cambiadietas.models.categoriesData
 import barrera.alejandro.cambiadietas.viewmodels.CommonUiViewModel
 import barrera.alejandro.cambiadietas.viewmodels.StartScreenViewModel
-import barrera.alejandro.cambiadietas.views.commonui.CambiaDietasColumn
-import barrera.alejandro.cambiadietas.views.commonui.FoodColumn
+import barrera.alejandro.cambiadietas.views.commonui.CambiaDietasContainer
+import barrera.alejandro.cambiadietas.views.commonui.CambiaDietasFoodColumn
 import barrera.alejandro.cambiadietas.views.theme.Aquamarine
 import barrera.alejandro.cambiadietas.views.theme.KellyGreen
 
@@ -38,7 +38,7 @@ fun StartScreen(
 ) {
     val expanded by startScreenViewModel.expanded.observeAsState(initial = false)
 
-    CambiaDietasColumn(
+    CambiaDietasContainer(
         modifier = modifier,
         paddingValues = paddingValues
     ) {
@@ -93,7 +93,7 @@ private fun FoodPicker(
                     text = stringResource(id = R.string.food_picker_question),
                     fontSize = 20.sp
                 )
-                FoodColumn(
+                CambiaDietasFoodColumn(
                     onNavigateToSelectedFoodScreen = onNavigateToSelectedFoodScreen,
                     foodCategory = foodCategory,
                     onFoodChange = onFoodChange,
