@@ -23,7 +23,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.models.FoodDrawableStringAmountTriple
+import barrera.alejandro.cambiadietas.models.Food
 import barrera.alejandro.cambiadietas.viewmodels.CommonUiViewModel
 import barrera.alejandro.cambiadietas.viewmodels.SelectedFoodScreenViewModel
 import barrera.alejandro.cambiadietas.views.commonui.CambiaDietasContainer
@@ -36,8 +36,8 @@ fun SelectedFoodScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
     foodCategory: String,
-    food: FoodDrawableStringAmountTriple,
-    foodItems: List<FoodDrawableStringAmountTriple>,
+    food: Food,
+    foodItems: List<Food>,
     commonUiViewModel: CommonUiViewModel,
     context: Context
 ) {
@@ -46,9 +46,9 @@ fun SelectedFoodScreen(
     val foodAmount by selectedFoodScreenViewModel.foodAmount.observeAsState(initial = "")
     val foodUnit by selectedFoodScreenViewModel.foodUnit.observeAsState(initial = "")
     val alternativeFood by selectedFoodScreenViewModel.alternativeFood.observeAsState(
-        initial = FoodDrawableStringAmountTriple(
-            drawable = R.drawable.food_image_placeholder,
-            text = R.string.food_text_placeholder,
+        initial = Food(
+            imageId = R.drawable.food_image_placeholder,
+            nameId = R.string.food_text_placeholder,
             equivalentAmount = 0.00
         )
     )
@@ -56,8 +56,8 @@ fun SelectedFoodScreen(
     val alternativeFoodUnit by selectedFoodScreenViewModel.alternativeFoodUnit.observeAsState(initial = "")
     val wrongInput by selectedFoodScreenViewModel.wrongInput.observeAsState(initial = false)
 
-    selectedFoodScreenViewModel.loadFoodUnit(stringResource(id = food.text))
-    selectedFoodScreenViewModel.loadAlternativeFoodUnit(stringResource(id = alternativeFood.text))
+    selectedFoodScreenViewModel.loadFoodUnit(stringResource(id = food.nameId))
+    selectedFoodScreenViewModel.loadAlternativeFoodUnit(stringResource(id = alternativeFood.nameId))
 
     CambiaDietasContainer(
         modifier = modifier,
@@ -102,15 +102,15 @@ fun SelectedFoodScreen(
 fun FoodComparator(
     modifier: Modifier = Modifier,
     foodCategory: String,
-    food: FoodDrawableStringAmountTriple,
+    food: Food,
     foodAmount: String,
     onFoodAmountChange: (String) -> Unit,
     foodUnit: String,
-    alternativeFood: FoodDrawableStringAmountTriple,
-    onAlternativeFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
+    alternativeFood: Food,
+    onAlternativeFoodChange: (Food) -> Unit,
     alternativeFoodAmount: String,
     alternativeFoodUnit: String,
-    foodItems: List<FoodDrawableStringAmountTriple>,
+    foodItems: List<Food>,
     wrongInput: Boolean,
     commonUiViewModel: CommonUiViewModel
 ) {
@@ -151,11 +151,11 @@ fun FoodComparator(
 @Composable
 fun FoodImageComparator(
     modifier: Modifier = Modifier,
-    food: FoodDrawableStringAmountTriple,
+    food: Food,
     foodAmount: String,
     onFoodAmountChange: (String) -> Unit,
     foodUnit: String,
-    alternativeFood: FoodDrawableStringAmountTriple,
+    alternativeFood: Food,
     alternativeFoodAmount: String,
     alternativeFoodUnit: String,
     wrongInput: Boolean
@@ -192,7 +192,7 @@ fun FoodImageComparator(
 @Composable
 fun FoodQuantityCard(
     modifier: Modifier = Modifier,
-    anyFood: FoodDrawableStringAmountTriple,
+    anyFood: Food,
     foodAmount: String,
     onFoodAmountChange: (String) -> Unit,
     measurementUnit: String,
@@ -212,14 +212,14 @@ fun FoodQuantityCard(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             Image(
-                painter = painterResource(id = anyFood.drawable),
+                painter = painterResource(id = anyFood.imageId),
                 contentDescription = null
             )
             Text(
                 modifier = Modifier
                     .width(120.dp)
                     .padding(horizontal = 5.dp),
-                text = stringResource(id = anyFood.text)
+                text = stringResource(id = anyFood.nameId)
             )
             TextField(
                 value = foodAmount,

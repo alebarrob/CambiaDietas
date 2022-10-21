@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import barrera.alejandro.cambiadietas.models.FoodDrawableStringAmountTriple
+import barrera.alejandro.cambiadietas.models.Food
 import barrera.alejandro.cambiadietas.viewmodels.CommonUiViewModel
 
 @Composable
@@ -24,9 +24,9 @@ fun CambiaDietasFoodColumn(
     commonUiViewModel: CommonUiViewModel,
     onNavigateToSelectedFoodScreen: (() -> Unit)? = null,
     foodCategory: String,
-    onFoodChange: ((FoodDrawableStringAmountTriple) -> Unit)? = null,
-    onAlternativeFoodChange: ((FoodDrawableStringAmountTriple) -> Unit)? = null,
-    foodItems: List<FoodDrawableStringAmountTriple>
+    onFoodChange: ((Food) -> Unit)? = null,
+    onAlternativeFoodChange: ((Food) -> Unit)? = null,
+    foodItems: List<Food>
 ) {
 
     commonUiViewModel.loadFoodItems(foodCategory)
@@ -54,7 +54,7 @@ fun CambiaDietasFoodColumn(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 5.dp, vertical = 10.dp),
-                    text = stringResource(id = item.text),
+                    text = stringResource(id = item.nameId),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Light
                 )

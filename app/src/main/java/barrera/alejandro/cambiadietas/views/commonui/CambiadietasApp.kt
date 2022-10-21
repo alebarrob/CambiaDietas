@@ -8,11 +8,13 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.compose.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.models.FoodDrawableStringAmountTriple
+import barrera.alejandro.cambiadietas.models.Food
 import barrera.alejandro.cambiadietas.models.Screen.*
-import barrera.alejandro.cambiadietas.viewmodels.CategoriesScreenViewModel
 import barrera.alejandro.cambiadietas.viewmodels.CommonUiViewModel
 import barrera.alejandro.cambiadietas.viewmodels.StartScreenViewModel
 import barrera.alejandro.cambiadietas.viewmodels.TipsScreenViewModel
@@ -25,7 +27,6 @@ import barrera.alejandro.cambiadietas.views.screens.TipsScreen
 fun CambiaDietasApp(
     commonUiViewModel: CommonUiViewModel,
     startScreenViewModel: StartScreenViewModel,
-    categoriesScreenViewModel: CategoriesScreenViewModel,
     tipsScreenViewModel: TipsScreenViewModel
 ) {
     val configuration = LocalConfiguration.current
@@ -36,9 +37,9 @@ fun CambiaDietasApp(
     val screens = listOf(StartScreen, CategoriesScreen, TipsScreen)
 
     val foodCategory by commonUiViewModel.foodCategory.observeAsState(initial = "Elige una categoría")
-    val food by commonUiViewModel.food.observeAsState(initial = FoodDrawableStringAmountTriple(
-            drawable = R.drawable.food_image_placeholder,
-            text = R.string.food_text_placeholder,
+    val food by commonUiViewModel.food.observeAsState(initial = Food(
+            imageId = R.drawable.food_image_placeholder,
+            nameId = R.string.food_text_placeholder,
             equivalentAmount = 0.00
         )
     )
@@ -86,8 +87,7 @@ fun CambiaDietasApp(
                     composable(route = CategoriesScreen.route) {
                         CategoriesScreen(
                             paddingValues = paddingValues,
-                            commonUiViewModel = commonUiViewModel,
-                            categoriesScreenViewModel = categoriesScreenViewModel
+                            commonUiViewModel = commonUiViewModel
                         )
                     }
                     composable(route = TipsScreen.route) {

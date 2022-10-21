@@ -86,8 +86,8 @@ fun TipsRow(
     ) {
         items(tips) { tip ->
             TipsCard(
-                tipTitle = stringResource(id = tip.tipTitle),
-                tipBody = stringResource(id = tip.tipBody)
+                tipTitle = stringResource(id = tip.tipTitleId),
+                tipBody = stringResource(id = tip.tipBodyId)
             )
         }
     }

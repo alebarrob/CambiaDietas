@@ -11,7 +11,6 @@ import barrera.alejandro.cambiadietas.views.theme.CambiaDietasAppTheme
 class MainActivity : ComponentActivity() {
     private val commonUiViewModel: CommonUiViewModel by viewModels()
     private val startScreenViewModel: StartScreenViewModel by viewModels()
-    private val categoriesScreenViewModel: CategoriesScreenViewModel by viewModels()
     private val tipsScreenViewModel: TipsScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +20,6 @@ class MainActivity : ComponentActivity() {
                 CambiaDietasApp(
                     commonUiViewModel,
                     startScreenViewModel,
-                    categoriesScreenViewModel,
                     tipsScreenViewModel
                 )
             }

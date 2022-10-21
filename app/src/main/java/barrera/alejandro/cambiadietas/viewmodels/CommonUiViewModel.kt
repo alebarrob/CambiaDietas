@@ -6,20 +6,23 @@ import androidx.lifecycle.ViewModel
 import barrera.alejandro.cambiadietas.models.*
 
 class CommonUiViewModel : ViewModel() {
+    private val _categories = MutableLiveData<List<Category>>()
+    val categories: LiveData<List<Category>> get() = _categories
+
+    private val _food = MutableLiveData<Food>()
+    val food: LiveData<Food> get() = _food
+
     private val _foodCategory = MutableLiveData<String>()
     val foodCategory: LiveData<String> get() = _foodCategory
 
-    private val _food = MutableLiveData<FoodDrawableStringAmountTriple>()
-    val food: LiveData<FoodDrawableStringAmountTriple> get() = _food
-
-    private val _foodItems = MutableLiveData<List<FoodDrawableStringAmountTriple>>()
-    val foodItems: LiveData<List<FoodDrawableStringAmountTriple>> get() = _foodItems
+    private val _foodItems = MutableLiveData<List<Food>>()
+    val foodItems: LiveData<List<Food>> get() = _foodItems
 
     fun onFoodCategoryChange(foodCategory: String) {
         _foodCategory.value = foodCategory
     }
 
-    fun onFoodChange(food: FoodDrawableStringAmountTriple) {
+    fun onFoodChange(food: Food) {
         _food.value = food
     }
 
@@ -27,7 +30,7 @@ class CommonUiViewModel : ViewModel() {
         _foodItems.value = selectFoodItems(foodCategory)
     }
 
-    fun selectFoodItems(foodCategory: String): List<FoodDrawableStringAmountTriple> {
+    fun selectFoodItems(foodCategory: String): List<Food> {
         return when (foodCategory) {
             "Frutas" -> fruitsData
             "Grasas y Proteínas" -> fatsAndProteinsData

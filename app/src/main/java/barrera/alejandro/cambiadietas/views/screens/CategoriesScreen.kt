@@ -22,9 +22,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import barrera.alejandro.cambiadietas.models.FoodDrawableStringAmountTriple
+import barrera.alejandro.cambiadietas.models.Food
 import barrera.alejandro.cambiadietas.models.categoriesData
-import barrera.alejandro.cambiadietas.viewmodels.CategoriesScreenViewModel
 import barrera.alejandro.cambiadietas.viewmodels.CommonUiViewModel
 import barrera.alejandro.cambiadietas.views.theme.KellyGreen
 
@@ -32,10 +31,9 @@ import barrera.alejandro.cambiadietas.views.theme.KellyGreen
 fun CategoriesScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
-    commonUiViewModel: CommonUiViewModel,
-    categoriesScreenViewModel: CategoriesScreenViewModel
+    commonUiViewModel: CommonUiViewModel
 ) {
-    val foodCategoriesId by categoriesScreenViewModel.foodCategoriesId.observeAsState(initial = categoriesData)
+    val categories by commonUiViewModel.categories.observeAsState(initial = categoriesData)
 
     Column(
         modifier = modifier
@@ -50,9 +48,9 @@ fun CategoriesScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        foodCategoriesId.forEach { categoryId ->
+        categories.forEach { category ->
             CategoryCard(
-                foodCategory = stringResource(id = categoryId),
+                foodCategory = stringResource(id = category.nameId),
                 commonUiViewModel = commonUiViewModel
             )
         }
@@ -93,7 +91,7 @@ fun CategoryCard(
 @Composable
 fun FoodRow(
     modifier: Modifier = Modifier,
-    foodItems: List<FoodDrawableStringAmountTriple>
+    foodItems: List<Food>
 ) {
     LazyRow(
         horizontalArrangement = Arrangement.Center,
@@ -109,7 +107,7 @@ fun FoodRow(
                     modifier = Modifier
                         .width(50.dp)
                         .height(50.dp),
-                    painter = painterResource(id = it.drawable),
+                    painter = painterResource(id = it.imageId),
                     contentDescription = null,
                     contentScale = ContentScale.Inside
                 )
@@ -117,7 +115,7 @@ fun FoodRow(
                     modifier = Modifier
                         .width(120.dp)
                         .padding(horizontal = 5.dp),
-                    text = stringResource(id = it.text)
+                    text = stringResource(id = it.nameId)
                 )
             }
         }

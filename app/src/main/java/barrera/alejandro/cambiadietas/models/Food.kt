@@ -6,8 +6,8 @@ import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class FoodDrawableStringAmountTriple(
-    @DrawableRes val drawable: Int,
-    @StringRes val text: Int,
+data class Food(
+    @DrawableRes val imageId: Int,
+    @StringRes val nameId: Int,
     val equivalentAmount: Double
 ) : Parcelable

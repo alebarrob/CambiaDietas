@@ -3,8 +3,8 @@ package barrera.alejandro.cambiadietas.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import barrera.alejandro.cambiadietas.models.FoodDrawableStringAmountTriple
-import barrera.alejandro.cambiadietas.models.IntermediateFood
+import barrera.alejandro.cambiadietas.models.Food
+import barrera.alejandro.cambiadietas.models.IntermediateFoodForCalculations
 import java.util.*
 
 class SelectedFoodScreenViewModel: ViewModel() {
@@ -14,8 +14,8 @@ class SelectedFoodScreenViewModel: ViewModel() {
     private val _wrongInput = MutableLiveData<Boolean>()
     val wrongInput: LiveData<Boolean> get() = _wrongInput
 
-    private val _alternativeFood = MutableLiveData<FoodDrawableStringAmountTriple>()
-    val alternativeFood: LiveData<FoodDrawableStringAmountTriple> get() = _alternativeFood
+    private val _alternativeFood = MutableLiveData<Food>()
+    val alternativeFood: LiveData<Food> get() = _alternativeFood
 
     private val _alternativeFoodAmount = MutableLiveData<String>()
     val alternativeFoodAmount: LiveData<String> get() = _alternativeFoodAmount
@@ -28,8 +28,8 @@ class SelectedFoodScreenViewModel: ViewModel() {
 
     fun onFoodAmountChange(
         foodCategory: String,
-        food: FoodDrawableStringAmountTriple,
-        alternativeFood: FoodDrawableStringAmountTriple,
+        food: Food,
+        alternativeFood: Food,
         foodAmount: String
     ) {
         when {
@@ -56,8 +56,8 @@ class SelectedFoodScreenViewModel: ViewModel() {
 
     private fun onAlternativeFoodAmountChange(
         foodCategory: String,
-        food: FoodDrawableStringAmountTriple,
-        alternativeFood: FoodDrawableStringAmountTriple,
+        food: Food,
+        alternativeFood: Food,
         foodAmount: Double
     ) {
         _alternativeFoodAmount.value = calculateFoodAmountEquivalence(
@@ -70,9 +70,9 @@ class SelectedFoodScreenViewModel: ViewModel() {
 
     private fun calculateFoodAmountEquivalence(
         foodCategory: String,
-        food: FoodDrawableStringAmountTriple,
+        food: Food,
         foodAmount: Double,
-        alternativeFood: FoodDrawableStringAmountTriple,
+        alternativeFood: Food,
     ): String {
         val intermediateFoodEquivalentAmount = selectIntermediateFoodEquivalentAmount(foodCategory)
         val intermediateFoodAmount = foodAmount * intermediateFoodEquivalentAmount / food.equivalentAmount
@@ -83,23 +83,23 @@ class SelectedFoodScreenViewModel: ViewModel() {
 
     private fun selectIntermediateFoodEquivalentAmount(foodCategory: String): Double {
         return when (foodCategory) {
-            "Frutas" -> IntermediateFood.APPLE.equivalentAmount
-            "Grasas y Proteínas" -> IntermediateFood.RABBIT.equivalentAmount
-            "Grasas" -> IntermediateFood.AVOCADO.equivalentAmount
-            "Carbohidratos" -> IntermediateFood.BREAD.equivalentAmount
-            "Lácteos" -> IntermediateFood.GREEK_YOGURT.equivalentAmount
+            "Frutas" -> IntermediateFoodForCalculations.APPLE.equivalentAmount
+            "Grasas y Proteínas" -> IntermediateFoodForCalculations.RABBIT.equivalentAmount
+            "Grasas" -> IntermediateFoodForCalculations.AVOCADO.equivalentAmount
+            "Carbohidratos" -> IntermediateFoodForCalculations.BREAD.equivalentAmount
+            "Lácteos" -> IntermediateFoodForCalculations.GREEK_YOGURT.equivalentAmount
             else -> 0.00
         }
     }
 
-    fun onAlternativeFoodChange(alternativeFood: FoodDrawableStringAmountTriple) {
+    fun onAlternativeFoodChange(alternativeFood: Food) {
         _alternativeFood.value = alternativeFood
     }
 
     fun updateAlternativeFoodAmount(
         foodCategory: String,
-        food: FoodDrawableStringAmountTriple,
-        alternativeFood: FoodDrawableStringAmountTriple,
+        food: Food,
+        alternativeFood: Food,
         foodAmount: String,
     ) {
         if (foodAmount.matches(Regex("\\d+(\$|(\\.(\$|\\d+\$)))"))) {

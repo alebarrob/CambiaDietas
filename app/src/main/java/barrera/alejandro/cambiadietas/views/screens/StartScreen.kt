@@ -15,7 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.models.FoodDrawableStringAmountTriple
+import barrera.alejandro.cambiadietas.models.Category
+import barrera.alejandro.cambiadietas.models.Food
 import barrera.alejandro.cambiadietas.models.categoriesData
 import barrera.alejandro.cambiadietas.viewmodels.CommonUiViewModel
 import barrera.alejandro.cambiadietas.viewmodels.StartScreenViewModel
@@ -31,12 +32,13 @@ fun StartScreen(
     onNavigateToSelectedFoodScreen: () -> Unit,
     foodCategory: String,
     onFoodCategoryChange: (String) -> Unit,
-    onFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
-    foodItems: List<FoodDrawableStringAmountTriple>,
+    onFoodChange: (Food) -> Unit,
+    foodItems: List<Food>,
     commonUiViewModel: CommonUiViewModel,
     startScreenViewModel: StartScreenViewModel
 ) {
     val expanded by startScreenViewModel.expanded.observeAsState(initial = false)
+    val categories by commonUiViewModel.categories.observeAsState(initial = categoriesData)
 
     CambiaDietasContainer(
         modifier = modifier,
@@ -49,6 +51,7 @@ fun StartScreen(
         FoodPicker(
             onNavigateToSelectedFoodScreen = onNavigateToSelectedFoodScreen,
             foodCategory = foodCategory,
+            categories = categories,
             onFoodCategoryChange = onFoodCategoryChange,
             onFoodChange = onFoodChange,
             foodItems = foodItems,
@@ -62,11 +65,12 @@ fun StartScreen(
 @Composable
 private fun FoodPicker(
     modifier: Modifier = Modifier,
+    categories: List<Category>,
     onNavigateToSelectedFoodScreen: () -> Unit,
     foodCategory: String,
     onFoodCategoryChange: (String) -> Unit,
-    onFoodChange: (FoodDrawableStringAmountTriple) -> Unit,
-    foodItems: List<FoodDrawableStringAmountTriple>,
+    onFoodChange: (Food) -> Unit,
+    foodItems: List<Food>,
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
     commonUiViewModel: CommonUiViewModel
@@ -82,6 +86,7 @@ private fun FoodPicker(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             FoodCategoryMenu(
+                categories = categories,
                 foodCategory = foodCategory,
                 onFoodCategoryChange = onFoodCategoryChange,
                 expanded = expanded,
@@ -108,13 +113,12 @@ private fun FoodPicker(
 @Composable
 private fun FoodCategoryMenu(
     modifier: Modifier = Modifier,
+    categories: List<Category>,
     foodCategory: String,
     onFoodCategoryChange: (String) -> Unit,
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit
 ) {
-    val categoriesItems = categoriesData
-
     Box(modifier = modifier) {
         OutlinedButton(
             onClick = { onExpandedChange(true) },
@@ -136,8 +140,8 @@ private fun FoodCategoryMenu(
             expanded = expanded,
             onDismissRequest = { onExpandedChange(false) }
         ) {
-            categoriesItems.forEach { item ->
-                val newCategory = stringResource(id = item)
+            categories.forEach { category ->
+                val newCategory = stringResource(id = category.nameId)
 
                 DropdownMenuItem(onClick = {
                     onFoodCategoryChange(newCategory)
@@ -147,7 +151,7 @@ private fun FoodCategoryMenu(
                         modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = stringResource(id = item))
+                        Text(text = stringResource(id = category.nameId))
                     }
                 }
             }

@@ -8,4 +8,4 @@ val categoriesData = listOf(
     R.string.fats_category,
     R.string.carbohydrates_category,
     R.string.dairy_category
-)
+).map { Category(it) }

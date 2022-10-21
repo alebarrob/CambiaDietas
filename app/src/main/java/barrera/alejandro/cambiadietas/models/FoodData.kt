@@ -26,7 +26,7 @@ val fruitsData = listOf(
     Triple(R.drawable.fruits_banana, R.string.banana_text, 165.00),
     Triple(R.drawable.fruits_watermelon, R.string.watermelon_text, 395.00),
     Triple(R.drawable.fruits_grapes, R.string.grapes_text, 125.00)
-).map { FoodDrawableStringAmountTriple(it.first, it.second, it.third) }
+).map { Food(it.first, it.second, it.third) }
 
 val fatsAndProteinsData = listOf(
     Triple(R.drawable.fats_proteins_tuna, R.string.tuna_text, 100.00),
@@ -52,7 +52,7 @@ val fatsAndProteinsData = listOf(
     Triple(R.drawable.fats_proteins_burgos_cheese, R.string.burgos_cheese_text, 150.00),
     Triple(R.drawable.fats_proteins_cheese, R.string.cheese_text, 28.00),
     Triple(R.drawable.fats_proteins_fresh_cheese, R.string.fresh_cheese_text, 250.00)
-).map { FoodDrawableStringAmountTriple(it.first, it.second, it.third) }
+).map { Food(it.first, it.second, it.third) }
 
 val fatsData = listOf(
     Triple(R.drawable.fats_oil, R.string.oil_text, 10.00),
@@ -64,7 +64,7 @@ val fatsData = listOf(
     Triple(R.drawable.fats_nuts, R.string.nuts_text, 15.00),
     Triple(R.drawable.fats_peanut_butter, R.string.peanut_butter_text, 15.00),
     Triple(R.drawable.fats_egg_yolk, R.string.egg_yolk_text, 2.00)
-).map { FoodDrawableStringAmountTriple(it.first, it.second, it.third) }
+).map { Food(it.first, it.second, it.third) }
 
 val carbohydratesData = listOf(
     Triple(R.drawable.carbohydrates_rice_pasta, R.string.rice_pasta_text, 30.00),
@@ -79,11 +79,11 @@ val carbohydratesData = listOf(
     Triple(R.drawable.carbohydrates_potato_pure, R.string.potato_pure_text, 30.00),
     Triple(R.drawable.carbohydrates_quinoa, R.string.quinoa_text, 30.00),
     Triple(R.drawable.carbohydrates_rice_pancakes, R.string.rice_pancakes_text, 3.00)
-).map { FoodDrawableStringAmountTriple(it.first, it.second, it.third) }
+).map { Food(it.first, it.second, it.third) }
 
 val dairyData = listOf(
     Triple(R.drawable.dairy_skimmed_milk, R.string.skimmed_milk_text, 300.00),
     Triple(R.drawable.dairy_skimmed_yogurt, R.string.skimmed_yogurt_text, 300.00),
     Triple(R.drawable.dairy_greek_yogurt, R.string.greek_yogurt_text, 100.00),
     Triple(R.drawable.dairy_protein_yogurt, R.string.protein_yogurt_text, 200.00)
-).map { FoodDrawableStringAmountTriple(it.first, it.second, it.third) }
+).map { Food(it.first, it.second, it.third) }
