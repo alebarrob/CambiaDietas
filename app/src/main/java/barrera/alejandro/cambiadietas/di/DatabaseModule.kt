@@ -26,5 +26,5 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideDao(dataBase: CambiaDietasRoomDataBase) = dataBase.tipDao()
+    fun provideTipDao(dataBase: CambiaDietasRoomDataBase) = dataBase.tipDao()
 }

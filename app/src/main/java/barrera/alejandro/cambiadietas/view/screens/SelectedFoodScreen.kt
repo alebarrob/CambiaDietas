@@ -24,12 +24,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.model.data.Food
-import barrera.alejandro.cambiadietas.viewmodel.CommonUiViewModel
-import barrera.alejandro.cambiadietas.viewmodel.SelectedFoodScreenViewModel
 import barrera.alejandro.cambiadietas.view.commonui.CambiaDietasContainer
 import barrera.alejandro.cambiadietas.view.commonui.CambiaDietasFoodColumn
 import barrera.alejandro.cambiadietas.view.theme.Aquamarine
 import barrera.alejandro.cambiadietas.view.theme.KellyGreen
+import barrera.alejandro.cambiadietas.viewmodel.CommonUiViewModel
+import barrera.alejandro.cambiadietas.viewmodel.SelectedFoodScreenViewModel
+import java.lang.reflect.Field
 
 @Composable
 fun SelectedFoodScreen(
@@ -235,5 +236,15 @@ fun FoodQuantityCard(
                 colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = KellyGreen),
             )
         }
+    }
+}
+
+fun getResId(resName: String, c: Class<*>): Int {
+    return try {
+        val idField: Field = c.getDeclaredField(resName)
+        idField.getInt(idField)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        -1
     }
 }
