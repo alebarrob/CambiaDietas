@@ -3,8 +3,8 @@ package barrera.alejandro.cambiadietas.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import barrera.alejandro.cambiadietas.model.entities.Food
-import barrera.alejandro.cambiadietas.model.entities.IntermediateFoodForCalculations
+import barrera.alejandro.cambiadietas.model.data.Food
+import barrera.alejandro.cambiadietas.model.data.IntermediateFoodForCalculations
 import java.util.*
 
 class SelectedFoodScreenViewModel: ViewModel() {

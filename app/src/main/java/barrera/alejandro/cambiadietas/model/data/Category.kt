@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.model.entities
+package barrera.alejandro.cambiadietas.model.data
 
 import androidx.annotation.StringRes
 

@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.model.entities
+package barrera.alejandro.cambiadietas.model.data
 
 enum class IntermediateFoodForCalculations(val equivalentAmount: Double) {
     APPLE(130.00),

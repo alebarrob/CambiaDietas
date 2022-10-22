@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import barrera.alejandro.cambiadietas.model.data.*
-import barrera.alejandro.cambiadietas.model.entities.*
 
 class CommonUiViewModel : ViewModel() {
     private val _categories = MutableLiveData<List<Category>>()

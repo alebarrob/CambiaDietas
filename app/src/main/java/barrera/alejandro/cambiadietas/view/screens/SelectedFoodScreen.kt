@@ -23,7 +23,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.model.entities.Food
+import barrera.alejandro.cambiadietas.model.data.Food
 import barrera.alejandro.cambiadietas.viewmodel.CommonUiViewModel
 import barrera.alejandro.cambiadietas.viewmodel.SelectedFoodScreenViewModel
 import barrera.alejandro.cambiadietas.view.commonui.CambiaDietasContainer

@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import barrera.alejandro.cambiadietas.model.entities.Food
+import barrera.alejandro.cambiadietas.model.data.Food
 import barrera.alejandro.cambiadietas.viewmodel.CommonUiViewModel
 
 @Composable

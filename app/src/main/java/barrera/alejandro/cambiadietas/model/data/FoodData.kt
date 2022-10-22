@@ -1,7 +1,6 @@
 package barrera.alejandro.cambiadietas.model.data
 
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.model.entities.Food
 
 val fruitsData = listOf(
     Triple(R.drawable.fruits_blueberries, R.string.blueberries_text, 120.00),

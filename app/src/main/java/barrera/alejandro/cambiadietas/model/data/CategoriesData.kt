@@ -1,7 +1,6 @@
 package barrera.alejandro.cambiadietas.model.data
 
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.model.entities.Category
 
 val categoriesData = listOf(
     R.string.fruits_category,

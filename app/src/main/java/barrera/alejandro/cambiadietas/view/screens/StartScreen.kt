@@ -15,8 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.model.entities.Category
-import barrera.alejandro.cambiadietas.model.entities.Food
+import barrera.alejandro.cambiadietas.model.data.Category
+import barrera.alejandro.cambiadietas.model.data.Food
 import barrera.alejandro.cambiadietas.model.data.categoriesData
 import barrera.alejandro.cambiadietas.viewmodel.CommonUiViewModel
 import barrera.alejandro.cambiadietas.viewmodel.StartScreenViewModel
@@ -37,7 +37,7 @@ fun StartScreen(
     commonUiViewModel: CommonUiViewModel,
     startScreenViewModel: StartScreenViewModel
 ) {
-    val expanded by startScreenViewModel.expanded.observeAsState(initial = false)
+    val expanded by startScreenViewModel.expanded.collectAsState(initial = false)
     val categories by commonUiViewModel.categories.observeAsState(initial = categoriesData)
 
     CambiaDietasContainer(

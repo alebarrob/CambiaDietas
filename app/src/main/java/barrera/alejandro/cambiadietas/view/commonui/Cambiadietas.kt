@@ -13,8 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.model.entities.Food
-import barrera.alejandro.cambiadietas.model.entities.Screen.*
+import barrera.alejandro.cambiadietas.model.data.Food
+import barrera.alejandro.cambiadietas.model.data.Screen.*
 import barrera.alejandro.cambiadietas.viewmodel.CommonUiViewModel
 import barrera.alejandro.cambiadietas.viewmodel.StartScreenViewModel
 import barrera.alejandro.cambiadietas.viewmodel.TipsScreenViewModel
@@ -24,7 +24,7 @@ import barrera.alejandro.cambiadietas.view.screens.StartScreen
 import barrera.alejandro.cambiadietas.view.screens.TipsScreen
 
 @Composable
-fun CambiaDietasApp(
+fun CambiaDietas(
     commonUiViewModel: CommonUiViewModel,
     startScreenViewModel: StartScreenViewModel,
     tipsScreenViewModel: TipsScreenViewModel
