@@ -1,43 +1,43 @@
 package barrera.alejandro.cambiadietas.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import barrera.alejandro.cambiadietas.model.data.*
+import androidx.lifecycle.viewModelScope
+import barrera.alejandro.cambiadietas.model.entities.Food
+import barrera.alejandro.cambiadietas.model.repositories.FoodRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CommonUiViewModel : ViewModel() {
-    private val _categories = MutableLiveData<List<Category>>()
-    val categories: LiveData<List<Category>> get() = _categories
+@HiltViewModel
+class CommonUiViewModel @Inject constructor(
+    private val foodRepository: FoodRepository
+) : ViewModel() {
+    private val _foodByCategory = MutableStateFlow<List<Food>>(listOf())
+    val foodByCategory: Flow<List<Food>> get() = _foodByCategory
 
-    private val _food = MutableLiveData<Food>()
-    val food: LiveData<Food> get() = _food
-
-    private val _foodCategory = MutableLiveData<String>()
-    val foodCategory: LiveData<String> get() = _foodCategory
-
-    private val _foodItems = MutableLiveData<List<Food>>()
-    val foodItems: LiveData<List<Food>> get() = _foodItems
-
-    fun onFoodCategoryChange(foodCategory: String) {
-        _foodCategory.value = foodCategory
-    }
-
-    fun onFoodChange(food: Food) {
-        _food.value = food
-    }
-
-    fun loadFoodItems(foodCategory: String) {
-        _foodItems.value = selectFoodItems(foodCategory)
-    }
-
-    fun selectFoodItems(foodCategory: String): List<Food> {
-        return when (foodCategory) {
-            "Frutas" -> fruitsData
-            "Grasas y Proteínas" -> fatsAndProteinsData
-            "Grasas" -> fatsData
-            "Carbohidratos" -> carbohydratesData
-            "Lácteos" -> dairyData
-            else -> listOf()
+    fun onFoodByCategoryChange(category: String) {
+        viewModelScope.launch {
+            foodRepository.getFoodByCategory(category).collect { foodList ->
+                _foodByCategory.value = foodList
+            }
         }
+    }
+
+    private val _selectedFoodName = MutableStateFlow("")
+    val selectedFoodName: Flow<String> get() = _selectedFoodName
+
+    private val _selectedCategory = MutableStateFlow("Elige una categoría")
+    val selectedCategory: Flow<String> get() = _selectedCategory
+
+
+
+    fun onSelectedCategoryChange(selectedCategory: String) {
+        _selectedCategory.value = selectedCategory
+    }
+
+    fun onSelectedFoodNameChange(selectedFoodName: String) {
+        _selectedFoodName.value = selectedFoodName
     }
 }

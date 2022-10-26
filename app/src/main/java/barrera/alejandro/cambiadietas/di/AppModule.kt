@@ -12,8 +12,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DatabaseModule {
-
+object AppModule {
     @Singleton
     @Provides
     fun provideDataBase(
@@ -22,9 +21,15 @@ object DatabaseModule {
         context,
         CambiaDietasRoomDataBase::class.java,
         "cambiadietas_database"
-    ).createFromAsset("database/cambiadietas_database.db").build()
+    ).fallbackToDestructiveMigration()
+        .createFromAsset("database/cambiadietas_database.db")
+        .build()
 
     @Singleton
     @Provides
     fun provideTipDao(dataBase: CambiaDietasRoomDataBase) = dataBase.tipDao()
+
+    @Singleton
+    @Provides
+    fun provideFoodDao(dataBase: CambiaDietasRoomDataBase) = dataBase.foodDao()
 }

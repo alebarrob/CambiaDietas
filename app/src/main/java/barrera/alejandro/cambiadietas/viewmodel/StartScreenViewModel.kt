@@ -1,14 +1,22 @@
 package barrera.alejandro.cambiadietas.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import barrera.alejandro.cambiadietas.model.entities.Food
+import barrera.alejandro.cambiadietas.model.repositories.FoodRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class StartScreenViewModel : ViewModel() {
-    private val _expanded = MutableStateFlow(false)
-    val expanded: Flow<Boolean> get() = _expanded
+@HiltViewModel
+class StartScreenViewModel @Inject constructor(
+    private val foodRepository: FoodRepository
+) : ViewModel() {
+    val categories: Flow<List<String>> = foodRepository.categories
 
-    fun onExpandedChange(expanded: Boolean) {
-        _expanded.value = expanded
-    }
+
+
+
 }

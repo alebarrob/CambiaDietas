@@ -3,8 +3,8 @@ package barrera.alejandro.cambiadietas.view.commonui
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -12,21 +12,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import barrera.alejandro.cambiadietas.R
-import barrera.alejandro.cambiadietas.model.data.Food
-import barrera.alejandro.cambiadietas.model.data.Screen.*
-import barrera.alejandro.cambiadietas.viewmodel.CommonUiViewModel
-import barrera.alejandro.cambiadietas.viewmodel.StartScreenViewModel
-import barrera.alejandro.cambiadietas.viewmodel.TipsScreenViewModel
+import barrera.alejandro.cambiadietas.model.routes.Screen.*
 import barrera.alejandro.cambiadietas.view.screens.CategoriesScreen
 import barrera.alejandro.cambiadietas.view.screens.SelectedFoodScreen
 import barrera.alejandro.cambiadietas.view.screens.StartScreen
 import barrera.alejandro.cambiadietas.view.screens.TipsScreen
+import barrera.alejandro.cambiadietas.viewmodel.CategoriesScreenViewModel
+import barrera.alejandro.cambiadietas.viewmodel.CommonUiViewModel
+import barrera.alejandro.cambiadietas.viewmodel.StartScreenViewModel
+import barrera.alejandro.cambiadietas.viewmodel.TipsScreenViewModel
 
 @Composable
 fun CambiaDietas(
     commonUiViewModel: CommonUiViewModel,
     startScreenViewModel: StartScreenViewModel,
+    categoriesScreenViewModel: CategoriesScreenViewModel,
     tipsScreenViewModel: TipsScreenViewModel
 ) {
     val configuration = LocalConfiguration.current
@@ -36,14 +36,9 @@ fun CambiaDietas(
     val currentDestination = navBackStackEntry?.destination
     val screens = listOf(StartScreen, CategoriesScreen, TipsScreen)
 
-    val foodCategory by commonUiViewModel.foodCategory.observeAsState(initial = "Elige una categoría")
-    val food by commonUiViewModel.food.observeAsState(initial = Food(
-            imageId = R.drawable.food_image_placeholder,
-            nameId = R.string.food_text_placeholder,
-            equivalentAmount = 0.00
-        )
-    )
-    val foodItems by commonUiViewModel.foodItems.observeAsState(initial = listOf())
+    val foodByCategory by commonUiViewModel.foodByCategory.collectAsState(initial = listOf())
+    val selectedFoodName by commonUiViewModel.selectedFoodName.collectAsState(initial = "")
+    val selectedCategory by commonUiViewModel.selectedCategory.collectAsState(initial = "Elige una categoría")
 
     Box {
         CambiadietasBackground()
@@ -58,7 +53,9 @@ fun CambiaDietas(
             },
             content = { paddingValues ->
                 NavHost(navController = navController, startDestination = StartScreen.route) {
-                    composable(route = StartScreen.route) {
+                    composable(
+                        route = StartScreen.route
+                    ) {
                         StartScreen(
                             paddingValues = paddingValues,
                             onNavigateToSelectedFoodScreen = {
@@ -66,35 +63,35 @@ fun CambiaDietas(
                                     popUpTo(StartScreen.route)
                                 }
                             },
-                            foodCategory = foodCategory,
-                            onFoodCategoryChange = { commonUiViewModel.onFoodCategoryChange(it) },
-                            onFoodChange = { commonUiViewModel.onFoodChange(it) },
-                            foodItems = foodItems,
-                            commonUiViewModel = commonUiViewModel,
-                            startScreenViewModel = startScreenViewModel
+                            startScreenViewModel = startScreenViewModel,
+                            configuration = configuration,
+                            foodByCategory = foodByCategory,
+                            selectedCategory = selectedCategory,
+                            onFoodByCategoryChange = { commonUiViewModel.onFoodByCategoryChange(it) },
+                            onSelectedCategoryChange = { commonUiViewModel.onSelectedCategoryChange(it) },
+                            onSelectedFoodNameChange = { commonUiViewModel.onSelectedFoodNameChange(it) }
                         )
                     }
                     composable(route = SelectedFoodScreen.route) {
                         SelectedFoodScreen(
                             paddingValues = paddingValues,
-                            food = food,
-                            foodCategory = foodCategory,
-                            foodItems = foodItems,
-                            commonUiViewModel = commonUiViewModel,
-                            context = context
+                            selectedCategory = selectedCategory,
+                            foodByCategory = foodByCategory,
+                            context = context,
+                            configuration = configuration,
+                            selectedFoodName = selectedFoodName
                         )
                     }
                     composable(route = CategoriesScreen.route) {
                         CategoriesScreen(
                             paddingValues = paddingValues,
-                            commonUiViewModel = commonUiViewModel
-                        )
+                            categoriesScreenViewModel = categoriesScreenViewModel                        )
                     }
                     composable(route = TipsScreen.route) {
                         TipsScreen(
+                            tipsScreenViewModel = tipsScreenViewModel,
                             paddingValues = paddingValues,
                             configuration = configuration,
-                            tipsScreenViewModel = tipsScreenViewModel,
                             context = context
                         )
                     }

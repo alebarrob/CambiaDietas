@@ -1,99 +1,11 @@
 <resources>
     <string name="app_name">CambiaDietas</string>
-
     <string name="bottom_navigation_start">INICIO</string>
     <string name="bottom_navigation_food_categories">CATEGORÍAS</string>
     <string name="bottom_navigation_nutrition_advices">CONSEJOS</string>
-
     <string name="food_picker_question">¿Qué alimento quieres cambiar?</string>
     <string name="food_comparator_question">¿Qué alimento prefieres comer?</string>
-
-    <string name="fruits_category">Frutas</string>
-    <string name="proteins_fats_category">Grasas y Proteínas</string>
-    <string name="fats_category">Grasas</string>
-    <string name="carbohydrates_category">Carbohidratos</string>
-    <string name="dairy_category">Lácteos</string>
-
-    <string name="food_text_placeholder"> </string>
-
-    <string name="blueberries_text">Arándanos</string>
-    <string name="cherries_text">Cerezas</string>
-    <string name="plums_text">Ciruelas</string>
-    <string name="dates_text">Dátiles</string>
-    <string name="raspberries_text">Frambuesas</string>
-    <string name="strawberries_text">Fresas</string>
-    <string name="figs_text">Higos</string>
-    <string name="kiwi_text">Kiwi</string>
-    <string name="tangerines_text">Mandarinas</string>
-    <string name="mango_text">Mango</string>
-    <string name="apple_text">Manzana</string>
-    <string name="peach_text">Melocotón</string>
-    <string name="melon_text">Melón</string>
-    <string name="blackberries_text">Moras</string>
-    <string name="orange_text">Naranja</string>
-    <string name="nectarine_text">Nectarina</string>
-    <string name="loquat_text">Nísperos</string>
-    <string name="papaya_text">Papaya</string>
-    <string name="pear_text">Pera</string>
-    <string name="pinneaple_text">Piña natural</string>
-    <string name="banana_text">Plátano</string>
-    <string name="watermelon_text">Sandía</string>
-    <string name="grapes_text">Uvas</string>
-
-    <string name="tuna_text">Atún al natural</string>
-    <string name="seafood_text">Marisco</string>
-    <string name="pork_text">Cerdo (Graso)</string>
-    <string name="rabbit_text">Conejo</string>
-    <string name="lamb_text">Cordero</string>
-    <string name="gluten_text">Gluten de trigo</string>
-    <string name="eggs_whites_text">Huevo (Clara)</string>
-    <string name="egg_text">Huevo entero XL</string>
-    <string name="spanish_jam_text">Jamón serrano</string>
-    <string name="pork_loin_text">Lomo de cerdo (Magro)</string>
-    <string name="tenderloin_text">Lomo embuchado</string>
-    <string name="white_fish_text">Pescado blanco</string>
-    <string name="chicken_text">Pollo o pavo (Pechuga sin piel)</string>
-    <string name="protein_powder_text">Proteína en polvo</string>
-    <string name="cottage_cheese_text">Requesón desnatado</string>
-    <string name="salmon_text">Salmón, pescados azules</string>
-    <string name="seitan_text">Seitan</string>
-    <string name="fat_beef_text">Ternera, potro (Graso)</string>
-    <string name="lean_beef_text">Ternera, potro (Magro)</string>
-    <string name="tofu_text">Tofu</string>
-    <string name="burgos_cheese_text">Queso burgos desnatado</string>
-    <string name="cheese_text">Queso (Cualquier tipo)</string>
-    <string name="fresh_cheese_text">Queso fresco batido 0%</string>
-
-    <string name="oil_text">Aceite</string>
-    <string name="olives_text">Aceitunas sin hueso</string>
-    <string name="avocado_text">Aguacate</string>
-    <string name="cocoa_text">Cacao desgrasado en polvo</string>
-    <string name="coconut_text">Coco</string>
-    <string name="chocolate_text">Chocolate negro</string>
-    <string name="nuts_text">Frutos secos</string>
-    <string name="peanut_butter_text">Mantequilla de cacahuete</string>
-    <string name="egg_yolk_text">Huevo (Yema)</string>
-
-    <string name="rice_pasta_text">Arroz o pasta (En seco)</string>
-    <string name="cereals_text">Cereales de desayuno</string>
-    <string name="oat_fleur_text">Copos/Harina de avena</string>
-    <string name="corn_fleur_text">Harina de maíz/de arroz</string>
-    <string name="beans_text">Legumbres (Crudas)</string>
-    <string name="honey_text">Miel</string>
-    <string name="bread_text">Pan</string>
-    <string name="toasted_bread_text">Pan tostado</string>
-    <string name="potato_text">Patata/Boniato (Crudo)</string>
-    <string name="potato_pure_text">Puré de patata deshidratado (En polvo)</string>
-    <string name="quinoa_text">Quinoa</string>
-    <string name="rice_pancakes_text">Tortitas de arroz o maíz</string>
-
-    <string name="skimmed_milk_text">Leche desnatada</string>
-    <string name="skimmed_yogurt_text">Yogur desnatado</string>
-    <string name="greek_yogurt_text">Yogur griego</string>
-    <string name="protein_yogurt_text">Yogur proteico</string>
-
     <string name="contact_message">Si quieres atención profesional personalizada, contacta con la dietista Mónica Barrera: monicabarrerarobles@gmail.com</string>
-
     <string name="email">monicabarrerarobles@gmail.com</string>
     <string name="subject">¡Hola! Busco la ayuda de una dietista :)</string>
 

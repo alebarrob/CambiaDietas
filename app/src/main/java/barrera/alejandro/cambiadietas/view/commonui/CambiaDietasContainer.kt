@@ -12,11 +12,10 @@ import androidx.compose.ui.platform.LocalConfiguration
 @Composable
 fun CambiaDietasContainer(
     modifier: Modifier = Modifier,
+    configuration: Configuration,
     paddingValues: PaddingValues,
     content: @Composable (ColumnScope.() -> Unit)
 ) {
-    val configuration = LocalConfiguration.current
-
     Column(
         modifier = when (configuration.orientation) {
             Configuration.ORIENTATION_LANDSCAPE -> modifier

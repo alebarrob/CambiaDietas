@@ -12,28 +12,31 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import barrera.alejandro.cambiadietas.model.data.Food
-import barrera.alejandro.cambiadietas.model.data.categoriesData
-import barrera.alejandro.cambiadietas.viewmodel.CommonUiViewModel
+import barrera.alejandro.cambiadietas.model.entities.Food
 import barrera.alejandro.cambiadietas.view.theme.KellyGreen
+import barrera.alejandro.cambiadietas.viewmodel.CategoriesScreenViewModel
 
 @Composable
 fun CategoriesScreen(
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues,
-    commonUiViewModel: CommonUiViewModel
+    categoriesScreenViewModel: CategoriesScreenViewModel,
+    paddingValues: PaddingValues
 ) {
-    val categories by commonUiViewModel.categories.observeAsState(initial = categoriesData)
+    val fruitItems by categoriesScreenViewModel.fruitItems.collectAsState(initial = listOf())
+    val fatsProteinsItems by categoriesScreenViewModel.fatsProteinsItems.collectAsState(initial = listOf())
+    val fatsItems by categoriesScreenViewModel.fatsItems.collectAsState(initial = listOf())
+    val carbohydratesItems by categoriesScreenViewModel.carbohydratesItems.collectAsState(initial = listOf())
+    val dairyItems by categoriesScreenViewModel.dairyItems.collectAsState(initial = listOf())
+    val foodItems = listOf(fruitItems, fatsProteinsItems, fatsItems, carbohydratesItems, dairyItems)
 
     Column(
         modifier = modifier
@@ -48,11 +51,8 @@ fun CategoriesScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        categories.forEach { category ->
-            CategoryCard(
-                foodCategory = stringResource(id = category.nameId),
-                commonUiViewModel = commonUiViewModel
-            )
+        foodItems.forEach { items ->
+            CategoryCard(items = items)
         }
     }
 }
@@ -60,8 +60,7 @@ fun CategoriesScreen(
 @Composable
 fun CategoryCard(
     modifier: Modifier = Modifier,
-    foodCategory: String,
-    commonUiViewModel: CommonUiViewModel
+    items: List<Food>
 ) {
     Card(
         modifier = modifier.padding(5.dp),
@@ -76,14 +75,14 @@ fun CategoryCard(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             Text(
-                text = foodCategory,
+                text = if (items.isEmpty()) "" else items[0].category,
                 fontWeight = FontWeight.SemiBold
             )
             Divider(
                 color = KellyGreen,
                 thickness = (0.5).dp
             )
-            FoodRow(foodItems = commonUiViewModel.selectFoodItems(foodCategory))
+            FoodRow(foodItems = items)
         }
     }
 }
@@ -97,7 +96,7 @@ fun FoodRow(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.Top
     ) {
-        items(foodItems) {
+        items(foodItems) { foodItem ->
             Column(
                 modifier = modifier.padding(top = 8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -107,7 +106,7 @@ fun FoodRow(
                     modifier = Modifier
                         .width(50.dp)
                         .height(50.dp),
-                    painter = painterResource(id = it.imageId),
+                    painter = painterResource(getResId(foodItem.drawableName)),
                     contentDescription = null,
                     contentScale = ContentScale.Inside
                 )
@@ -115,7 +114,7 @@ fun FoodRow(
                     modifier = Modifier
                         .width(120.dp)
                         .padding(horizontal = 5.dp),
-                    text = stringResource(id = it.nameId)
+                    text = foodItem.name
                 )
             }
         }

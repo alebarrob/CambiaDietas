@@ -33,9 +33,9 @@ import barrera.alejandro.cambiadietas.viewmodel.TipsScreenViewModel
 @Composable
 fun TipsScreen(
     modifier: Modifier = Modifier,
+    tipsScreenViewModel: TipsScreenViewModel,
     paddingValues: PaddingValues,
     configuration: Configuration,
-    tipsScreenViewModel: TipsScreenViewModel,
     context: Context
 ) {
     val tips by tipsScreenViewModel.tips.collectAsState(initial = listOf())

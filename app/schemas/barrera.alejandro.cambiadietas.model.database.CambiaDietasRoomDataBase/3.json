@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "a5870ace73b38c62840d9101a3fb2699",
+    "version": 3,
+    "identityHash": "8ba7eb9c467f5dec510d978af94c35bc",
     "entities": [
       {
         "tableName": "tips",
@@ -38,7 +38,7 @@
       },
       {
         "tableName": "food",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `drawable_name` TEXT NOT NULL, `name` TEXT NOT NULL, `equivalent_amount_for_calculations` REAL NOT NULL, `category` TEXT NOT NULL, `unit` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `drawable_name` TEXT NOT NULL, `name` TEXT NOT NULL, `equivalent_amount_for_calculations` REAL NOT NULL, `category` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -69,12 +69,6 @@
             "columnName": "category",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "unit",
-            "columnName": "unit",
-            "affinity": "TEXT",
-            "notNull": true
           }
         ],
         "primaryKey": {
@@ -90,7 +84,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a5870ace73b38c62840d9101a3fb2699')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8ba7eb9c467f5dec510d978af94c35bc')"
     ]
   }
 }
