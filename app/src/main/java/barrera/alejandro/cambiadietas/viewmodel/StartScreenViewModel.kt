@@ -16,7 +16,12 @@ class StartScreenViewModel @Inject constructor(
 ) : ViewModel() {
     val categories: Flow<List<String>> = foodRepository.categories
 
+    private val _selectedCategory = MutableStateFlow("Elige una categoría")
+    val selectedCategory: Flow<String> get() = _selectedCategory
 
+    fun onSelectedCategoryChange(selectedCategory: String) {
+        _selectedCategory.value = selectedCategory
+    }
 
 
 }

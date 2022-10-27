@@ -25,19 +25,9 @@ class CommonUiViewModel @Inject constructor(
         }
     }
 
-    private val _selectedFoodName = MutableStateFlow("")
-    val selectedFoodName: Flow<String> get() = _selectedFoodName
-
-    private val _selectedCategory = MutableStateFlow("Elige una categoría")
-    val selectedCategory: Flow<String> get() = _selectedCategory
 
 
 
-    fun onSelectedCategoryChange(selectedCategory: String) {
-        _selectedCategory.value = selectedCategory
-    }
 
-    fun onSelectedFoodNameChange(selectedFoodName: String) {
-        _selectedFoodName.value = selectedFoodName
-    }
+
 }

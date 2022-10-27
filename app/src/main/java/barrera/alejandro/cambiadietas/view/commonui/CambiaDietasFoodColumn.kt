@@ -20,7 +20,7 @@ import barrera.alejandro.cambiadietas.model.entities.Food
 fun CambiaDietasFoodColumn(
     modifier: Modifier = Modifier,
     onNavigateToSelectedFoodScreen: (() -> Unit)? = null,
-    onSelectedFoodChange: ((String) -> Unit)? = null,
+    onSelectedFoodNameChange: ((String) -> Unit)? = null,
     onAlternativeFoodChange: ((Food) -> Unit)? = null,
     foodByCategory: List<Food>
 ) {
@@ -36,8 +36,8 @@ fun CambiaDietasFoodColumn(
         foodByCategory.forEach { item ->
             Button(
                 onClick = {
+                    onSelectedFoodNameChange?.invoke(item.name)
                     onNavigateToSelectedFoodScreen?.invoke()
-                    onSelectedFoodChange?.invoke(item.name)
                     onAlternativeFoodChange?.invoke(item)
                 },
                 shape = MaterialTheme.shapes.medium,

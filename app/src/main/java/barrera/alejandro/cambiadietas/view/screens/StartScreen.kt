@@ -14,8 +14,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.model.entities.Food
+import barrera.alejandro.cambiadietas.model.routes.Screen
 import barrera.alejandro.cambiadietas.view.commonui.CambiaDietasContainer
 import barrera.alejandro.cambiadietas.view.commonui.CambiaDietasFoodColumn
 import barrera.alejandro.cambiadietas.view.theme.Aquamarine
@@ -27,16 +29,15 @@ fun StartScreen(
     modifier: Modifier = Modifier,
     configuration: Configuration,
     paddingValues: PaddingValues,
-    onNavigateToSelectedFoodScreen: () -> Unit,
+    navController: NavController,
     startScreenViewModel: StartScreenViewModel,
     foodByCategory: List<Food>,
-    onFoodByCategoryChange: (String) -> Unit,
-    selectedCategory: String,
-    onSelectedCategoryChange: (String) -> Unit,
-    onSelectedFoodNameChange: (String) -> Unit
+    onFoodByCategoryChange: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     val categories by startScreenViewModel.categories.collectAsState(initial = listOf())
+    val selectedCategory by startScreenViewModel.selectedCategory.collectAsState(initial = "Elige una categoría")
+    var selectedFoodName = ""
 
     CambiaDietasContainer(
         modifier = modifier,
@@ -48,12 +49,18 @@ fun StartScreen(
             contentDescription = null
         )
         FoodPicker(
-            onNavigateToSelectedFoodScreen = onNavigateToSelectedFoodScreen,
+            onNavigateToSelectedFoodScreen = {
+                navController.navigate(
+                    route = "selectedFoodScreen/$selectedFoodName"
+                ) {
+                    popUpTo(Screen.StartScreen.route)
+                }
+            },
             selectedCategory = selectedCategory,
             categories = categories,
-            onSelectedCategoryChange = { onSelectedCategoryChange(it) },
+            onSelectedCategoryChange = { startScreenViewModel.onSelectedCategoryChange(it) },
             onFoodByCategoryChange = onFoodByCategoryChange,
-            onSelectedFoodChange = { onSelectedFoodNameChange(it) },
+            onSelectedFoodNameChange = { selectedFoodName = it },
             foodByCategory = foodByCategory,
             expanded = expanded,
             onExpandedChange = { expanded = it },
@@ -69,7 +76,7 @@ private fun FoodPicker(
     selectedCategory: String,
     onSelectedCategoryChange: (String) -> Unit,
     onFoodByCategoryChange: (String) -> Unit,
-    onSelectedFoodChange: (String) -> Unit,
+    onSelectedFoodNameChange: (String) -> Unit,
     foodByCategory: List<Food>,
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit
@@ -100,7 +107,7 @@ private fun FoodPicker(
                 )
                 CambiaDietasFoodColumn(
                     onNavigateToSelectedFoodScreen = onNavigateToSelectedFoodScreen,
-                    onSelectedFoodChange = onSelectedFoodChange,
+                    onSelectedFoodNameChange = onSelectedFoodNameChange,
                     foodByCategory = foodByCategory,
                 )
             }

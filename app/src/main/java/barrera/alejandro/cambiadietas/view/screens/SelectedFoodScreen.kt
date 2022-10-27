@@ -2,6 +2,7 @@ package barrera.alejandro.cambiadietas.view.screens
 
 import android.content.Context
 import android.content.res.Configuration
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -38,9 +39,7 @@ fun SelectedFoodScreen(
     modifier: Modifier = Modifier,
     configuration: Configuration,
     paddingValues: PaddingValues,
-    selectedCategory: String,
     foodByCategory: List<Food>,
-    selectedFoodName: String,
     context: Context
 ) {
     val selectedFoodScreenViewModel = hiltViewModel<SelectedFoodScreenViewModel>()
@@ -68,7 +67,7 @@ fun SelectedFoodScreen(
         )
     )
 
-    selectedFoodScreenViewModel.onSelectedFoodChange(selectedFoodName)
+    //selectedFoodScreenViewModel.onSelectedFoodChange(selectedFoodName)
 
 
     CambiaDietasContainer(
@@ -82,7 +81,7 @@ fun SelectedFoodScreen(
             onSelectedFoodAmountChange = {
                 selectedFoodScreenViewModel.onSelectedFoodAmountChange(
                     selectedFoodAmount = it,
-                    selectedCategory = selectedCategory,
+                    selectedCategory = selectedFood.category,
                     selectedFood = selectedFood,
                     alternativeFood = alternativeFood
                 )
@@ -94,7 +93,7 @@ fun SelectedFoodScreen(
             onAlternativeFoodChange = {
                 selectedFoodScreenViewModel.onAlternativeFoodChange(
                     selectedFoodAmount = selectedFoodAmount,
-                    selectedCategory = selectedCategory,
+                    selectedCategory = selectedFood.category,
                     selectedFood = selectedFood,
                     alternativeFood = it
                 )

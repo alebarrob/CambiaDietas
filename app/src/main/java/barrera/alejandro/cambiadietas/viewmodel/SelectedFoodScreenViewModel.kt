@@ -1,5 +1,6 @@
 package barrera.alejandro.cambiadietas.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import barrera.alejandro.cambiadietas.model.IntermediateFoodForCalculations
@@ -14,19 +15,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SelectedFoodScreenViewModel @Inject constructor(
-    private val foodRepository: FoodRepository
+    savedStateHandle: SavedStateHandle,
+    foodRepository: FoodRepository
 ): ViewModel() {
-    private val _selectedFood = MutableStateFlow(
-        Food(
-            id = 100,
-            drawableName = "food_image_placeholder",
-            name = "",
-            equivalentAmountForCalculations = 0.0,
-            category = "",
-            unit = ""
-        )
+    val selectedFood: Flow<Food> = foodRepository.getFoodByName(
+        savedStateHandle.get<String>("selectedFoodName")!!
     )
-    val selectedFood: Flow<Food> get() = _selectedFood
 
     private val _selectedFoodAmount = MutableStateFlow("")
     val selectedFoodAmount: Flow<String> get() = _selectedFoodAmount
@@ -49,14 +43,6 @@ class SelectedFoodScreenViewModel @Inject constructor(
     private val _wrongInput = MutableStateFlow(false)
     val wrongInput: Flow<Boolean> get() = _wrongInput
 
-    fun onSelectedFoodChange(name: String) {
-        viewModelScope.launch {
-            foodRepository.getFoodByName(name).collect { food ->
-                _selectedFood.value = food
-            }
-        }
-    }
-
     fun onAlternativeFoodChange(
         selectedCategory: String,
         selectedFood: Food,
@@ -71,6 +57,8 @@ class SelectedFoodScreenViewModel @Inject constructor(
                 alternativeFood = alternativeFood,
                 selectedFoodAmount = selectedFoodAmount.toDouble()
             )
+        } else {
+            _alternativeFood.value = alternativeFood
         }
 
     }
