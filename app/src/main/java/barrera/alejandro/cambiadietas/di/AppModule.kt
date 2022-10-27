@@ -2,7 +2,7 @@ package barrera.alejandro.cambiadietas.di
 
 import android.content.Context
 import androidx.room.Room
-import barrera.alejandro.cambiadietas.model.database.CambiaDietasRoomDataBase
+import barrera.alejandro.cambiadietas.models.database.CambiaDietasRoomDataBase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
