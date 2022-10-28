@@ -2,6 +2,8 @@ package barrera.alejandro.cambiadietas.views.screens
 
 import android.content.Context
 import android.content.res.Configuration
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -67,6 +69,12 @@ fun SelectedFoodScreen(
     val alternativeFoodAmount by selectedFoodScreenViewModel.alternativeFoodAmount.collectAsState(initial = "")
     val wrongInput by selectedFoodScreenViewModel.wrongInput.collectAsState(initial = false)
 
+    if (wrongInput) {
+        Toast.makeText(context, "Has introducido un valor incorrecto", Toast.LENGTH_SHORT).show()
+        Handler(Looper.getMainLooper()).postDelayed({
+            selectedFoodScreenViewModel.onWrongInputChange(false)
+        }, 2000)
+    }
     CambiaDietasContainer(
         modifier = modifier,
         paddingValues = paddingValues,
@@ -90,11 +98,6 @@ fun SelectedFoodScreen(
                     selectedFood = selectedFood,
                     alternativeFood = alternativeFood
                 )
-                if (wrongInput) {
-                    Toast.makeText(
-                        context, "Has introducido un valor incorrecto", Toast.LENGTH_SHORT
-                    ).show()
-                }
             },
             alternativeFoodAmount = alternativeFoodAmount,
             wrongInput = wrongInput
@@ -212,9 +215,12 @@ fun FoodQuantityCard(
                     .padding(horizontal = 5.dp),
                 text = anyFood.name
             )
+
             TextField(
                 value = foodAmount,
-                onValueChange = onFoodAmountChange,
+                onValueChange = {
+                    onFoodAmountChange(it)
+                },
                 modifier = Modifier.width(120.dp),
                 enabled = enabled,
                 label = { Text(text = anyFood.unit) },

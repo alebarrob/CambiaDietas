@@ -119,4 +119,8 @@ class SelectedFoodScreenViewModel @Inject constructor(
             else -> 0.00
         }
     }
+
+    fun onWrongInputChange(wrongInput: Boolean) {
+        _wrongInput.value = wrongInput
+    }
 }
