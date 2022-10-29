@@ -2,7 +2,10 @@ package barrera.alejandro.cambiadietas.di
 
 import android.content.Context
 import androidx.room.Room
+import barrera.alejandro.cambiadietas.models.daos.FoodDao
 import barrera.alejandro.cambiadietas.models.database.CambiaDietasRoomDataBase
+import barrera.alejandro.cambiadietas.models.repositories.FoodRepository
+import barrera.alejandro.cambiadietas.models.repositories.FoodRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,4 +35,8 @@ object AppModule {
     @Singleton
     @Provides
     fun provideFoodDao(dataBase: CambiaDietasRoomDataBase) = dataBase.foodDao()
+
+    @Singleton
+    @Provides
+    fun foodRepositoryImpl(foodDao: FoodDao): FoodRepository = FoodRepositoryImpl(foodDao)
 }

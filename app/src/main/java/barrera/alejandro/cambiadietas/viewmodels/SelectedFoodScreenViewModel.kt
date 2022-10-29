@@ -2,8 +2,8 @@ package barrera.alejandro.cambiadietas.viewmodels
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import barrera.alejandro.cambiadietas.models.enums.IntermediateFoodForCalculations
 import barrera.alejandro.cambiadietas.models.entities.Food
+import barrera.alejandro.cambiadietas.models.enums.IntermediateFoodForCalculations
 import barrera.alejandro.cambiadietas.models.repositories.FoodRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -14,14 +14,14 @@ import javax.inject.Inject
 @HiltViewModel
 class SelectedFoodScreenViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    foodRepository: FoodRepository
+    foodRepositoryImpl: FoodRepository
 ): ViewModel() {
     private val selectedFoodName = savedStateHandle.get<String>("selectedFoodName")!!
     private val selectedFoodCategory = savedStateHandle.get<String>("selectedCategory")!!
 
-    val foodByCategory = foodRepository.getFoodByCategory(selectedFoodCategory)
+    val foodByCategory = foodRepositoryImpl.getFoodByCategory(selectedFoodCategory)
 
-    val selectedFood = foodRepository.getFoodByName(selectedFoodName)
+    val selectedFood = foodRepositoryImpl.getFoodByName(selectedFoodName)
 
     private val _alternativeFood = MutableStateFlow(
         Food(
@@ -97,7 +97,7 @@ class SelectedFoodScreenViewModel @Inject constructor(
         )
     }
 
-    private fun calculateFoodAmountEquivalence(
+    fun calculateFoodAmountEquivalence(
         selectedFood: Food,
         alternativeFood: Food,
         selectedFoodAmount: Double

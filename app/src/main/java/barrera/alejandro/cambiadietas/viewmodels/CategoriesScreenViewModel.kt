@@ -3,7 +3,7 @@ package barrera.alejandro.cambiadietas.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import barrera.alejandro.cambiadietas.models.entities.Food
-import barrera.alejandro.cambiadietas.models.repositories.FoodRepository
+import barrera.alejandro.cambiadietas.models.repositories.FoodRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoriesScreenViewModel @Inject constructor(
-    private val foodRepository: FoodRepository
+    private val foodRepositoryImpl: FoodRepositoryImpl
 ) : ViewModel() {
     private val _fruitItems = MutableStateFlow(listOf<Food>())
     val fruitItems: Flow<List<Food>> get() = _fruitItems
@@ -39,7 +39,7 @@ class CategoriesScreenViewModel @Inject constructor(
 
     private fun loadItems(category: String, loadOperation: (List<Food>) -> Unit) {
         viewModelScope.launch {
-            foodRepository.getFoodByCategory(category).collect { items ->
+            foodRepositoryImpl.getFoodByCategory(category).collect { items ->
                 loadOperation(items)
             }
         }
