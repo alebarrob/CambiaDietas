@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "527840915771",
+    "project_id": "cambiadietas",
+    "storage_bucket": "cambiadietas.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527840915771:android:28b43223cdb7352b41071e",
+        "android_client_info": {
+          "package_name": "barrera.alejandro.cambiadietas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527840915771-um9ao7hvb545a0hjusnfpjno8e68jpu1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChfU2eMxPLcGlY_tTgac8z4_UjfmglEDg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527840915771-um9ao7hvb545a0hjusnfpjno8e68jpu1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
