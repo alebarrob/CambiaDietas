@@ -1,3 +1,10 @@
+/*
+* Column with a drop-down list of food names that can be selected.
+* When selecting a food, different actions can optionally occur.
+* This allows the column to be flexible enough to be used on two different
+* screens: StartScreen and SelectedFoodScreen.
+*/
+
 package barrera.alejandro.cambiadietas.views.commonui
 
 import androidx.compose.foundation.layout.*
@@ -36,8 +43,22 @@ fun CambiaDietasFoodColumn(
         foodByCategory.forEach { item ->
             Button(
                 onClick = {
+                    /*
+                    * Indicates what happens on the StartScreen when the user chooses an item
+                    * of type String representing the name of the food to be replaced.
+                    */
                     onSelectedFoodNameChange?.invoke(item.name)
+
+                    /*
+                    * Indicates what happens on the SelectedFoodScreen when the user chooses
+                    * an item of type Food representing the alternative food he/she wants to eat.
+                    */
                     onAlternativeFoodChange?.invoke(item)
+
+                    /*
+                    * Indicates the action of navigating from the StartScreen
+                    * to the SelectedFoodScreen.
+                    */
                     onNavigateToSelectedFoodScreen?.invoke()
                 },
                 shape = MaterialTheme.shapes.medium,

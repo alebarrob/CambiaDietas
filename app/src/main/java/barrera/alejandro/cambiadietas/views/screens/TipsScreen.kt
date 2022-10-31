@@ -1,3 +1,8 @@
+/*
+ * Screen showing general nutritional advice and also a clickable element that allows
+ * you to contact a professional dietitian by email for personalized attention.
+ */
+
 package barrera.alejandro.cambiadietas.views.screens
 
 import android.content.ActivityNotFoundException

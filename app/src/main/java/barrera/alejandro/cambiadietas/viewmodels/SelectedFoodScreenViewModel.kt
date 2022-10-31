@@ -97,6 +97,13 @@ class SelectedFoodScreenViewModel @Inject constructor(
         )
     }
 
+    /*
+    * This function, together with selectIntermediateFoodEquivalentAmount, handles the main
+    * logical operations of the application. They take the amount of food the user should eat in
+    * their selected food and calculate the equivalent amount in the alternative food with a rule
+    * of three. The operation is performed in two steps: first the amount is converted to an
+    * intermediate food unit and then it is converted to the desired alternative food unit.
+    */
     fun calculateFoodAmountEquivalence(
         selectedFood: Food,
         alternativeFood: Food,

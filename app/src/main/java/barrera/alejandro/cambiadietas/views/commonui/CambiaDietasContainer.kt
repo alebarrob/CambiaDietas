@@ -1,3 +1,8 @@
+/*
+* Container used in StartScreen and SelectedFoodScreen that adapts to the screen rotation.
+* When in landscape mode it is possible to scroll down to see all content.
+ */
+
 package barrera.alejandro.cambiadietas.views.commonui
 
 import android.content.res.Configuration

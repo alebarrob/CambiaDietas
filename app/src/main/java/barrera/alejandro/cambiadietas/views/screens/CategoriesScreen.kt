@@ -1,3 +1,8 @@
+/*
+ * Screen that shows which foods
+ * belong to the different categories.
+ */
+
 package barrera.alejandro.cambiadietas.views.screens
 
 import androidx.compose.foundation.BorderStroke

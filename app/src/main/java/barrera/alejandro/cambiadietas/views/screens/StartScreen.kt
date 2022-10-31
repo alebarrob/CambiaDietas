@@ -1,3 +1,8 @@
+/*
+ * The initial screen where the user can choose the food category and also which food
+ * he/she wants to substitute in his/her diet.
+ */
+
 package barrera.alejandro.cambiadietas.views.screens
 
 import android.content.res.Configuration
@@ -18,11 +23,11 @@ import androidx.navigation.NavController
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.models.entities.Food
 import barrera.alejandro.cambiadietas.models.routes.ScreenNavigation
+import barrera.alejandro.cambiadietas.viewmodels.StartScreenViewModel
 import barrera.alejandro.cambiadietas.views.commonui.CambiaDietasContainer
 import barrera.alejandro.cambiadietas.views.commonui.CambiaDietasFoodColumn
 import barrera.alejandro.cambiadietas.views.theme.Aquamarine
 import barrera.alejandro.cambiadietas.views.theme.KellyGreen
-import barrera.alejandro.cambiadietas.viewmodels.StartScreenViewModel
 
 @Composable
 fun StartScreen(

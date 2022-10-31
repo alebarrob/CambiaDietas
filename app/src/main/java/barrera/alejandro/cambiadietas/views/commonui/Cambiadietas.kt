@@ -12,13 +12,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import barrera.alejandro.cambiadietas.models.routes.ScreenNavigation.*
+import barrera.alejandro.cambiadietas.viewmodels.CategoriesScreenViewModel
+import barrera.alejandro.cambiadietas.viewmodels.StartScreenViewModel
+import barrera.alejandro.cambiadietas.viewmodels.TipsScreenViewModel
 import barrera.alejandro.cambiadietas.views.screens.CategoriesScreen
 import barrera.alejandro.cambiadietas.views.screens.SelectedFoodScreen
 import barrera.alejandro.cambiadietas.views.screens.StartScreen
 import barrera.alejandro.cambiadietas.views.screens.TipsScreen
-import barrera.alejandro.cambiadietas.viewmodels.CategoriesScreenViewModel
-import barrera.alejandro.cambiadietas.viewmodels.StartScreenViewModel
-import barrera.alejandro.cambiadietas.viewmodels.TipsScreenViewModel
 
 @Composable
 fun CambiaDietas(

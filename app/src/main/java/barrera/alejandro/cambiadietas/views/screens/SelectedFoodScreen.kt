@@ -1,3 +1,8 @@
+/*
+ * Screen where the user can choose an alternative food for his/her diet and check what is
+ * the equivalent amount he/she should eat.
+ */
+
 package barrera.alejandro.cambiadietas.views.screens
 
 import android.content.Context
@@ -42,6 +47,10 @@ fun SelectedFoodScreen(
     configuration: Configuration,
     context: Context
 ) {
+    /*
+    * The ViewModel of this screen is declared here so that the state with the
+    * alternative food chosen is not saved when switching screens.
+    */
     val selectedFoodScreenViewModel = hiltViewModel<SelectedFoodScreenViewModel>()
 
     val foodByCategory by selectedFoodScreenViewModel.foodByCategory.collectAsState(listOf())
@@ -218,9 +227,7 @@ fun FoodQuantityCard(
 
             TextField(
                 value = foodAmount,
-                onValueChange = {
-                    onFoodAmountChange(it)
-                },
+                onValueChange = { onFoodAmountChange(it) },
                 modifier = Modifier.width(120.dp),
                 enabled = enabled,
                 label = { Text(text = anyFood.unit) },
@@ -235,6 +242,11 @@ fun FoodQuantityCard(
     }
 }
 
+/*
+* Function that returns the id of a resource, either a drawable or a string,
+* after passing the resource name as a parameter. The function returns a drawable
+* resource id by default.
+*/
 fun getResId(resName: String, c: Class<*> = R.drawable::class.java): Int {
     return try {
         val idField: Field = c.getDeclaredField(resName)
