@@ -44,7 +44,8 @@ fun CambiaDietasBottomBar(
                 selectedContentColor = RaisinBlack,
                 unselectedContentColor = Cadet,
                 selected = when {
-                    currentDestination?.route == "selectedFoodScreen" && screen.route == "startScreen" -> true
+                    currentDestination?.route == "selectedFoodScreen/{selectedFoodName}/{selectedCategory}"
+                            && screen.route == "startScreen" -> true
                     currentDestination?.hierarchy?.any { (it.route == screen.route) } == true -> true
                     else -> false
                 },
