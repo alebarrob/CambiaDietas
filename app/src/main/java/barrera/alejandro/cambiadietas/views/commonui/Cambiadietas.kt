@@ -2,7 +2,8 @@ package barrera.alejandro.cambiadietas.views.commonui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -14,7 +15,6 @@ import barrera.alejandro.cambiadietas.models.routes.ScreenNavigation.*
 import barrera.alejandro.cambiadietas.viewmodels.CategoriesScreenViewModel
 import barrera.alejandro.cambiadietas.viewmodels.StartScreenViewModel
 import barrera.alejandro.cambiadietas.viewmodels.TipsScreenViewModel
-import barrera.alejandro.cambiadietas.views.eula.EulaAlertDialog
 import barrera.alejandro.cambiadietas.views.screens.CategoriesScreen
 import barrera.alejandro.cambiadietas.views.screens.SelectedFoodScreen
 import barrera.alejandro.cambiadietas.views.screens.StartScreen
@@ -32,12 +32,6 @@ fun CambiaDietas(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val screens = listOf(StartScreen, CategoriesScreen, TipsScreen)
-    var showEulaAlertDialog by remember { mutableStateOf(true) }
-
-    if (showEulaAlertDialog) EulaAlertDialog(
-        onDismiss = { showEulaAlertDialog = false },
-        onExit = {  }
-    )
 
     Box {
         CambiadietasBackground()

@@ -120,11 +120,4 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
-
-    // In-app updates
-    implementation "com.google.android.play:app-update:2.0.1"
-    implementation "com.google.android.play:app-update-ktx:2.0.0"
-
-    // DataStore
-    implementation "androidx.datastore:datastore-preferences:1.1.0-dev01"
 }
