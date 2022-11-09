@@ -28,6 +28,7 @@ import barrera.alejandro.cambiadietas.views.commonui.CambiaDietasContainer
 import barrera.alejandro.cambiadietas.views.commonui.CambiaDietasFoodColumn
 import barrera.alejandro.cambiadietas.views.theme.Aquamarine
 import barrera.alejandro.cambiadietas.views.theme.KellyGreen
+import barrera.alejandro.cambiadietas.views.theme.White
 
 @Composable
 fun StartScreen(
@@ -146,7 +147,7 @@ private fun FoodCategoryMenu(
         DropdownMenu(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White),
+                .background(White),
             expanded = expanded,
             onDismissRequest = { onExpandedChange(false) }
         ) {

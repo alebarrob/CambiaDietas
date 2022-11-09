@@ -21,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -33,12 +32,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.models.entities.Food
+import barrera.alejandro.cambiadietas.viewmodels.SelectedFoodScreenViewModel
 import barrera.alejandro.cambiadietas.views.commonui.CambiaDietasContainer
 import barrera.alejandro.cambiadietas.views.commonui.CambiaDietasFoodColumn
+import barrera.alejandro.cambiadietas.views.commonui.getResId
 import barrera.alejandro.cambiadietas.views.theme.Aquamarine
 import barrera.alejandro.cambiadietas.views.theme.KellyGreen
-import barrera.alejandro.cambiadietas.viewmodels.SelectedFoodScreenViewModel
-import java.lang.reflect.Field
+import barrera.alejandro.cambiadietas.views.theme.White
 
 @Composable
 fun SelectedFoodScreen(
@@ -206,7 +206,7 @@ fun FoodQuantityCard(
 
     Card(
         shape = MaterialTheme.shapes.medium,
-        backgroundColor = Color.White,
+        backgroundColor = White,
         elevation = 5.dp
     ) {
         Column(
@@ -215,7 +215,7 @@ fun FoodQuantityCard(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             Image(
-                painter = painterResource(getResId(anyFood.drawableName)),
+                painter = painterResource(getResId(anyFood.category, anyFood.name)),
                 contentDescription = null
             )
             Text(
@@ -239,20 +239,5 @@ fun FoodQuantityCard(
                 colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = KellyGreen),
             )
         }
-    }
-}
-
-/*
-* Function that returns the id of a resource, either a drawable or a string,
-* after passing the resource name as a parameter. The function returns a drawable
-* resource id by default.
-*/
-fun getResId(resName: String, c: Class<*> = R.drawable::class.java): Int {
-    return try {
-        val idField: Field = c.getDeclaredField(resName)
-        idField.getInt(idField)
-    } catch (e: Exception) {
-        e.printStackTrace()
-        -1
     }
 }

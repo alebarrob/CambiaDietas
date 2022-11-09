@@ -21,14 +21,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import barrera.alejandro.cambiadietas.models.entities.Food
-import barrera.alejandro.cambiadietas.views.theme.KellyGreen
 import barrera.alejandro.cambiadietas.viewmodels.CategoriesScreenViewModel
+import barrera.alejandro.cambiadietas.views.commonui.getResId
+import barrera.alejandro.cambiadietas.views.theme.KellyGreen
+import barrera.alejandro.cambiadietas.views.theme.White
 
 @Composable
 fun CategoriesScreen(
@@ -70,7 +71,7 @@ fun CategoryCard(
     Card(
         modifier = modifier.padding(5.dp),
         shape = MaterialTheme.shapes.medium,
-        backgroundColor = Color.White,
+        backgroundColor = White,
         elevation = (1.5).dp,
         border = BorderStroke((0.5).dp, KellyGreen)
     ) {
@@ -111,7 +112,7 @@ fun FoodRow(
                     modifier = Modifier
                         .width(50.dp)
                         .height(50.dp),
-                    painter = painterResource(getResId(foodItem.drawableName)),
+                    painter = painterResource(getResId(foodItem.category, foodItem.name)),
                     contentDescription = null,
                     contentScale = ContentScale.Inside
                 )
