@@ -8,4 +8,4 @@ The application also includes some general nutrition advice on one of its screen
 
 In this application I used Jetpack Compose, MVVM architecture, dependency injection with Hilt, Room Database, Coroutines and unit tests. 
 
-The application can be downloaded from the Play Store:
+The application can be downloaded from the Play Store: https://play.google.com/store/apps/details?id=barrera.alejandro.cambiadietas
