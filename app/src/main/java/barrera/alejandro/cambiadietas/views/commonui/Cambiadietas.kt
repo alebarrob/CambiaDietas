@@ -19,6 +19,7 @@ import barrera.alejandro.cambiadietas.views.screens.CategoriesScreen
 import barrera.alejandro.cambiadietas.views.screens.SelectedFoodScreen
 import barrera.alejandro.cambiadietas.views.screens.StartScreen
 import barrera.alejandro.cambiadietas.views.screens.TipsScreen
+import com.google.android.gms.ads.MobileAds
 
 @Composable
 fun CambiaDietas(
@@ -32,6 +33,9 @@ fun CambiaDietas(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val screens = listOf(StartScreen, CategoriesScreen, TipsScreen)
+
+    // Ads initialization
+    MobileAds.initialize(context)
 
     Box {
         CambiadietasBackground()

@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import barrera.alejandro.cambiadietas.models.entities.Food
 import barrera.alejandro.cambiadietas.viewmodels.CategoriesScreenViewModel
+import barrera.alejandro.cambiadietas.views.commonui.AdvertView
 import barrera.alejandro.cambiadietas.views.commonui.getResId
 import barrera.alejandro.cambiadietas.views.theme.KellyGreen
 import barrera.alejandro.cambiadietas.views.theme.White
@@ -57,9 +58,11 @@ fun CategoriesScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
+        AdvertView()
         foodItems.forEach { items ->
             CategoryCard(items = items)
         }
+        AdvertView()
     }
 }
 

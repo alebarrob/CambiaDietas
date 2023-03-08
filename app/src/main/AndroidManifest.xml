@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CambiaDietas"
         tools:targetApi="33">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9771408617801489~8246191144"/>
         <activity
             android:name=".views.mainactivity.MainActivity"
             android:exported="true"
