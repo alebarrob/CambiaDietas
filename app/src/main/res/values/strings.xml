@@ -1,15 +1,33 @@
 <resources>
+    <!-- App General -->
     <string name="app_name">CambiaDietas</string>
-    <string name="bottom_navigation_start">INICIO</string>
-    <string name="bottom_navigation_food_categories">CATEGORÍAS</string>
-    <string name="bottom_navigation_nutrition_advices">CONSEJOS</string>
+
+    <!-- Core -->
+    <string name="back_icon_description">Volver atrás</string>
+    <string name="start_label_text">INICIO</string>
+    <string name="start_icon_description">Inicio</string>
+    <string name="categories_label_text">CATEGORÍAS</string>
+    <string name="categories_icon_description">Categorías</string>
+    <string name="tips_label_text">CONSEJOS</string>
+    <string name="tips_icon_description">Consejos</string>
+
+    <!-- Change Diet -->
+    <!-- Start -->
+    <string name="logo_description">Logo de CambiaDietas</string>
+    <!-- Selected Food -->
     <string name="food_picker_question">¿Qué alimento quieres cambiar?</string>
     <string name="food_comparator_question">¿Qué alimento prefieres comer?</string>
-    <string name="contact_message">Si quieres atención profesional personalizada, contacta con la dietista Mónica Barrera: monicabarrerarobles@gmail.com</string>
-    <string name="email">monicabarrerarobles@gmail.com</string>
-    <string name="subject">¡Hola! Busco la ayuda de una dietista :)</string>
-    <string name="license_agreement_title">Acuerdo de licencia para el usuario final</string>
 
+    <!-- Categories -->
+    <!-- Category Detail -->
+    <string name="food_category_image_description">Foto de la comida</string>
+    <!-- Components -->
     <string name="ad_id_banner">ca-app-pub-9771408617801489/4115374442</string>
 
+    <!-- Tips -->
+    <string name="contact_message">Si quieres atención profesional personalizada, contacta con la dietista Mónica Barrera: monicabarrerarobles@gmail.com</string>
+    <string name="email">monicabarrerarobles@gmail.com</string>
+    <string name="click_image_description">Imagen de Click</string>
+    <string name="dietist_image_description">Imagen de una dietista</string>
+    <string name="subject">¡Hola! Busco la ayuda de una dietista :)</string>
 </resources>

@@ -1,9 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-parcelize'
-    id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-kapt'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
 }
@@ -48,7 +47,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion "1.2.0-beta03"
+        kotlinCompilerExtensionVersion '1.4.2'
     }
     packagingOptions {
         resources {
@@ -65,55 +64,53 @@ android {
 
 dependencies {
 
-    implementation "androidx.core:core-ktx:$core_version"
-    
-    // System UI Controller - Accompanist
-    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+    // Android Support
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
 
-    // Local Unit Tests
-    testImplementation "com.google.truth:truth:$truth_version"
-    testImplementation "junit:junit:$junit_version"
-    testImplementation "io.mockk:mockk:$mockk_version"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
-
-    // Instrumentation Tests
-    androidTestImplementation "junit:junit:$junit_version"
-    androidTestImplementation "com.google.truth:truth:$truth_version"
-    androidTestImplementation "androidx.test.ext:junit:$testextjunit_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$testespresso_version"
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    androidTestImplementation "com.google.dagger:hilt-android-testing:$dagger_version"
-    androidTestImplementation "com.google.dagger:hilt-android-compiler:$dagger_version"
-    androidTestImplementation "io.mockk:mockk:$mockk_version"
-
-    // Compose
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
+    // Jetpack Compose
+    implementation 'androidx.activity:activity-compose:1.6.1'
+    implementation 'androidx.compose.ui:ui:1.4.0-beta02'
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation 'androidx.activity:activity-compose:1.6.1'
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    implementation 'androidx.compose.material3:material3:1.1.0-alpha07'
 
     // Navigation
-    implementation "androidx.navigation:navigation-compose:$navigation_version"
+    // Be careful with the 2.6.0-alpha06 version, it causes a bug in the app
+    implementation 'androidx.navigation:navigation-compose:2.5.0-rc01'
 
-    // Room database
+    // System Bars Customization
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$navigation_version"
+
+    // Room Database
     implementation("androidx.room:room-runtime:$room_version")
+    implementation 'androidx.core:core-ktx:1.9.0'
     annotationProcessor("androidx.room:room-compiler:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
-
-    // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     // Dagger Hilt
     implementation "androidx.hilt:hilt-navigation-compose:$hilt_version"
     implementation "com.google.dagger:hilt-android:$dagger_version"
     kapt "com.google.dagger:hilt-compiler:$dagger_version"
     kapt "androidx.hilt:hilt-compiler:$hilt_version"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+
+    // Unit Tests
+    testImplementation 'junit:junit:4.13.2'
+
+    // User Interface Tests
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+
+    // Debug
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
     // Firebase crashlytics
     implementation platform('com.google.firebase:firebase-bom:31.0.2')
@@ -122,5 +119,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
     // Ads
-    implementation 'com.google.android.gms:play-services-ads:21.3.0'
+    implementation 'com.google.android.gms:play-services-ads:21.5.0'
 }
