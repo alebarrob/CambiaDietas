@@ -7,4 +7,5 @@ data class StartState(
     val categories: List<String> = emptyList(),
     val selectedCategory: String = "Elige una categoría",
     val foods: List<Food> = emptyList(),
+    val selectedFoodName: String = ""
 )

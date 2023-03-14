@@ -4,7 +4,7 @@ import barrera.alejandro.cambiadietas.core.domain.model.Food
 import kotlinx.coroutines.flow.Flow
 
 interface FoodRepository {
-    fun getAllCategories(): Flow<List<String>>
+    fun getAllFoodCategories(): Flow<List<String>>
 
     fun getFoodByCategory(category: String): Flow<List<Food>>
 

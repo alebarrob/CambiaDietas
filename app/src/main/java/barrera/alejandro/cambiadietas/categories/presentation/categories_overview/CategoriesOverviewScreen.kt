@@ -22,11 +22,11 @@ import barrera.alejandro.cambiadietas.core.presentation.theme.LocalSpacing
 fun CategoriesOverviewScreen(
     modifier: Modifier = Modifier,
     viewModel: CategoriesOverviewViewModel = hiltViewModel(),
-    onNavigateToCategoryDetail: (category: String) -> Unit,
+    onNavigateToCategoryDetail: (foodCategory: String) -> Unit,
     paddingValues: PaddingValues
 ) {
     val spacing = LocalSpacing.current
-    val categories = viewModel.categories
+    val foodCategories = viewModel.foodCategories
 
     LaunchedEffect(key1 = Unit) {
         viewModel.loadCategories()
@@ -39,11 +39,11 @@ fun CategoriesOverviewScreen(
         bottomBarPadding = paddingValues.calculateBottomPadding()
     ) {
         AdvertView()
-        categories.forEach { category ->
-            CategoryButton(
-                category = category,
+        foodCategories.forEach { foodCategory ->
+            FoodCategoryButton(
+                foodCategory = foodCategory,
                 onClick = {
-                    onNavigateToCategoryDetail(category)
+                    onNavigateToCategoryDetail(foodCategory)
                 }
             )
         }
@@ -52,10 +52,10 @@ fun CategoriesOverviewScreen(
 }
 
 @Composable
-fun CategoryButton(
+fun FoodCategoryButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    category: String
+    foodCategory: String
 ) {
     val spacing = LocalSpacing.current
 
@@ -71,7 +71,7 @@ fun CategoryButton(
         contentPadding = PaddingValues(spacing.spaceMedium)
     ) {
         Text(
-            text = category.uppercase(),
+            text = foodCategory.uppercase(),
             style = typography.displayMedium
         )
     }

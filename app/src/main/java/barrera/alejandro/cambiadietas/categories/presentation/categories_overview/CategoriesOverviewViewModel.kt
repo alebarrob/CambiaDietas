@@ -5,22 +5,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import barrera.alejandro.cambiadietas.categories.domain.categories_overview.use_case.CategoriesOverviewUseCases
+import barrera.alejandro.cambiadietas.core.domain.use_case.CoreUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CategoriesOverviewViewModel @Inject constructor(
-    private val categoriesOverviewUseCases: CategoriesOverviewUseCases
+    private val coreUseCases: CoreUseCases
 ) : ViewModel() {
-    var categories by mutableStateOf(emptyList<String>())
+    var foodCategories by mutableStateOf(emptyList<String>())
         private set
 
     fun loadCategories() {
         viewModelScope.launch {
-            categoriesOverviewUseCases.getAllCategories().collect { loadedCategories ->
-                categories = loadedCategories
+            coreUseCases.getAllFoodCategories().collect { loadedFoodCategories ->
+                foodCategories = loadedFoodCategories
             }
         }
     }

@@ -1,19 +1,51 @@
-/*
- * Screen where the user can choose an alternative food for his/her diet and check what is
- * the equivalent amount he/she should eat.
- */
-
-package barrera.alejandro.cambiadietas.views.screens
+package barrera.alejandro.cambiadietas.change_diet.presentation.selected_food
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
+import barrera.alejandro.cambiadietas.change_diet.presentation.components.FoodPicker
+import barrera.alejandro.cambiadietas.core.presentation.components.AdaptableColumn
+import barrera.alejandro.cambiadietas.core.presentation.theme.LocalSpacing
 
 @Composable
 fun SelectedFoodScreen(
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    viewModel: SelectedFoodViewModel = hiltViewModel()
 ) {
+    val state = viewModel.state
+    val spacing = LocalSpacing.current
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.onEvent(SelectedFoodEvent.LoadSelectedFood)
+        viewModel.onEvent(SelectedFoodEvent.LoadFoodsByCategory)
+    }
+
+    AdaptableColumn(
+        modifier = modifier.padding(
+            vertical = spacing.spaceSmall,
+            horizontal = spacing.spaceLarge
+        ),
+        verticalArrangement = Arrangement.spacedBy(
+            space = spacing.default,
+            alignment = Alignment.CenterVertically
+        ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        topBarPadding = paddingValues.calculateTopPadding()
+    ) {
+        FoodPicker(
+            headline = stringResource(id = barrera.alejandro.cambiadietas.R.string.selected_food_food_picker_headline),
+            selectedCategory = state.selectedFoodCategory,
+            foods = state.foods,
+            onFoodClick = { foodName, foodCategory ->
+
+            }
+        )
+    }
 
     /** The ViewModel of this screen is declared here so that the state with the
     * alternative food chosen is not saved when switching screens.
@@ -124,9 +156,9 @@ fun FoodComparator(
             )
         }
     }
-}
+}*/
 
-@Composable
+/*@Composable
 fun FoodImageComparator(
     modifier: Modifier = Modifier,
     selectedFood: Food,

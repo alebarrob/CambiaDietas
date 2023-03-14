@@ -14,9 +14,9 @@
     <!-- Change Diet -->
     <!-- Start -->
     <string name="logo_description">Logo de CambiaDietas</string>
+    <string name="start_food_picker_headline">Elige el alimento que quieres cambiar:</string>
     <!-- Selected Food -->
-    <string name="food_picker_question">¿Qué alimento quieres cambiar?</string>
-    <string name="food_comparator_question">¿Qué alimento prefieres comer?</string>
+    <string name="selected_food_food_picker_headline">Elige el alimento que prefieres comer:</string>
 
     <!-- Categories -->
     <!-- Category Detail -->

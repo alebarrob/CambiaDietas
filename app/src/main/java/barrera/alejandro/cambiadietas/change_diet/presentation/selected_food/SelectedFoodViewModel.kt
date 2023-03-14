@@ -1,16 +1,62 @@
 package barrera.alejandro.cambiadietas.change_diet.presentation.selected_food
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import barrera.alejandro.cambiadietas.core.domain.repository.FoodRepository
+import androidx.lifecycle.viewModelScope
+import barrera.alejandro.cambiadietas.change_diet.data.domain.use_case.ChangeDietUseCases
+import barrera.alejandro.cambiadietas.core.domain.use_case.CoreUseCases
+import barrera.alejandro.cambiadietas.core.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SelectedFoodScreenViewModel @Inject constructor(
+class SelectedFoodViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    foodRepositoryImpl: FoodRepository
+    private val changeDietUseCases: ChangeDietUseCases,
+    private val coreUseCases: CoreUseCases
 ): ViewModel() {
+    var state by mutableStateOf(
+        SelectedFoodState(
+            selectedFoodName = savedStateHandle.get<String>("foodName")!!,
+            selectedFoodCategory = savedStateHandle.get<String>("foodCategory")!!
+        )
+    )
+        private set
+
+    private val _uiEvent = Channel<UiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
+
+    fun onEvent(event: SelectedFoodEvent) {
+        when (event) {
+            is SelectedFoodEvent.LoadSelectedFood -> {
+                viewModelScope.launch {
+                    changeDietUseCases.getFoodByName(state.selectedFoodName).collect { food ->
+                        state = state.copy(selectedFood = food)
+                    }
+                }
+            }
+            is SelectedFoodEvent.LoadFoodsByCategory -> {
+                viewModelScope.launch {
+                    coreUseCases.getFoodByCategory(state.selectedFoodCategory).collect { foods ->
+                        state = state.copy(foods = foods)
+                    }
+                }
+            }
+            is SelectedFoodEvent.OnAlternativeFoodChange -> {
+
+            }
+            is SelectedFoodEvent.OnSelectedFoodAmountChange -> {
+
+            }
+        }
+    }
+
     /*private val selectedFoodName = savedStateHandle.get<String>("selectedFoodName")!!
     private val selectedFoodCategory = savedStateHandle.get<String>("selectedCategory")!!
 

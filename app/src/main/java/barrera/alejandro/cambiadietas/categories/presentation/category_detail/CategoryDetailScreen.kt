@@ -32,7 +32,9 @@ fun CategoryDetailScreen(
     }
 
     Column(
-        modifier = modifier.padding(top = paddingValues.calculateTopPadding()),
+        modifier = modifier
+            .padding(top = paddingValues.calculateTopPadding())
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -76,7 +78,7 @@ fun CategoryCard(
             )
             Divider(
                 color = colorScheme.primary,
-                thickness = (0.5).dp
+                thickness = 1.dp
             )
             FoodFlowRow(
                 foods = foods,
@@ -108,7 +110,7 @@ fun FoodFlowRow(
                 modifier = modifier.padding(spacing.spaceExtraSmall),
                 shape = MaterialTheme.shapes.medium,
                 colors = CardDefaults.cardColors(containerColor = colorScheme.tertiary),
-                border = BorderStroke((0.5).dp, colorScheme.primary),
+                border = BorderStroke(1.dp, colorScheme.primary),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column(

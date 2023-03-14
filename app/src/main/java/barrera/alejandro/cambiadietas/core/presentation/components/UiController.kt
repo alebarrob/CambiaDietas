@@ -11,7 +11,7 @@ fun UiController(
     currentDestination: NavDestination?
 ) {
     when (currentDestination?.route) {
-        "selectedFood", "categoryDetail/{category}" -> {
+        "selectedFood/{foodName}/{foodCategory}", "categoryDetail/{foodCategory}" -> {
             viewModel.onEvent(CoreEvent.HideBottomBar)
             viewModel.onEvent(CoreEvent.ShowTopBar)
         }

@@ -71,7 +71,7 @@ fun TipsRow(
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(containerColor = colorScheme.background),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        border = BorderStroke((0.5).dp, colorScheme.primary)
+        border = BorderStroke(1.dp, colorScheme.primary)
     ) {
         LazyRow(
             modifier = modifier.padding(spacing.spaceSmall),
@@ -101,7 +101,7 @@ fun TipsCard(
             .width(280.dp)
             .height(200.dp),
         colors = CardDefaults.cardColors(containerColor = colorScheme.secondary),
-        border = BorderStroke(1.dp, colorScheme.primary),
+        border = BorderStroke((0.5).dp, colorScheme.primary),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(

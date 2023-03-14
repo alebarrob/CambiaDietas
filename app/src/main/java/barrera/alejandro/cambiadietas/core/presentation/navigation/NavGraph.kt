@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import barrera.alejandro.cambiadietas.core.presentation.navigation.NavigationScreen.*
 import barrera.alejandro.cambiadietas.categories.presentation.categories_overview.CategoriesOverviewScreen
 import barrera.alejandro.cambiadietas.categories.presentation.category_detail.CategoryDetailScreen
-import barrera.alejandro.cambiadietas.views.screens.SelectedFoodScreen
+import barrera.alejandro.cambiadietas.change_diet.presentation.selected_food.SelectedFoodScreen
 import barrera.alejandro.cambiadietas.change_diet.presentation.start.StartScreen
 import barrera.alejandro.cambiadietas.tips.presentation.TipsScreen
 
@@ -24,27 +24,27 @@ fun NavGraph(
         composable(route = StartScreen.route) {
             StartScreen(
                 paddingValues = paddingValues,
-                onNavigateToSelectedFood = { food, category ->
+                onNavigateToSelectedFood = { foodName, foodCategory ->
                     navController.navigate(
                         route = SelectedFoodScreen.route +
-                                "/$food" +
-                                "/$category"
+                                "/$foodName" +
+                                "/$foodCategory"
                     )
                 }
             )
         }
-        composable(route = SelectedFoodScreen.route) {
+        composable(route = SelectedFoodScreen.route + "/{foodName}/{foodCategory}") {
             SelectedFoodScreen(paddingValues = paddingValues)
         }
         composable(route = CategoriesOverviewScreen.route) {
             CategoriesOverviewScreen(
                 paddingValues = paddingValues,
-                onNavigateToCategoryDetail = { category ->
-                    navController.navigate(CategoryDetailScreen.route + "/$category")
+                onNavigateToCategoryDetail = { foodCategory ->
+                    navController.navigate(CategoryDetailScreen.route + "/$foodCategory")
                 }
             )
         }
-        composable(route = CategoryDetailScreen.route + "/{category}") {
+        composable(route = CategoryDetailScreen.route + "/{foodCategory}") {
             CategoryDetailScreen(paddingValues = paddingValues)
         }
         composable(route = TipsScreen.route) {

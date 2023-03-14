@@ -1,5 +1,7 @@
-package barrera.alejandro.cambiadietas.core.domain.di
+package barrera.alejandro.cambiadietas.change_diet.data.domain.di
 
+import barrera.alejandro.cambiadietas.change_diet.data.domain.use_case.ChangeDietUseCases
+import barrera.alejandro.cambiadietas.change_diet.data.domain.use_case.GetFoodByName
 import barrera.alejandro.cambiadietas.core.domain.repository.FoodRepository
 import barrera.alejandro.cambiadietas.core.domain.use_case.CoreUseCases
 import barrera.alejandro.cambiadietas.core.domain.use_case.GetAllFoodCategories
@@ -13,16 +15,14 @@ import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object CoreDomainModule {
+object ChangeDietDomainModule {
     @ViewModelScoped
     @Provides
-    fun provideCoreUseCases(
+    fun provideChangeDietUseCases(
         foodRepository: FoodRepository
-    ): CoreUseCases {
-        return CoreUseCases(
-            getDrawableId = GetDrawableId(),
-            getAllFoodCategories = GetAllFoodCategories(foodRepository),
-            getFoodByCategory = GetFoodByCategory(foodRepository)
+    ): ChangeDietUseCases {
+        return ChangeDietUseCases(
+            getFoodByName = GetFoodByName(foodRepository)
         )
     }
 }

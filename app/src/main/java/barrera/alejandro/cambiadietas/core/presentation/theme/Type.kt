@@ -36,6 +36,12 @@ private val fontFamilyLato = FontFamily(
 )
 
 val Typography = Typography(
+    displayLarge = TextStyle(
+        fontFamily = fontFamilyKulimPark,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center,
+        fontSize = 32.sp
+    ),
     displayMedium = TextStyle(
         fontFamily = fontFamilyKulimPark,
         fontWeight = FontWeight.Bold,

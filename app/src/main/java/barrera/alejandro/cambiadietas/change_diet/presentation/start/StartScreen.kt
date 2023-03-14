@@ -6,36 +6,47 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import barrera.alejandro.cambiadietas.R
+import barrera.alejandro.cambiadietas.change_diet.presentation.components.FoodPicker
 import barrera.alejandro.cambiadietas.core.presentation.components.AdaptableColumn
+import barrera.alejandro.cambiadietas.core.presentation.theme.LocalSpacing
 
 
 @Composable
 fun StartScreen(
     modifier: Modifier = Modifier,
+    viewModel: StartViewModel = hiltViewModel(),
     paddingValues: PaddingValues,
-    onNavigateToSelectedFood: (String, String) -> Unit,
-    viewModel: StartViewModel = hiltViewModel()
+    onNavigateToSelectedFood: (
+        foodName: String,
+        foodCategory: String
+    ) -> Unit
 ) {
-    /*val categories by startScreenViewModel.categories.collectAsState(initial = listOf())
-    val selectedCategory by startScreenViewModel.selectedCategory.collectAsState(initial = "Elige una categoría")
-    val foodByCategory by startScreenViewModel.foodByCategory.collectAsState(initial = listOf())
-    var expanded by remember { mutableStateOf(false) }
-    var selectedFoodName = ""*/
-
     val state = viewModel.state
+    val spacing = LocalSpacing.current
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.onEvent(StartEvent.LoadCategories)
+    }
 
     AdaptableColumn(
-        verticalArrangement = Arrangement.Center,
+        modifier = modifier.padding(
+            vertical = spacing.spaceSmall,
+            horizontal = spacing.spaceLarge
+        ),
+        verticalArrangement = Arrangement.spacedBy(
+            space = spacing.default,
+            alignment = Alignment.CenterVertically
+        ),
         horizontalAlignment = Alignment.CenterHorizontally,
         bottomBarPadding = paddingValues.calculateBottomPadding()
     ) {
@@ -43,127 +54,90 @@ fun StartScreen(
             painter = painterResource(id = R.drawable.logo_cambiadietas),
             contentDescription = stringResource(id = R.string.logo_description)
         )
-        Card(
-            modifier = modifier.padding(start = 30.dp, top = 4.dp, end = 30.dp, bottom = 15.dp),
-            shape = MaterialTheme.shapes.medium,
-        ) {
-            Column(
-                modifier = Modifier.padding(5.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                FoodCategoryMenu(
-                    expanded = state.menuIsExpanded,
-                    categories = state.categories,
-                    selectedCategory = state.selectedCategory,
-
-                    )
+        Text(
+            text = stringResource(id = R.string.app_name),
+            style = typography.displayLarge
+        )
+        Spacer(modifier = Modifier.height(spacing.spaceSmall))
+        FoodCategoryMenu(
+            menuIsExpanded = state.menuIsExpanded,
+            categories = state.categories,
+            selectedCategory = state.selectedCategory,
+            onFoodCategoryMenuDismissRequest = {
+                viewModel.onEvent(StartEvent.OnFoodCategoryMenuDismissRequest)
+            },
+            onSelectedCategoryChange = { selectedCategory ->
+                viewModel.onEvent(StartEvent.OnSelectedCategoryChange(selectedCategory))
+            },
+            onFoodCategoryButtonClick = {
+                viewModel.onEvent(StartEvent.OnFoodCategoryButtonClick)
             }
-        }
-        /*if (selectedCategory != "Elige una categoría") {
-            Text(
-                modifier = Modifier.padding(vertical = 16.dp),
-                text = stringResource(id = R.string.food_picker_question),
-                fontSize = 20.sp
-            )
-            CambiaDietasFoodColumn(
-                foodByCategory = foodByCategory,
-                onSelectedFoodNameChange = onSelectedFoodNameChange,
-                onNavigateToSelectedFoodScreen = onNavigateToSelectedFoodScreen
-            )
-        }*/
-
+        )
+        Spacer(modifier = Modifier.height(spacing.spaceSmall))
+        FoodPicker(
+            headline = stringResource(id = R.string.start_food_picker_headline),
+            selectedCategory = state.selectedCategory,
+            foods = state.foods,
+            onFoodClick = { foodName, foodCategory ->
+                onNavigateToSelectedFood(
+                    foodName,
+                    foodCategory
+                )
+            }
+        )
     }
 }
-
-/*@Composable
-private fun FoodPicker(
-    modifier: Modifier = Modifier,
-    categories: List<String>,
-    selectedCategory: String,
-    onSelectedCategoryChange: (String) -> Unit,
-    foodByCategory: List<Food>,
-    onFoodByCategoryChange: (String) -> Unit,
-    expanded: Boolean,
-    onExpandedChange: (Boolean) -> Unit,
-    onSelectedFoodNameChange: (String) -> Unit,
-    onNavigateToSelectedFoodScreen: () -> Unit
-) {
-    Card(
-        modifier = modifier.padding(start = 30.dp, top = 4.dp, end = 30.dp, bottom = 15.dp),
-        shape = MaterialTheme.shapes.medium,
-        elevation = (1.5).dp,
-        backgroundColor = Aquamarine
-    ) {
-        Column(
-            modifier = Modifier.padding(5.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            FoodCategoryMenu(
-                categories = categories,
-                selectedCategory = selectedCategory,
-                onSelectedCategoryChange = onSelectedCategoryChange,
-                onFoodByCategoryChange = onFoodByCategoryChange,
-                expanded = expanded,
-                onExpandedChange = onExpandedChange
-            )
-            if (selectedCategory != "Elige una categoría") {
-                Text(
-                    modifier = Modifier.padding(vertical = 16.dp),
-                    text = stringResource(id = R.string.food_picker_question),
-                    fontSize = 20.sp
-                )
-                CambiaDietasFoodColumn(
-                    foodByCategory = foodByCategory,
-                    onSelectedFoodNameChange = onSelectedFoodNameChange,
-                    onNavigateToSelectedFoodScreen = onNavigateToSelectedFoodScreen
-                )
-            }
-        }
-    }
-}*/
 
 @Composable
 private fun FoodCategoryMenu(
     modifier: Modifier = Modifier,
+    menuIsExpanded: Boolean,
     categories: List<String>,
     selectedCategory: String,
-    onSelectedCategoryChange: (String) -> Unit = { null },
-    onFoodByCategoryChange: (String) -> Unit = { null },
-    expanded: Boolean,
-    onExpandedChange: (Boolean) -> Unit = { null }
+    onFoodCategoryButtonClick: () -> Unit,
+    onSelectedCategoryChange: (String) -> Unit,
+    onFoodCategoryMenuDismissRequest: () -> Unit,
 ) {
     Box(modifier = modifier) {
-        OutlinedButton(
-            onClick = { onExpandedChange(true) },
-            shape = MaterialTheme.shapes.small,
-            border = BorderStroke((0.5).dp, colorScheme.secondary)
-        ) {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 5.dp, vertical = 10.dp)
-                    .background(Color.White),
-                text = selectedCategory
-            )
-        }
+        CategoryButton(
+            selectedCategory = selectedCategory,
+            onFoodCategoryButtonClick = onFoodCategoryButtonClick
+        )
         DropdownMenu(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(White),
-            expanded = expanded,
-            onDismissRequest = { onExpandedChange(false) }
+            modifier = Modifier.background(color = colorScheme.secondary),
+            expanded = menuIsExpanded,
+            onDismissRequest = onFoodCategoryMenuDismissRequest
         ) {
             categories.forEach { category ->
                 DropdownMenuItem(
-                    text = { Text(text = category) },
-                    onClick = {
-                        onSelectedCategoryChange(category)
-                        onFoodByCategoryChange(category)
-                        onExpandedChange(false)
-                    }
+                    text = { Text(text = category.uppercase()) },
+                    onClick = { onSelectedCategoryChange(category) }
                 )
             }
         }
     }
 }
 
+@Composable
+private fun CategoryButton(
+    modifier: Modifier = Modifier,
+    selectedCategory: String,
+    onFoodCategoryButtonClick: () -> Unit
+) {
+    val spacing = LocalSpacing.current
+
+    Button(
+        onClick = onFoodCategoryButtonClick,
+        modifier = modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+        colors = ButtonDefaults.buttonColors(containerColor = colorScheme.secondary),
+        border = BorderStroke(2.dp, colorScheme.primary),
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 10.dp),
+        contentPadding = PaddingValues(spacing.spaceMedium)
+    ) {
+        Text(
+            text = selectedCategory.uppercase(),
+            style = typography.displayMedium
+        )
+    }
+}
