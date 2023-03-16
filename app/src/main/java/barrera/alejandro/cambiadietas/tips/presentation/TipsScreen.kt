@@ -155,8 +155,7 @@ fun ContactCard(
             horizontalArrangement = Arrangement.Center
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxHeight(),
+                modifier = Modifier.fillMaxHeight(),
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

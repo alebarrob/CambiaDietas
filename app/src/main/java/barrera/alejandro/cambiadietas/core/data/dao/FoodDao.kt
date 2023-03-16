@@ -14,5 +14,5 @@ interface FoodDao {
     fun getFoodByCategory(category: String): Flow<List<Food>>
 
     @Query("SELECT * FROM food WHERE name = :name")
-    fun getFoodByName(name: String): Flow<Food> // De verdad lo usas?
+    fun getFoodByName(name: String): Flow<Food>
 }

@@ -83,7 +83,9 @@ fun SelectedFoodScreen(
             alternativeFood = state.alternativeFood,
             selectedFoodAmount = state.selectedFoodAmount,
             onSelectedFoodAmountChange = { selectedFoodAmount ->
-                viewModel.onEvent(SelectAlternativeFoodEvent.OnSelectedFoodAmountChange(selectedFoodAmount))
+                viewModel.onEvent(
+                    SelectAlternativeFoodEvent.OnSelectedFoodAmountChange(selectedFoodAmount)
+                )
             },
             alternativeFoodAmount = state.alternativeFoodAmount
         )
