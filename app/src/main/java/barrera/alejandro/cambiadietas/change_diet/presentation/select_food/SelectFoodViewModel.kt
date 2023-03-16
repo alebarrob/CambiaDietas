@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.change_diet.presentation.start
+package barrera.alejandro.cambiadietas.change_diet.presentation.select_food
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,25 +11,25 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class StartViewModel @Inject constructor(
+class SelectFoodViewModel @Inject constructor(
     private val coreUseCases: CoreUseCases
 ) : ViewModel() {
-    var state by mutableStateOf(StartState())
+    var state by mutableStateOf(SelectFoodState())
         private set
 
-    fun onEvent(event: StartEvent) {
+    fun onEvent(event: SelectFoodEvent) {
         when (event) {
-            is StartEvent.LoadCategories -> {
+            is SelectFoodEvent.LoadCategories -> {
                 viewModelScope.launch {
                     coreUseCases.getAllFoodCategories().collect { loadedCategories ->
                         state = state.copy(categories = loadedCategories)
                     }
                 }
             }
-            is StartEvent.OnFoodCategoryButtonClick -> {
+            is SelectFoodEvent.OnFoodCategoryButtonClick -> {
                 state = state.copy(menuIsExpanded = true)
             }
-            is StartEvent.OnSelectedCategoryChange -> {
+            is SelectFoodEvent.OnSelectedCategoryChange -> {
                 state = state.copy(
                     selectedCategory = event.selectedCategory,
                     menuIsExpanded = false
@@ -40,10 +40,10 @@ class StartViewModel @Inject constructor(
                     }
                 }
             }
-            is StartEvent.OnFoodCategoryMenuDismissRequest -> {
+            is SelectFoodEvent.OnFoodCategoryMenuDismissRequest -> {
                 state = state.copy(menuIsExpanded = false)
             }
-            is StartEvent.OnSelectedFoodChange -> {
+            is SelectFoodEvent.OnSelectedFoodChange -> {
                 state = state.copy(selectedFoodName = event.selectedFoodName)
             }
         }

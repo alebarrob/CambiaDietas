@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.change_diet.presentation.start
+package barrera.alejandro.cambiadietas.change_diet.presentation.select_food
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -22,9 +22,9 @@ import barrera.alejandro.cambiadietas.core.presentation.theme.LocalSpacing
 
 
 @Composable
-fun StartScreen(
+fun SelectFoodScreen(
     modifier: Modifier = Modifier,
-    viewModel: StartViewModel = hiltViewModel(),
+    viewModel: SelectFoodViewModel = hiltViewModel(),
     paddingValues: PaddingValues,
     onNavigateToSelectedFood: (
         foodName: String,
@@ -35,7 +35,7 @@ fun StartScreen(
     val spacing = LocalSpacing.current
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.onEvent(StartEvent.LoadCategories)
+        viewModel.onEvent(SelectFoodEvent.LoadCategories)
     }
 
     AdaptableColumn(
@@ -64,18 +64,18 @@ fun StartScreen(
             categories = state.categories,
             selectedCategory = state.selectedCategory,
             onFoodCategoryMenuDismissRequest = {
-                viewModel.onEvent(StartEvent.OnFoodCategoryMenuDismissRequest)
+                viewModel.onEvent(SelectFoodEvent.OnFoodCategoryMenuDismissRequest)
             },
             onSelectedCategoryChange = { selectedCategory ->
-                viewModel.onEvent(StartEvent.OnSelectedCategoryChange(selectedCategory))
+                viewModel.onEvent(SelectFoodEvent.OnSelectedCategoryChange(selectedCategory))
             },
             onFoodCategoryButtonClick = {
-                viewModel.onEvent(StartEvent.OnFoodCategoryButtonClick)
+                viewModel.onEvent(SelectFoodEvent.OnFoodCategoryButtonClick)
             }
         )
         Spacer(modifier = Modifier.height(spacing.spaceSmall))
         FoodPicker(
-            headline = stringResource(id = R.string.start_food_picker_headline),
+            headline = stringResource(id = R.string.food_picker_headline_start),
             selectedCategory = state.selectedCategory,
             foods = state.foods,
             onFoodClick = { foodName, foodCategory ->

@@ -1,8 +1,8 @@
-package barrera.alejandro.cambiadietas.change_diet.presentation.start
+package barrera.alejandro.cambiadietas.change_diet.presentation.select_food
 
 import barrera.alejandro.cambiadietas.core.domain.model.Food
 
-data class StartState(
+data class SelectFoodState(
     val menuIsExpanded: Boolean = false,
     val categories: List<String> = emptyList(),
     val selectedCategory: String = "Elige una categoría",

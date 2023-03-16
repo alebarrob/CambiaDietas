@@ -1,9 +1,11 @@
-package barrera.alejandro.cambiadietas.change_diet.presentation.selected_food
+package barrera.alejandro.cambiadietas.change_diet.presentation.select_alternative_food
 
 import barrera.alejandro.cambiadietas.core.domain.model.Food
 
-data class SelectedFoodState(
+data class SelectAlternativeFoodState(
     val selectedFoodName: String,
+    val selectedFoodCategory: String,
+    val foodsByCategory: List<Food> = emptyList(),
     val selectedFood: Food = Food(
         id = 100,
         name = "",
@@ -11,7 +13,6 @@ data class SelectedFoodState(
         category = "",
         unit = ""
     ),
-    val selectedFoodCategory: String,
     val selectedFoodAmount: String = "",
     val alternativeFood: Food = Food(
         id = 100,
@@ -20,6 +21,5 @@ data class SelectedFoodState(
         category = "",
         unit = ""
     ),
-    val alternativeFoodAmount: String = "",
-    val foods: List<Food> = emptyList()
+    val alternativeFoodAmount: String = ""
 )

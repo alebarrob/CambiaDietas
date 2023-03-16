@@ -9,14 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import barrera.alejandro.cambiadietas.R
 import barrera.alejandro.cambiadietas.core.domain.model.Food
+import barrera.alejandro.cambiadietas.core.presentation.components.FoodCard
 import barrera.alejandro.cambiadietas.core.presentation.theme.LocalSpacing
 
 @Composable
@@ -98,7 +94,7 @@ fun FoodFlowRow(
     val spacing = LocalSpacing.current
 
     FlowRow(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.Center,
@@ -106,47 +102,11 @@ fun FoodFlowRow(
         maxItemsInEachRow = 2
     ) {
         foods.forEach { food ->
-            Card(
-                modifier = modifier.padding(spacing.spaceExtraSmall),
-                shape = MaterialTheme.shapes.medium,
-                colors = CardDefaults.cardColors(containerColor = colorScheme.tertiary),
-                border = BorderStroke(1.dp, colorScheme.primary),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-            ) {
-                Column(
-                    modifier = modifier
-                        .padding(vertical = spacing.spaceMedium)
-                        .fillMaxHeight()
-                        .height(115.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(
-                        space = spacing.spaceExtraSmall,
-                        alignment = Alignment.CenterVertically
-                    )
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .width(40.dp)
-                            .height(40.dp),
-                        painter = painterResource(
-                            getDrawableId(
-                                food.category,
-                                food.name
-                            )
-                        ),
-                        contentDescription = stringResource(id = R.string.food_category_image_description),
-                        contentScale = ContentScale.Inside
-                    )
-                    Text(
-                        modifier = Modifier
-                            .width(120.dp)
-                            .padding(spacing.spaceExtraSmall),
-                        text = food.name,
-                        style = typography.bodyMedium,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
+            FoodCard(
+                modifier = Modifier.padding(spacing.spaceExtraSmall),
+                getDrawableId = getDrawableId,
+                food = food
+            )
         }
     }
 }

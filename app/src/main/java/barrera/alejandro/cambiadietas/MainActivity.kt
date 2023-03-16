@@ -16,7 +16,7 @@ import barrera.alejandro.cambiadietas.core.presentation.components.BottomBar
 import barrera.alejandro.cambiadietas.core.presentation.components.TopBar
 import barrera.alejandro.cambiadietas.core.presentation.components.UiController
 import barrera.alejandro.cambiadietas.core.presentation.navigation.NavGraph
-import barrera.alejandro.cambiadietas.core.presentation.navigation.NavigationScreen.StartScreen
+import barrera.alejandro.cambiadietas.core.presentation.navigation.NavigationScreen.SelectFoodScreen
 import barrera.alejandro.cambiadietas.core.presentation.theme.CambiaDietasTheme
 import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
                             BottomBar(
                                 onItemClick = { screen ->
                                     navController.navigate(screen.route) {
-                                        popUpTo(StartScreen.route) { inclusive = false }
+                                        popUpTo(SelectFoodScreen.route) { inclusive = false }
                                         launchSingleTop = true
                                     }
                                 },

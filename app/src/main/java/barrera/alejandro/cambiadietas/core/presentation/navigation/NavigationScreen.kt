@@ -10,13 +10,13 @@ sealed class NavigationScreen(
     @DrawableRes val iconImageId: Int? = null,
     @StringRes val iconImageDescription: Int? = null
 ) {
-    object StartScreen: NavigationScreen(
-        route = "start",
-        iconLabelId = R.string.start_label_text,
-        iconImageId = R.drawable.ic_start,
-        iconImageDescription = R.string.start_icon_description
+    object SelectFoodScreen: NavigationScreen(
+        route = "selectFood",
+        iconLabelId = R.string.select_food_label_text,
+        iconImageId = R.drawable.ic_select_food,
+        iconImageDescription = R.string.select_food_icon_description
     )
-    object SelectedFoodScreen: NavigationScreen(route = "selectedFood")
+    object SelectAlternativeFoodScreen: NavigationScreen(route = "selectAlternativeFood")
     object CategoriesOverviewScreen: NavigationScreen(
         route = "categoriesOverview",
         iconLabelId = R.string.categories_label_text,

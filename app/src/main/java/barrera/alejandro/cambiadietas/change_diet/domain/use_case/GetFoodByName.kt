@@ -1,4 +1,4 @@
-package barrera.alejandro.cambiadietas.change_diet.data.domain.use_case
+package barrera.alejandro.cambiadietas.change_diet.domain.use_case
 
 import barrera.alejandro.cambiadietas.core.domain.model.Food
 import barrera.alejandro.cambiadietas.core.domain.repository.FoodRepository

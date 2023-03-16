@@ -1,27 +1,27 @@
 <resources>
     <!-- App General -->
     <string name="app_name">CambiaDietas</string>
+    <string name="food_image_description">Foto de la comida</string>
 
     <!-- Core -->
     <string name="back_icon_description">Volver atrás</string>
-    <string name="start_label_text">INICIO</string>
-    <string name="start_icon_description">Inicio</string>
+    <string name="select_food_label_text">INICIO</string>
+    <string name="select_food_icon_description">Inicio</string>
     <string name="categories_label_text">CATEGORÍAS</string>
     <string name="categories_icon_description">Categorías</string>
     <string name="tips_label_text">CONSEJOS</string>
     <string name="tips_icon_description">Consejos</string>
 
     <!-- Change Diet -->
-    <!-- Start -->
+    <!-- Select Food -->
     <string name="logo_description">Logo de CambiaDietas</string>
-    <string name="start_food_picker_headline">Elige el alimento que quieres cambiar:</string>
-    <!-- Selected Food -->
-    <string name="selected_food_food_picker_headline">Elige el alimento que prefieres comer:</string>
+    <string name="food_picker_headline_start">Elige el alimento que quieres cambiar:</string>
+    <!-- Select Alternative Food -->
+    <string name="food_picker_headline_selected_food">Elige el alimento que prefieres comer:</string>
+    <string name="arrow_icon_description">Icono de una flecha</string>
+    <string name="food_amount_error">Has introducido un valor incorrecto</string>
 
     <!-- Categories -->
-    <!-- Category Detail -->
-    <string name="food_category_image_description">Foto de la comida</string>
-    <!-- Components -->
     <string name="ad_id_banner">ca-app-pub-9771408617801489/4115374442</string>
 
     <!-- Tips -->

@@ -8,8 +8,8 @@ import androidx.navigation.compose.composable
 import barrera.alejandro.cambiadietas.core.presentation.navigation.NavigationScreen.*
 import barrera.alejandro.cambiadietas.categories.presentation.categories_overview.CategoriesOverviewScreen
 import barrera.alejandro.cambiadietas.categories.presentation.category_detail.CategoryDetailScreen
-import barrera.alejandro.cambiadietas.change_diet.presentation.selected_food.SelectedFoodScreen
-import barrera.alejandro.cambiadietas.change_diet.presentation.start.StartScreen
+import barrera.alejandro.cambiadietas.change_diet.presentation.select_alternative_food.SelectedFoodScreen
+import barrera.alejandro.cambiadietas.change_diet.presentation.select_food.SelectFoodScreen
 import barrera.alejandro.cambiadietas.tips.presentation.TipsScreen
 
 @Composable
@@ -19,21 +19,21 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = StartScreen.route
+        startDestination = SelectFoodScreen.route
     ) {
-        composable(route = StartScreen.route) {
-            StartScreen(
+        composable(route = SelectFoodScreen.route) {
+            SelectFoodScreen(
                 paddingValues = paddingValues,
                 onNavigateToSelectedFood = { foodName, foodCategory ->
                     navController.navigate(
-                        route = SelectedFoodScreen.route +
+                        route = SelectAlternativeFoodScreen.route +
                                 "/$foodName" +
                                 "/$foodCategory"
                     )
                 }
             )
         }
-        composable(route = SelectedFoodScreen.route + "/{foodName}/{foodCategory}") {
+        composable(route = SelectAlternativeFoodScreen.route + "/{foodName}/{foodCategory}") {
             SelectedFoodScreen(paddingValues = paddingValues)
         }
         composable(route = CategoriesOverviewScreen.route) {

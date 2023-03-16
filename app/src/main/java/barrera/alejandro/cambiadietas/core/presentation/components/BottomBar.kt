@@ -20,7 +20,7 @@ fun BottomBar(
     bottomBarState: Boolean,
     currentDestination: NavDestination?
 ) {
-    val screens = listOf(StartScreen, CategoriesOverviewScreen, TipsScreen)
+    val screens = listOf(SelectFoodScreen, CategoriesOverviewScreen, TipsScreen)
 
     AnimatedVisibility(
         visible = bottomBarState,
