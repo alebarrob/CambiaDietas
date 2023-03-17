@@ -119,7 +119,7 @@ fun FoodImageComparator(
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         FoodQuantityCard(
             getDrawableId = getDrawableId,
