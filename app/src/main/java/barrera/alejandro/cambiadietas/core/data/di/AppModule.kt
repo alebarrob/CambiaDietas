@@ -25,7 +25,8 @@ object AppModule {
             context,
             CambiaDietasRoomDataBase::class.java,
             "cambiadietas_database"
-        ).createFromAsset("database/cambiadietas_database.db")
+        ).fallbackToDestructiveMigration()
+            .createFromAsset("database/cambiadietas_database.db")
             .build()
     }
 
