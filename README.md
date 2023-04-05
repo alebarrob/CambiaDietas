@@ -1,7 +1,9 @@
 # CambiaDietas
 
-This repository contains my first android application: CambiaDietas. It is an application that allows you to substitute a food in your diet for a different one and calculate the equivalent amount you should eat.
+This repository contains Cambiadietas, a mobile application that allows you to change one food in your diet for a different one while maintaining the overall balance between nutrients. 
 
-For example, if in today's diet you have to eat chicken but you feel like eating a pork chop, the app will tell you how much pork you should eat.
+The application also includes a general advice section and contact with a professional dietitian, in case you need more personalized attention.
 
-The application also includes some general nutrition advice on one of its screens, as well as the contact of a professional dietician in case you need more personalized attention.
+It is available for download at: https://play.google.com/store/apps/details?id=barrera.alejandro.cambiadietas
+
+In case you get the code from the repository, you will have to add your own "google-services.json" file, which is used to interact with Firebase services.
